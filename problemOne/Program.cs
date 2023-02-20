@@ -62,70 +62,8 @@ internal class Program
         KGraph.TryBuid(ref matrix, out graph);
 
         graph.Print();
-    }
 
-    private static bool TryBuildGraph(int[,] matrix, out List<Vertex> vertexes)
-    {
-        int matrixRowCount = matrix.GetLength(0);
-        int matrixColumnCount = matrix.GetLength(1);
 
-        // формирование массива вершин
-        vertexes = new List<Vertex>();
-        for (int row = 0; row < matrixRowCount; row++)
-            for (int column = 0; column < matrixColumnCount; column++)
-            {
-                Vertex? v = vertexes.FirstOrDefault(v => v.rowPosition == row && v.columnPosition == column);
-                if (v == null)
-                {
-                    v = new Vertex
-                    {
-                        rowPosition = row,
-                        columnPosition = column,
-                        Weight = matrix[row, column]
-                    };
-                    vertexes.Add(v);
-                }
-
-                if (row == matrixRowCount - 1
-                       && column == matrixColumnCount - 1)
-                    v.IsTarget = true;
-
-                Vertex? vN = null;
-                // right neighbour
-                if (row + 1 < matrixRowCount)
-                {
-                    vN = vertexes.FirstOrDefault(v => v.rowPosition == row + 1 && v.columnPosition == column);
-                    if (vN == null)
-                    {
-                        vN = new Vertex
-                        {
-                            rowPosition = row + 1,
-                            columnPosition = column,
-                            Weight = matrix[row + 1, column]
-                        };
-                        vertexes.Add(vN);
-                    }
-                    v.Neighbours.Add(vN);
-                }
-
-                // bottom neighbour
-                if (column + 1 < matrixColumnCount)
-                {
-                    vN = vertexes.FirstOrDefault(v => v.rowPosition == row && v.columnPosition == column + 1);
-                    if (vN == null)
-                    {
-                        vN = new Vertex
-                        {
-                            rowPosition = row,
-                            columnPosition = column + 1,
-                            Weight = matrix[row, column + 1]
-                        };
-                        vertexes.Add(vN);
-                    }
-                    v.Neighbours.Add(vN);
-                }
-            }
-        return true;
     }
 
     static List<int> pathLengthFounded = new List<int>();
