@@ -5,10 +5,6 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        int processorCount = 0;
-        int processCount = 0;
-        int blockCount = 0;
-
         int[,] matrixTest = new int[12, 12]
         {
             { 1,4,3,1 ,1,4,3,1, 1,4,3,1 },
@@ -39,7 +35,7 @@ internal class Program
             { 3,2,1,1, 0,0,0,0, 0,0,0,0 },
             { 1,1,3,2, 0,0,0,0, 0,0,0,0 },
             { 2,1,2,3, 0,0,0,0, 0,0,0,0 }
-        };//27(22)
+        };//27
         int[,] matrixtest3 = new int[8, 12]
         {
             { 3,2,1,4, 2,1,1,3, 2,2,3,2 },
@@ -60,25 +56,12 @@ internal class Program
             { 1,3,2,3 },
             { 2,4,1,2 },
             { 3,2,3,1 }
-        };//12(15)
+        };//16
 
-        List<Vertex>? verticies;
-        TryBuildGraph(matrix, out verticies);
+        KGraph? graph;
+        KGraph.TryBuid(ref matrix, out graph);
 
-        GetCriticalPathLength(verticies);
-
-        Console.WriteLine($"\n{ pathLengthFounded.Max()} count: {pathLengthFounded.Count}");
-    }
-
-    private static void PrintGraph(List<Vertex> graph)
-    {
-        foreach(Vertex v in graph)
-        {
-            Console.WriteLine(v);
-            foreach(Vertex vN in v.Neighbours)
-                Console.WriteLine("\t" + vN);
-        }
-
+        graph.Print();
     }
 
     private static bool TryBuildGraph(int[,] matrix, out List<Vertex> vertexes)
@@ -204,24 +187,5 @@ public class Vertex
     public override string ToString()
     {
         return $"Vertex weight: {Weight}; coord: r-{rowPosition}, c-{columnPosition}; Neib count {Neighbours.Count}.";
-    }
-}
-
-public class KStateMachine
-{
-    private ConcurrentBag<KProcessor> _processorList = new ConcurrentBag<KProcessor>();
-    private ConcurrentStack<KProcess> _tasks= new ConcurrentStack<KProcess>();
-
-    public void Initialize(int processorCount, int processCount, int blockCount = 0)
-    {
-        // если кол-во блоков (_s) не задано -
-        // предполагаем что кол-во блоков равно кол-ву прроцессоров
-        AddProcessor(new KProcessor(), processorCount);
-    }
-
-    private void AddProcessor(KProcessor proc, int count = 1)
-    {
-        for(int iteration = 0; iteration < count; iteration++)
-            _processorList.Add(proc);
     }
 }
