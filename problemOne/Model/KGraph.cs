@@ -73,8 +73,8 @@
 
             if (vertex.Neighbours.Count > 0 && !forceBreak)
             {
-                // если вершины равновесны тестим обе
-                //иначе идем через самую толстую
+                // если вершины равновесны - тестим обе
+                // иначе идем через самую толстую
                 if (vertex.Neighbours.All(v => v.Weight == vertex.Neighbours.Max(v => v.Weight)))
                     foreach (KVertex testVertex in vertex.Neighbours)
                     {
