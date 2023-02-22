@@ -59,15 +59,17 @@ internal class Program
         };//16
 
         KGraph? graph;
-        KGraph.TryBuid(ref matrix, out graph);
+        KGraph.TryBuid(ref matrixTest2, out graph);
 
         graph.Print();
 
+        List<KVertex> criticalPath = graph.GetCriticalPath();
 
+        graph.Print(criticalPath);
+
+        Console.WriteLine($"Critical path length: {criticalPath.Sum(v => v.Weight)}");
     }
-
-    static List<int> pathLengthFounded = new List<int>();
-    static Stack<Vertex> path = new Stack<Vertex>();
+    /*
     private static void GetCriticalPathLength(List<Vertex> graph, Vertex? startVertex = null)
     {
         Vertex? vStart;
@@ -109,21 +111,5 @@ internal class Program
 
         GetCriticalPathLength(graph, testVertex);
     }
-}
-
-public class Vertex
-{
-    public List<Vertex?> Neighbours { get; set; } = new List<Vertex?>();
-    
-    public int rowPosition { get; set; } = 0;
-    public int columnPosition { get; set; } = 0;
-    public int Weight { get; set; } = 0;
-
-    public bool Visited { get; set; } = false;
-    public bool IsTarget { get; set; } = false;
-
-    public override string ToString()
-    {
-        return $"Vertex weight: {Weight}; coord: r-{rowPosition}, c-{columnPosition}; Neib count {Neighbours.Count}.";
-    }
+    */
 }
