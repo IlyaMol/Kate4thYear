@@ -49,7 +49,7 @@
 
         private Stack<KVertex> verticesStack = new();
         private List<KVertex> criticalPath = new();
-        public List<KVertex> GetCriticalPath(KVertex? vertex = null, int processorCount = 3)
+        public List<KVertex> GetCriticalPath(KVertex? vertex = null)
         {
             bool forceBreak = false;
 

@@ -1,5 +1,4 @@
 ﻿using problemOne.Model;
-using System.Collections.Concurrent;
 
 internal class Program
 {
@@ -69,47 +68,4 @@ internal class Program
 
         Console.WriteLine($"Critical path length: {criticalPath.Sum(v => v.Weight)}");
     }
-    /*
-    private static void GetCriticalPathLength(List<Vertex> graph, Vertex? startVertex = null)
-    {
-        Vertex? vStart;
-        Vertex? testVertex;
-
-        if (startVertex == null)
-            vStart = graph.First();
-        else
-            vStart = startVertex;
-
-        path.Push(vStart);
-
-        if(!vStart.IsTarget)
-            vStart.Visited = true;
-
-        Console.Write($"Path now: ");
-        foreach (int i in path.Select(v => v.Weight))
-            Console.Write(i);
-        Console.WriteLine();
-        //Console.WriteLine($"Testing verticie: row: {vStart.rowPosition}, col: {vStart.columnPosition}, weight: {vStart.Weight}");
-
-        if(vStart.Neighbours.Count > 0)
-        {
-            testVertex = vStart.Neighbours.Where(vN => !vN!.Visited).MaxBy(vN => vN!.Weight);
-            if (testVertex == null) return;
-            GetCriticalPathLength(graph, testVertex);
-        }
-        
-        if(vStart.IsTarget)
-            pathLengthFounded.Add(path.Sum(v => v.Weight));
-
-        vStart = path.Pop().Neighbours.FirstOrDefault(v => !v.Visited);
-
-        if (vStart == null) return;
-
-        testVertex = vStart.Neighbours.Where(vN => !vN!.Visited).MaxBy(vN => vN!.Weight);
-
-        if (testVertex == null) return;
-
-        GetCriticalPathLength(graph, testVertex);
-    }
-    */
 }
