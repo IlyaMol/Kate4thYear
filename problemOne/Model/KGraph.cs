@@ -42,7 +42,7 @@
             int resultMatrixRowCount = processorCount * subMatrixDict.Values.First().GetLength(0);
             int resultMatrixColumnCount = subMatrixDict.Values.First().GetLength(1) * (subMatrixDict.Values.Count);
             int[,] resultMatrix = new int[resultMatrixRowCount, resultMatrixColumnCount];
-            bool ignoreRowIncrement = false;
+
             int[] ignorePattern = new int[subMatrixDict.Values.Count];
             for (int elementIndex = 0; elementIndex < ignorePattern.Length; elementIndex++)
                 ignorePattern[elementIndex] = 999;
@@ -71,7 +71,6 @@
                             if (ignorePattern[elementIndex] == 999)
                             {
                                 ignorePattern[elementIndex] = indexToIgnore;
-                                ignoreRowIncrement = false;
                                 break;
                             }
                         break;
@@ -80,11 +79,7 @@
                     resultMatrix[rowIndex, columnindex] = subMatrixDict[subMatrixIndex][subMatrixRowIndex, subMatrixColumnIndex];
                     subMatrixColumnIndex++;
                 }
-                if (!ignoreRowIncrement)
-                {
-                    subMatrixRowIndex++;
-                    ignoreRowIncrement = false;
-                }
+                subMatrixRowIndex++;
                 
 
                 for (int newMatrixIndex = 0; newMatrixIndex <= subMatrixDict.Values.Count; newMatrixIndex++)
