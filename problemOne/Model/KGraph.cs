@@ -36,6 +36,7 @@
                 subMatrixRowIndex++;
             }
             subMatrixDict.Add(subMatrixIndex, subMatrix);
+            subMatrix = new int[processorCount, blockCount];
             // <---
 
             // prepare matrix using Dictionary<int, int[,]> --->
@@ -51,7 +52,8 @@
             subMatrixRowIndex = 0;
             for (int rowIndex = 0; rowIndex < resultMatrix.GetLength(0); rowIndex++)
             {
-                if(subMatrixRowIndex >= subMatrixDict[subMatrixIndex].GetLength(0))
+
+                if (subMatrixRowIndex >= subMatrixDict[subMatrixIndex].GetLength(0))
                 {
                     subMatrixIndex++;
                     subMatrixRowIndex = 0;
@@ -64,25 +66,28 @@
                         subMatrixIndex++;
                         subMatrixColumnIndex = 0;
                     }
-                    if (subMatrixIndex >= subMatrixDict.Count)
+
+                    if (subMatrixIndex >= subMatrixDict.Values.Count)
                     {
-                        int indexToIgnore = subMatrixDict.Where(kvp => !ignorePattern.Contains(kvp.Key)).First().Key;
+                        var notIgnoringSubMatrix = subMatrixDict.Where(kvp => !ignorePattern.Contains(kvp.Key));
+                        int indexToIgnore = notIgnoringSubMatrix.First().Key;
                         for (int elementIndex = 0; elementIndex < ignorePattern.Length; elementIndex++)
                             if (ignorePattern[elementIndex] == 999)
                             {
                                 ignorePattern[elementIndex] = indexToIgnore;
+                                subMatrixDict.Remove(0);
+                                subMatrixDict.Add(subMatrixDict.Keys.Max() + 1, subMatrix);
                                 break;
                             }
                         break;
                     }
-                        
+
                     resultMatrix[rowIndex, columnindex] = subMatrixDict[subMatrixIndex][subMatrixRowIndex, subMatrixColumnIndex];
                     subMatrixColumnIndex++;
                 }
                 subMatrixRowIndex++;
-                
 
-                for (int newMatrixIndex = 0; newMatrixIndex <= subMatrixDict.Values.Count; newMatrixIndex++)
+                for (int newMatrixIndex = 0; newMatrixIndex < subMatrixDict.Keys.Max(); newMatrixIndex++)
                     if (ignorePattern.Contains(newMatrixIndex)) continue;
                     else
                     {
@@ -90,6 +95,8 @@
                         break;
                     }
                 subMatrixColumnIndex = 0;
+
+                PrintMatrix(resultMatrix);
             }
             //<---
             return resultMatrix;
@@ -203,6 +210,20 @@
                 index++;
             } while (Vertices.Any(v => v.RowIndex >= index));
             Thread.Sleep(100);
+        }
+
+        public static void PrintMatrix(int[,] matrix)
+        {
+            Console.Clear();
+            for (int rowIndex = 0; rowIndex < matrix.GetLength(0); rowIndex++)
+            {
+                for (int columnIndex = 0; columnIndex < matrix.GetLength(1); columnIndex++)
+                {
+                    Console.Write(matrix[rowIndex, columnIndex] + " ");
+                }
+                Console.WriteLine();
+            }
+                
         }
     }
 }
