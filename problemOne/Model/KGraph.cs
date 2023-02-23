@@ -6,6 +6,7 @@
 
         public ICollection<KVertex> Vertices { get; } = new HashSet<KVertex>();
 
+        
         public static int[,] PrepareMatrix(int[,] matrix, int processorCount)
         {
             // matrix segmentation --->
@@ -15,6 +16,8 @@
             int subMatrixIndex = 0;
             int subMatrixRowIndex = 0;
             int subMatrixColumnIndex = 0;
+
+            //TODO: тут не processorCount, а, скорее Math.Ceiling(processCount/processorCount)
             var subMatrix = new int[processorCount, blockCount];
             for (int rowIndex = 0; rowIndex < matrix.GetLength(0); rowIndex++)
             {

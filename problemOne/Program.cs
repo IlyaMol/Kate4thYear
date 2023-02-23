@@ -4,7 +4,7 @@ internal class Program
 { 
     private static void Main(string[] args)
     {
-        int processorCount = 4;
+        int processorCount = 3;
         int processCount = 9;
         int blockCount = 4;
         
