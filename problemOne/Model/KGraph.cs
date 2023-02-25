@@ -13,11 +13,13 @@
             Dictionary<int, int[,]> subMatrixDict = new();
             int blockCount = matrix.GetLength(1);
 
+            double i = matrix.GetLength(0) / (double)processorCount;
+            int processGroupCount = (int)Math.Ceiling(i);
+
             int subMatrixIndex = 0;
             int subMatrixRowIndex = 0;
             int subMatrixColumnIndex = 0;
-
-            //TODO: тут не processorCount, а, скорее Math.Ceiling(processCount/processorCount)
+            // NOTE(wwaffe): submatrix row count depends of processor count
             var subMatrix = new int[processorCount, blockCount];
             for (int rowIndex = 0; rowIndex < matrix.GetLength(0); rowIndex++)
             {
@@ -43,7 +45,7 @@
             // <---
 
             // prepare matrix using Dictionary<int, int[,]> --->
-            int resultMatrixRowCount = processorCount * subMatrixDict.Values.First().GetLength(0);
+            int resultMatrixRowCount = processGroupCount * subMatrixDict.Values.First().GetLength(0);
             int resultMatrixColumnCount = subMatrixDict.Values.First().GetLength(1) * (subMatrixDict.Values.Count);
             int[,] resultMatrix = new int[resultMatrixRowCount, resultMatrixColumnCount];
 

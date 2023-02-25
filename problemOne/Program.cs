@@ -4,9 +4,7 @@ internal class Program
 { 
     private static void Main(string[] args)
     {
-        int processorCount = 3;
-        int processCount = 9;
-        int blockCount = 4;
+        int processorCount = 4;
         
         int[,] matrixTest = new int[12, 4]
         {
@@ -62,7 +60,7 @@ internal class Program
         };//16
 
         KGraph? graph;
-        int[,] preparedMatrix = KGraph.PrepareMatrix(matrix, processorCount);
+        int[,] preparedMatrix = KGraph.PrepareMatrix(matrixTest, processorCount);
         KGraph.TryBuid(ref preparedMatrix, out graph);
 
         graph.Print();
