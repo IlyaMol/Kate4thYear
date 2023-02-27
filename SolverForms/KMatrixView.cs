@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace SolverForms
+﻿namespace SolverForms
 {
     public partial class KGraphView : UserControl
     {
