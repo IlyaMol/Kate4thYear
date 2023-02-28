@@ -42,14 +42,24 @@ namespace SolverForms
                 OnPropertyChanged();
             }
         }
-
-
         #endregion
+
+        private int[,] _matrix = new int[0, 0];
+        public int[,] Matrix 
+        {
+            get { return _matrix; }
+            set
+            {
+                if(_matrix == value) return;
+                _matrix = value; 
+                OnPropertyChanged();
+            }
+        }
 
         #region Methods
         public bool TryBuildGraph()
         {
-
+            Matrix = new int[ProcessCount, BlockCount];
             return true;
         }
         #endregion

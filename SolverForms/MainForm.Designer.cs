@@ -1,6 +1,6 @@
 ﻿namespace SolverForms
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -39,6 +39,8 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
+            this.kGraphView1 = new SolverForms.KGraphView();
+            this.importButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.processorCountNumUpDownValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.blockCountNumUpDownValue)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -138,7 +140,7 @@
             // 
             // buildGraphButton
             // 
-            this.buildGraphButton.Location = new System.Drawing.Point(110, 105);
+            this.buildGraphButton.Location = new System.Drawing.Point(188, 76);
             this.buildGraphButton.Name = "buildGraphButton";
             this.buildGraphButton.Size = new System.Drawing.Size(75, 23);
             this.buildGraphButton.TabIndex = 6;
@@ -177,14 +179,35 @@
             this.textBox6.Size = new System.Drawing.Size(23, 23);
             this.textBox6.TabIndex = 1;
             // 
-            // Form1
+            // kGraphView1
+            // 
+            this.kGraphView1.AutoSize = true;
+            this.kGraphView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.kGraphView1.Location = new System.Drawing.Point(15, 105);
+            this.kGraphView1.Name = "kGraphView1";
+            this.kGraphView1.Size = new System.Drawing.Size(251, 459);
+            this.kGraphView1.TabIndex = 7;
+            // 
+            // importButton
+            // 
+            this.importButton.Location = new System.Drawing.Point(188, 47);
+            this.importButton.Name = "importButton";
+            this.importButton.Size = new System.Drawing.Size(75, 23);
+            this.importButton.TabIndex = 8;
+            this.importButton.Text = "Json";
+            this.importButton.UseVisualStyleBackColor = true;
+            this.importButton.Click += new System.EventHandler(this.importButton_Click);
+            // 
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 571);
+            this.ClientSize = new System.Drawing.Size(800, 576);
+            this.Controls.Add(this.importButton);
+            this.Controls.Add(this.kGraphView1);
             this.Controls.Add(this.buildGraphButton);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.processorCountNumUpDownValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.blockCountNumUpDownValue)).EndInit();
@@ -210,5 +233,7 @@
         private TableLayoutPanel tableLayoutPanel3;
         private TextBox textBox5;
         private TextBox textBox6;
+        private KGraphView kGraphView1;
+        private Button importButton;
     }
 }
