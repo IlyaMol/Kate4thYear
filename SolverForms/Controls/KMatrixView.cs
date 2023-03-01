@@ -1,4 +1,6 @@
-﻿namespace SolverForms
+﻿using System.Windows.Forms;
+
+namespace SolverForms
 {
     [System.ComponentModel.ComplexBindingProperties("DataSource")]
     public partial class KMatrixView : UserControl
@@ -78,6 +80,19 @@
 
             return tableLayoutPanel;
         }
+
+        private void AddColumn()
+        {
+            foreach(Control row in matrixRepresentationContainer.Controls)
+            {
+                if(row.GetType() == typeof(TableLayoutPanel) && row != null)
+                {
+                    ((TableLayoutPanel)row).ColumnStyles.Add(new ColumnStyle());
+                }
+            }
+        }
+
+
         private void CopyArray(int[,] source, ref int[,] dest)
         {
             for(int rowIndex =0; rowIndex < dest.GetLength(0); rowIndex++)
