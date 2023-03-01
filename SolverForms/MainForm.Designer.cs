@@ -35,12 +35,14 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.processCountNumUpDownValue = new System.Windows.Forms.NumericUpDown();
             this.processCountLabel = new System.Windows.Forms.Label();
-            this.buildGraphButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
-            this.kGraphView1 = new SolverForms.KGraphView();
             this.importButton = new System.Windows.Forms.Button();
+            this.openJsonFile = new System.Windows.Forms.OpenFileDialog();
+            this.exportButton = new System.Windows.Forms.Button();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.matrixRepresentationContainer = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.processorCountNumUpDownValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.blockCountNumUpDownValue)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -64,9 +66,19 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.blockCountNumUpDownValue.Location = new System.Drawing.Point(106, 60);
+            this.blockCountNumUpDownValue.Maximum = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
             this.blockCountNumUpDownValue.Name = "blockCountNumUpDownValue";
             this.blockCountNumUpDownValue.Size = new System.Drawing.Size(64, 23);
             this.blockCountNumUpDownValue.TabIndex = 1;
+            this.blockCountNumUpDownValue.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // processorCountLabel
             // 
@@ -121,9 +133,19 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.processCountNumUpDownValue.Location = new System.Drawing.Point(106, 31);
+            this.processCountNumUpDownValue.Maximum = new decimal(new int[] {
+            13,
+            0,
+            0,
+            0});
             this.processCountNumUpDownValue.Name = "processCountNumUpDownValue";
             this.processCountNumUpDownValue.Size = new System.Drawing.Size(64, 23);
             this.processCountNumUpDownValue.TabIndex = 5;
+            this.processCountNumUpDownValue.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // processCountLabel
             // 
@@ -137,16 +159,6 @@
             this.processCountLabel.TabIndex = 4;
             this.processCountLabel.Text = "Процессы (n)";
             this.processCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // buildGraphButton
-            // 
-            this.buildGraphButton.Location = new System.Drawing.Point(188, 76);
-            this.buildGraphButton.Name = "buildGraphButton";
-            this.buildGraphButton.Size = new System.Drawing.Size(75, 23);
-            this.buildGraphButton.TabIndex = 6;
-            this.buildGraphButton.Text = "Построить";
-            this.buildGraphButton.UseVisualStyleBackColor = true;
-            this.buildGraphButton.Click += new System.EventHandler(this.BuildGraphButton_Click);
             // 
             // tableLayoutPanel3
             // 
@@ -179,36 +191,56 @@
             this.textBox6.Size = new System.Drawing.Size(23, 23);
             this.textBox6.TabIndex = 1;
             // 
-            // kGraphView1
-            // 
-            this.kGraphView1.AutoSize = true;
-            this.kGraphView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.kGraphView1.Location = new System.Drawing.Point(15, 105);
-            this.kGraphView1.Name = "kGraphView1";
-            this.kGraphView1.Size = new System.Drawing.Size(251, 459);
-            this.kGraphView1.TabIndex = 7;
-            // 
             // importButton
             // 
-            this.importButton.Location = new System.Drawing.Point(188, 47);
+            this.importButton.Location = new System.Drawing.Point(188, 13);
             this.importButton.Name = "importButton";
             this.importButton.Size = new System.Drawing.Size(75, 23);
             this.importButton.TabIndex = 8;
-            this.importButton.Text = "Json";
+            this.importButton.Text = "Импорт";
             this.importButton.UseVisualStyleBackColor = true;
             this.importButton.Click += new System.EventHandler(this.importButton_Click);
+            // 
+            // openJsonFile
+            // 
+            this.openJsonFile.Filter = "Json-файл|*.json";
+            // 
+            // exportButton
+            // 
+            this.exportButton.Location = new System.Drawing.Point(269, 12);
+            this.exportButton.Name = "exportButton";
+            this.exportButton.Size = new System.Drawing.Size(75, 23);
+            this.exportButton.TabIndex = 9;
+            this.exportButton.Text = "Экспорт";
+            this.exportButton.UseVisualStyleBackColor = true;
+            this.exportButton.Click += new System.EventHandler(this.exportButton_Click);
+            // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.DefaultExt = "json";
+            this.saveFileDialog.FileName = "sourceData";
+            this.saveFileDialog.Filter = "Json-файл|*.json";
+            this.saveFileDialog.InitialDirectory = "D:\\";
+            // 
+            // matrixRepresentationContainer
+            // 
+            this.matrixRepresentationContainer.Location = new System.Drawing.Point(12, 105);
+            this.matrixRepresentationContainer.Name = "matrixRepresentationContainer";
+            this.matrixRepresentationContainer.Size = new System.Drawing.Size(200, 399);
+            this.matrixRepresentationContainer.TabIndex = 10;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 576);
+            this.Controls.Add(this.matrixRepresentationContainer);
+            this.Controls.Add(this.exportButton);
             this.Controls.Add(this.importButton);
-            this.Controls.Add(this.kGraphView1);
-            this.Controls.Add(this.buildGraphButton);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
             ((System.ComponentModel.ISupportInitialize)(this.processorCountNumUpDownValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.blockCountNumUpDownValue)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -229,11 +261,13 @@
         private TableLayoutPanel tableLayoutPanel1;
         private Label processCountLabel;
         private NumericUpDown processCountNumUpDownValue;
-        private Button buildGraphButton;
         private TableLayoutPanel tableLayoutPanel3;
         private TextBox textBox5;
         private TextBox textBox6;
-        private KGraphView kGraphView1;
         private Button importButton;
+        private OpenFileDialog openJsonFile;
+        private Button exportButton;
+        private SaveFileDialog saveFileDialog;
+        private KMatrixView kMatrixView1;
     }
 }

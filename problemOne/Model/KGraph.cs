@@ -4,9 +4,31 @@
     {
         public Guid Id { get; set; }
 
-        public ICollection<KVertex> Vertices { get; } = new HashSet<KVertex>();
+        public int RowInMatrix 
+        { 
+            get
+            {
+                if (Vertices.Count == 0) return 0;
+                return Vertices.Max(v => v.RowIndex);
+            } 
+        }
+        public int ColumnInMatrix
+        {
+            get
+            {
+                if (Vertices.Count == 0) return 0;
+                return Vertices.Max(v => v.ColumnIndex);
+            }
+        }
+        public ICollection<KVertex> Vertices { get; set; } = new HashSet<KVertex>();
 
-        
+        public KVertex ElementAt(int rowIndex, int columnIndex)
+        {
+            KVertex? vertex = Vertices.FirstOrDefault(v => v.RowIndex == rowIndex && v.ColumnIndex == columnIndex);
+            if (vertex == null) { throw new ArgumentOutOfRangeException($"[{rowIndex}, {columnIndex}]"); }
+            return vertex;
+        }
+
         public static int[,] PrepareMatrix(int[,] matrix, int processorCount)
         {
             // matrix segmentation --->
@@ -107,7 +129,7 @@
             return resultMatrix;
         }
 
-        public static bool TryBuid(ref int[,] sourceMatrix, out KGraph graph)
+        public static bool TryBuid(int[,] sourceMatrix, out KGraph graph)
         {
             graph = new KGraph();
 
@@ -145,6 +167,25 @@
                     }
                 }
 
+            return true;
+        }
+        public static bool ToMatrix(KGraph sourceGraph, out int[,]? resultMatrix)
+        {
+            resultMatrix = null;
+            if (sourceGraph.Vertices.Count <= 0) return false;
+
+            int rowCount = sourceGraph.Vertices.Max(v => v.RowIndex) +1;
+            int columnCount = sourceGraph.Vertices.Max(v => v.ColumnIndex) +1;
+            resultMatrix = new int[rowCount, columnCount];
+
+            for(int rowIndex = 0; rowIndex < resultMatrix.GetLength(0); rowIndex++)
+                for(int columnIndex = 0; columnIndex < resultMatrix.GetLength(1); columnIndex++)
+                {
+                    KVertex? vertex = sourceGraph.Vertices
+                        .FirstOrDefault(v => v.RowIndex == rowIndex && v.ColumnIndex == columnIndex);
+                    if (vertex == null) return false;
+                    resultMatrix[rowIndex, columnIndex] = vertex.Weight;
+                }
             return true;
         }
 
@@ -216,7 +257,6 @@
             } while (Vertices.Any(v => v.RowIndex >= index));
             Thread.Sleep(100);
         }
-
         public static void PrintMatrix(int[,] matrix)
         {
             Console.Clear();

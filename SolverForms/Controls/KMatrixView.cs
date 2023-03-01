@@ -1,25 +1,38 @@
-﻿using SolverForms.Controls;
-
-namespace SolverForms
+﻿namespace SolverForms
 {
     [System.ComponentModel.ComplexBindingProperties("DataSource")]
-    public partial class KGraphView : UserControl
+    public partial class KMatrixView : UserControl
     {
-        KMatrixViewModel ViewModel = new KMatrixViewModel();
-
-
-        public int[,]? DataSource
+        private int[,] _dataSource = new int[0,0];
+        public int[,] DataSource
         {
-            get { return ViewModel.MatrixStructure; }
+            get { return _dataSource; }
             set
             {
-                if (value == null) return;
-                ViewModel.MatrixStructure = value;
+                if(_dataSource != value)
+                CopyArray(_dataSource, ref value);
+                _dataSource = value;
                 Create();
             }
         }
+        public int RowCount 
+        { 
+            get { return _dataSource.GetLength(0); }
+            set
+            {
+                DataSource = new int[value, _dataSource.GetLength(1)];
+            }
+        }
+        public int ColCount
+        {
+            get { return _dataSource.GetLength(1); }
+            set
+            {
+                DataSource = new int[_dataSource.GetLength(0), value];
+            }
+        }
 
-        public KGraphView()
+        public KMatrixView()
         {
             InitializeComponent();
         }
@@ -38,16 +51,15 @@ namespace SolverForms
                 matrixRepresentationContainer.Controls.Add(newRowView);
             }
         }
-
-        private TextBox CreateCell(int rowIndex, int cellIndex)
+        private TextBox CreateCell(int rowIndex, int columnindex)
         {
             TextBox cellBox = new TextBox();
             cellBox.Location = new Point(3, 3);
-            cellBox.Name = $"matrixCellTextBox{cellIndex}";
+            cellBox.Name = $"matrixCellTextBox{rowIndex + columnindex}";
             cellBox.Size = new Size(23, 23);
             cellBox.TabIndex = 0;
             cellBox.TextAlign = HorizontalAlignment.Center;
-            cellBox.DataBindings.Add("Text", ViewModel.MatrixStructure[rowIndex, cellIndex], "");
+            cellBox.DataBindings.Add("Text", _dataSource[rowIndex, columnindex], "", false, DataSourceUpdateMode.OnPropertyChanged);
             return cellBox;
         }
         private TableLayoutPanel CreateRowContainer(int cellCount = 0, int rowIndex = 0)
@@ -65,6 +77,18 @@ namespace SolverForms
             tableLayoutPanel.TabIndex = 8;
 
             return tableLayoutPanel;
+        }
+        private void CopyArray(int[,] source, ref int[,] dest)
+        {
+            for(int rowIndex =0; rowIndex < dest.GetLength(0); rowIndex++)
+            {
+                if(rowIndex < source.GetLength(0))
+                    for (int columnIndex = 0; columnIndex < dest.GetLength(1); columnIndex++)
+                    {
+                        if(columnIndex < source.GetLength(1))
+                            dest[rowIndex, columnIndex] = source[rowIndex, columnIndex];
+                    }
+            }
         }
     }
 }

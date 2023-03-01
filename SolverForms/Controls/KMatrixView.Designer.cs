@@ -1,6 +1,6 @@
 ﻿namespace SolverForms
 {
-    partial class KGraphView
+    partial class KMatrixView
     {
         /// <summary> 
         /// Обязательная переменная конструктора.

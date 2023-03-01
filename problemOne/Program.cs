@@ -61,7 +61,7 @@ internal class Program
 
         KGraph? graph;
         int[,] preparedMatrix = KGraph.PrepareMatrix(matrixTest, processorCount);
-        KGraph.TryBuid(ref preparedMatrix, out graph);
+        KGraph.TryBuid(preparedMatrix, out graph);
 
         graph.Print();
 
