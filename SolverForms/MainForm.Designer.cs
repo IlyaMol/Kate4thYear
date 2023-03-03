@@ -42,7 +42,7 @@
             this.openJsonFile = new System.Windows.Forms.OpenFileDialog();
             this.exportButton = new System.Windows.Forms.Button();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.matrixRepresentationContainer = new System.Windows.Forms.FlowLayoutPanel();
+            this.kMatrixView1 = new SolverForms.KMatrixView();
             ((System.ComponentModel.ISupportInitialize)(this.processorCountNumUpDownValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.blockCountNumUpDownValue)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -74,11 +74,6 @@
             this.blockCountNumUpDownValue.Name = "blockCountNumUpDownValue";
             this.blockCountNumUpDownValue.Size = new System.Drawing.Size(64, 23);
             this.blockCountNumUpDownValue.TabIndex = 1;
-            this.blockCountNumUpDownValue.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             // 
             // processorCountLabel
             // 
@@ -141,11 +136,6 @@
             this.processCountNumUpDownValue.Name = "processCountNumUpDownValue";
             this.processCountNumUpDownValue.Size = new System.Drawing.Size(64, 23);
             this.processCountNumUpDownValue.TabIndex = 5;
-            this.processCountNumUpDownValue.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             // 
             // processCountLabel
             // 
@@ -199,7 +189,6 @@
             this.importButton.TabIndex = 8;
             this.importButton.Text = "Импорт";
             this.importButton.UseVisualStyleBackColor = true;
-            this.importButton.Click += new System.EventHandler(this.importButton_Click);
             // 
             // openJsonFile
             // 
@@ -213,7 +202,6 @@
             this.exportButton.TabIndex = 9;
             this.exportButton.Text = "Экспорт";
             this.exportButton.UseVisualStyleBackColor = true;
-            this.exportButton.Click += new System.EventHandler(this.exportButton_Click);
             // 
             // saveFileDialog
             // 
@@ -222,25 +210,26 @@
             this.saveFileDialog.Filter = "Json-файл|*.json";
             this.saveFileDialog.InitialDirectory = "D:\\";
             // 
-            // matrixRepresentationContainer
+            // kMatrixView1
             // 
-            this.matrixRepresentationContainer.Location = new System.Drawing.Point(12, 105);
-            this.matrixRepresentationContainer.Name = "matrixRepresentationContainer";
-            this.matrixRepresentationContainer.Size = new System.Drawing.Size(200, 399);
-            this.matrixRepresentationContainer.TabIndex = 10;
+            this.kMatrixView1.ColumnCount = 0;
+            this.kMatrixView1.Location = new System.Drawing.Point(12, 105);
+            this.kMatrixView1.Name = "kMatrixView1";
+            this.kMatrixView1.RowCount = 0;
+            this.kMatrixView1.Size = new System.Drawing.Size(642, 377);
+            this.kMatrixView1.TabIndex = 10;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 576);
-            this.Controls.Add(this.matrixRepresentationContainer);
+            this.Controls.Add(this.kMatrixView1);
             this.Controls.Add(this.exportButton);
             this.Controls.Add(this.importButton);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "MainForm";
             this.Text = "Form1";
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
             ((System.ComponentModel.ISupportInitialize)(this.processorCountNumUpDownValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.blockCountNumUpDownValue)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);

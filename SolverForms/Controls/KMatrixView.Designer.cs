@@ -40,12 +40,12 @@
             this.matrixRepresentationContainer.Size = new System.Drawing.Size(150, 150);
             this.matrixRepresentationContainer.TabIndex = 0;
             // 
-            // KGraphView
+            // KMatrixView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.matrixRepresentationContainer);
-            this.Name = "KGraphView";
+            this.Name = "KMatrixView";
             this.ResumeLayout(false);
 
         }

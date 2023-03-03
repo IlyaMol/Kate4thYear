@@ -1,109 +1,172 @@
-﻿using System.Windows.Forms;
+﻿using SolverForms.Controls;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace SolverForms
 {
-    [System.ComponentModel.ComplexBindingProperties("DataSource")]
-    public partial class KMatrixView : UserControl
+    public partial class KMatrixView : UserControl, INotifyPropertyChanged
     {
         private int[,] _dataSource = new int[0,0];
-        public int[,] DataSource
-        {
+        public int[,] DataSource 
+        { 
             get { return _dataSource; }
-            set
-            {
-                if(_dataSource != value)
-                CopyArray(_dataSource, ref value);
-                _dataSource = value;
-                Create();
-            }
+            set { _dataSource = value; }
         }
+
         public int RowCount 
         { 
             get { return _dataSource.GetLength(0); }
             set
             {
-                DataSource = new int[value, _dataSource.GetLength(1)];
+                if(RowCount == value) return;
+                if(RowCount < value)
+                    AddRow();
+                else if(RowCount > value)
+                    RemoveRow();
+                OnPropertyChanged();
             }
         }
-        public int ColCount
-        {
-            get { return _dataSource.GetLength(1); }
+
+        public int ColumnCount 
+        { 
+            get { return _dataSource.GetLength(1);}
             set
             {
-                DataSource = new int[_dataSource.GetLength(0), value];
+                if(ColumnCount == value) return;
+                if(ColumnCount < value)
+                    AddColumn();
+                else if (ColumnCount > value)
+                    RemoveColumn();
+                OnPropertyChanged();
             }
         }
 
         public KMatrixView()
         {
             InitializeComponent();
+            matrixRepresentationContainer.Padding = new Padding(0, 0, 0, 0);
+            matrixRepresentationContainer.Margin = new Padding(0, 0, 0, 0);
         }
 
-        public void Create()
+        private void AddRow()
         {
-            if (DataSource == null) return;
+            int[,] newSource = new int[RowCount +1, ColumnCount];
+            for(int rowIndex = 0; rowIndex < RowCount; rowIndex++)
+                for(int columnIndex = 0; columnIndex < ColumnCount; columnIndex++)
+                    newSource[rowIndex, columnIndex] = _dataSource[rowIndex, columnIndex];
+            _dataSource = newSource;
+            AddRowInView();
+        }
+        private void RemoveRow()
+        {
+            int[,] newSource = new int[RowCount - 1, ColumnCount];
+            for (int rowIndex = 0; rowIndex < newSource.GetLength(0); rowIndex++)
+                for (int columnIndex = 0; columnIndex < newSource.GetLength(1); columnIndex++)
+                    newSource[rowIndex, columnIndex] = _dataSource[rowIndex, columnIndex];
+            _dataSource = newSource;
+            RemoveRowInView();
+        }
+        private void AddColumn()
+        {
+            int[,] newSource = new int[RowCount, ColumnCount +1];
+            for (int rowIndex = 0; rowIndex < RowCount; rowIndex++)
+                for (int columnIndex = 0; columnIndex < ColumnCount; columnIndex++)
+                    newSource[rowIndex, columnIndex] = _dataSource[rowIndex, columnIndex];
+            _dataSource = newSource;
+            AddColumnInView();
+        } 
+        private void RemoveColumn()
+        {
+            int[,] newSource = new int[RowCount, ColumnCount - 1];
+            for (int rowIndex = 0; rowIndex < newSource.GetLength(0); rowIndex++)
+                for (int columnIndex = 0; columnIndex < newSource.GetLength(1); columnIndex++)
+                    newSource[rowIndex, columnIndex] = _dataSource[rowIndex, columnIndex];
+            _dataSource = newSource;
+            RemoveColumnInView();
+        }
 
-            matrixRepresentationContainer.Controls.Clear();
-
-            for(int rowIndex = 0; rowIndex < DataSource.GetLength(0); rowIndex++)
+        private void AddRowInView()
+        {
+            matrixRepresentationContainer.SuspendLayout();
+            RowLayoutPanel newRowView = CreateRowContainer(ColumnCount, RowCount -1);
+            for (int columnIndex = 0; columnIndex < ColumnCount; columnIndex++)
+                newRowView.Controls.Add(CreateCell(RowCount, columnIndex));
+            matrixRepresentationContainer.Controls.Add(newRowView);
+            matrixRepresentationContainer.ResumeLayout();
+        }
+        private void RemoveRowInView()
+        {
+            matrixRepresentationContainer.SuspendLayout();
+            if (matrixRepresentationContainer.Controls.Count > 0)
+                matrixRepresentationContainer.Controls.RemoveAt(matrixRepresentationContainer.Controls.Count-1);
+            else if(matrixRepresentationContainer.Controls.Count == 0)
+                matrixRepresentationContainer.Controls.RemoveAt(matrixRepresentationContainer.Controls.Count);
+            matrixRepresentationContainer.ResumeLayout();
+        }
+        private void AddColumnInView()
+        {
+            matrixRepresentationContainer.SuspendLayout();
+            for(int rowIndex =0; rowIndex < RowCount; rowIndex++)
             {
-                TableLayoutPanel newRowView = CreateRowContainer(DataSource.GetLength(1), rowIndex);
-                for (int columnIndex = 0; columnIndex < DataSource.GetLength(1); columnIndex++)
-                    newRowView.Controls.Add(CreateCell(rowIndex, columnIndex));
-                matrixRepresentationContainer.Controls.Add(newRowView);
+                RowLayoutPanel rowView = (RowLayoutPanel)(matrixRepresentationContainer.Controls[rowIndex]);
+                
+                rowView.Controls.Add(CreateCell(rowIndex, rowView.Controls.Count));
+                rowView.ColumnCount++;
             }
+            matrixRepresentationContainer.ResumeLayout();
         }
-        private TextBox CreateCell(int rowIndex, int columnindex)
+        private void RemoveColumnInView()
         {
-            TextBox cellBox = new TextBox();
-            cellBox.Location = new Point(3, 3);
+            matrixRepresentationContainer.SuspendLayout();
+            foreach (RowLayoutPanel rowView in matrixRepresentationContainer.Controls)
+            {
+                rowView.ColumnCount--;
+                if (rowView.Controls.Count > 0)
+                    rowView.Controls.RemoveAt(rowView.Controls.Count -1);
+                else if (rowView.Controls.Count == 0)
+                    rowView.Controls.RemoveAt(rowView.Controls.Count);
+            }
+            matrixRepresentationContainer.ResumeLayout();
+        }
+
+        private CellTextBox CreateCell(int rowIndex, int columnindex)
+        {
+            CellTextBox cellBox = new CellTextBox();
             cellBox.Name = $"matrixCellTextBox{rowIndex + columnindex}";
-            cellBox.Size = new Size(23, 23);
-            cellBox.TabIndex = 0;
-            cellBox.TextAlign = HorizontalAlignment.Center;
-            cellBox.DataBindings.Add("Text", _dataSource[rowIndex, columnindex], "", false, DataSourceUpdateMode.OnPropertyChanged);
+            cellBox.RowIndex= rowIndex;
+            cellBox.ColumnIndex= columnindex;
+            cellBox.TextChanged += CellBox_TextChanged;
             return cellBox;
         }
-        private TableLayoutPanel CreateRowContainer(int cellCount = 0, int rowIndex = 0)
+
+        private void CellBox_TextChanged(object? sender, CellEventArgs e)
         {
-            TableLayoutPanel tableLayoutPanel = new TableLayoutPanel();
-            tableLayoutPanel.AutoSize = true;
-            tableLayoutPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            Debug.WriteLine($"Text changed: {e.NewValue}, row {e.RowIndex}, col {e.ColumnIndex}");
+        }
+
+        private RowLayoutPanel CreateRowContainer(int cellCount = 0, int rowIndex = 0)
+        {
+            RowLayoutPanel tableLayoutPanel = new RowLayoutPanel();
             tableLayoutPanel.ColumnCount = cellCount;
-            for(int cellIndex = 0; cellIndex < cellCount; cellIndex++)
+            for (int cellIndex = 0; cellIndex < cellCount; cellIndex++)
                 tableLayoutPanel.ColumnStyles.Add(new ColumnStyle());
-            tableLayoutPanel.Location = new Point(3, 3);
             tableLayoutPanel.Name = $"matrixRowContainer{rowIndex}";
             tableLayoutPanel.RowCount = 1;
-            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel.TabIndex = 8;
+            tableLayoutPanel.Index= rowIndex;
+            
+            Random rnd = new();
+            tableLayoutPanel.BackColor = Color.FromArgb(rnd.Next(255), rnd.Next(255), rnd.Next(255));
 
             return tableLayoutPanel;
         }
-
-        private void AddColumn()
+        
+        #region INotify... implementation
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            foreach(Control row in matrixRepresentationContainer.Controls)
-            {
-                if(row.GetType() == typeof(TableLayoutPanel) && row != null)
-                {
-                    ((TableLayoutPanel)row).ColumnStyles.Add(new ColumnStyle());
-                }
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-
-        private void CopyArray(int[,] source, ref int[,] dest)
-        {
-            for(int rowIndex =0; rowIndex < dest.GetLength(0); rowIndex++)
-            {
-                if(rowIndex < source.GetLength(0))
-                    for (int columnIndex = 0; columnIndex < dest.GetLength(1); columnIndex++)
-                    {
-                        if(columnIndex < source.GetLength(1))
-                            dest[rowIndex, columnIndex] = source[rowIndex, columnIndex];
-                    }
-            }
-        }
+        #endregion
     }
 }
