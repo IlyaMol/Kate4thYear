@@ -65,10 +65,10 @@ internal class Program
 
         graph.Print();
 
-        //List<KVertex> criticalPath = graph.GetCriticalPath();
+        List<KVertex> criticalPath = graph.GetCriticalPath();
 
-        //graph.Print(criticalPath);
+        graph.Print(criticalPath);
 
-        //Console.WriteLine($"Critical path length: {criticalPath.Sum(v => v.Weight)}");
+        Console.WriteLine($"Critical path length: {criticalPath.Sum(v => v.Weight)}");
     }
 }

@@ -29,18 +29,14 @@
             return vertex;
         }
 
-        public static int[,] PrepareMatrix(int[,] matrix, int processorCount)
+        private static Dictionary<int, int[,]> GetSubProcesses(int[,] matrix, int processorCount)
         {
             // matrix segmentation --->
             Dictionary<int, int[,]> subMatrixDict = new();
             int blockCount = matrix.GetLength(1);
 
-            double i = matrix.GetLength(0) / (double)processorCount;
-            int processGroupCount = (int)Math.Ceiling(i);
-
             int subMatrixIndex = 0;
             int subMatrixRowIndex = 0;
-            int subMatrixColumnIndex = 0;
             // NOTE(wwaffe): submatrix row count depends of processor count
             var subMatrix = new int[processorCount, blockCount];
             for (int rowIndex = 0; rowIndex < matrix.GetLength(0); rowIndex++)
@@ -63,9 +59,21 @@
                 subMatrixRowIndex++;
             }
             subMatrixDict.Add(subMatrixIndex, subMatrix);
-            subMatrix = new int[processorCount, blockCount];
             // <---
 
+            return subMatrixDict;
+        }
+
+        public static int[,] PrepareMatrix(int[,] matrix, int processorCount)
+        {
+            int processGroupCount = (int)Math.Ceiling(matrix.GetLength(0) / (double)processorCount);
+
+            Dictionary<int, int[,]> subMatrixDict = GetSubProcesses(matrix, processorCount);
+            int subMatrixColumnIndex = 0;
+            
+            int subMatrixIndex = 0;
+            int subMatrixRowIndex = 0;
+            var subMatrix = new int[processorCount, matrix.GetLength(1)];
             // prepare matrix using Dictionary<int, int[,]> --->
             int resultMatrixRowCount = processGroupCount * subMatrixDict.Values.First().GetLength(0);
             int resultMatrixColumnCount = subMatrixDict.Values.First().GetLength(1) * (subMatrixDict.Values.Count);
@@ -123,7 +131,7 @@
                     }
                 subMatrixColumnIndex = 0;
 
-                PrintMatrix(resultMatrix);
+                //PrintMatrix(resultMatrix);
             }
             //<---
             return resultMatrix;
@@ -196,7 +204,7 @@
             bool forceBreak = false;
 
             List<KVertex> visitedVertices = new List<KVertex>();
-
+            if (Vertices.Count <= 0) return criticalPath;
             if (vertex == null)
                 vertex = Vertices.First();
             verticesStack.Push(vertex);
@@ -209,8 +217,8 @@
                     criticalPath.Reverse();
                     forceBreak = true;
 
-                    if (criticalPath.Count == 0 || criticalPath.Sum(v => v.Weight) <= verticesStack.Sum(v => v.Weight))
-                        Print(criticalPath);
+                    //if (criticalPath.Count == 0 || criticalPath.Sum(v => v.Weight) <= verticesStack.Sum(v => v.Weight))
+                        //Print(criticalPath);
                 }
 
             if (vertex.Neighbours.Count > 0 && !forceBreak)

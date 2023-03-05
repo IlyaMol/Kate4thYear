@@ -33,11 +33,10 @@
             // 
             // matrixRepresentationContainer
             // 
-            this.matrixRepresentationContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.matrixRepresentationContainer.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.matrixRepresentationContainer.Location = new System.Drawing.Point(0, 0);
+            this.matrixRepresentationContainer.Location = new System.Drawing.Point(3, 3);
             this.matrixRepresentationContainer.Name = "matrixRepresentationContainer";
-            this.matrixRepresentationContainer.Size = new System.Drawing.Size(150, 150);
+            this.matrixRepresentationContainer.Size = new System.Drawing.Size(100, 100);
             this.matrixRepresentationContainer.TabIndex = 0;
             // 
             // KMatrixView
@@ -46,6 +45,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.matrixRepresentationContainer);
             this.Name = "KMatrixView";
+            this.Size = new System.Drawing.Size(106, 106);
             this.ResumeLayout(false);
 
         }
