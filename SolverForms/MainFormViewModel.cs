@@ -7,12 +7,16 @@ namespace SolverForms
 {
     public class MainFormViewModel : INotifyPropertyChanged
     {
+        #region Fields
         private int processorCount = 0;
         private int[,] sourceMatrix = new int[0, 0];
         private int[,] resultMatrix = new int[0, 0];
         private int criticalPathLength = 0;
         private List<KVertex> criticalPath = new List<KVertex>();
         private KGraph? graph;
+        #endregion
+
+        #region Properties
         public int ProcessorCount
         {
             get { return processorCount; }
@@ -72,7 +76,11 @@ namespace SolverForms
                 return result;
             }
         }
+        #endregion
 
+        public Dictionary<int, int[,]>? SubProcess { get; private set; }
+
+        #region Methods
         public void DataSourceChangedDelegate(int[,] newDataSource)
         {
             SourceMatrix = newDataSource;
@@ -85,6 +93,7 @@ namespace SolverForms
 
         private void RecalcResult()
         {
+            SubProcess = KGraph.GetSubProcesses(SourceMatrix, processorCount);
             int[,] preparedMatrix = KGraph.PrepareMatrix(SourceMatrix, processorCount);
             ResultMatrix = preparedMatrix;
 
@@ -94,6 +103,7 @@ namespace SolverForms
                 CriticalPathLength = criticalPath.Sum(v => v.Weight);
             }
         }
+        #endregion
 
         #region INotify... implementation
         public event PropertyChangedEventHandler? PropertyChanged;

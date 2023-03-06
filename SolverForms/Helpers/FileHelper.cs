@@ -1,4 +1,4 @@
-﻿namespace Lanch.Core.Helpers
+﻿namespace SolverForms.Helpers
 {
     public class FileHelper
     {

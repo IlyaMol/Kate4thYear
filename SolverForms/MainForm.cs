@@ -8,8 +8,6 @@ namespace SolverForms
             InitializeComponent();
             sourceDataLayout.AutoSize= true;
             sourceDataLayout.AutoSizeMode=AutoSizeMode.GrowAndShrink;
-            sourceDataGroup.AutoSize = true;
-            sourceDataGroup.AutoSizeMode=AutoSizeMode.GrowAndShrink;
             sourceMatrixView.AutoSize = true;
             sourceMatrixView.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             resultMatrixView.AutoSize = true;
@@ -26,7 +24,6 @@ namespace SolverForms
                 nameof(ViewModel.ProcessorCount),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged);
-
             processCountNumUpDownValue.DataBindings.Add(
                 nameof(processorCountNumUpDownValue.Value),
                 sourceMatrixView,
@@ -52,7 +49,6 @@ namespace SolverForms
                 nameof(ViewModel.ResultMatrix),
                 false,
                 DataSourceUpdateMode.OnPropertyChanged);
-
             resultMatrixView.DataBindings.Add(
                 nameof(resultMatrixView.SelectedCells),
                 ViewModel,
@@ -67,18 +63,16 @@ namespace SolverForms
         {
             ViewModel.ProcessorCount = 3;
             sourceMatrixView.DataSource = new int[8, 4]
-        {
-            { 3,2,1,4 },
-            { 1,2,3,1 },
-            { 4,1,3,2 },
-
-            { 2,1,1,3 },
-            { 1,3,1,1 },
-            { 4,3,3,1 },
-
-            { 2,2,3,2 },
-            { 1,2,1,5 }
-        };//35
+            {
+                { 3,2,1,4 },
+                { 1,2,3,1 },
+                { 4,1,3,2 },
+                { 2,1,1,3 },
+                { 1,3,1,1 },
+                { 4,3,3,1 },
+                { 2,2,3,2 },
+                { 1,2,1,5 }
+            };
         }
     }
 }
