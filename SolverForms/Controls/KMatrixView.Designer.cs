@@ -38,6 +38,7 @@
             this.matrixRepresentationContainer.Name = "matrixRepresentationContainer";
             this.matrixRepresentationContainer.Size = new System.Drawing.Size(100, 100);
             this.matrixRepresentationContainer.TabIndex = 0;
+            this.matrixRepresentationContainer.WrapContents = false;
             // 
             // KMatrixView
             // 

@@ -200,6 +200,8 @@ namespace SolverForms
             cellBox.Name = $"matrixCellTextBox{rowIndex + columnindex}";
             cellBox.RowIndex= rowIndex;
             cellBox.ColumnIndex= columnindex;
+            if(rowIndex < DataSource.GetLength(0) &&
+                columnindex < DataSource.GetLength(1))
             cellBox.Text = DataSource[rowIndex, columnindex].ToString();
             cellBox.Validated += CellBox_Validated;
 

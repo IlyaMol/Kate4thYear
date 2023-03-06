@@ -199,12 +199,13 @@
 
         private Stack<KVertex> verticesStack = new();
         private List<KVertex> criticalPath = new();
-        public List<KVertex> GetCriticalPath(KVertex? vertex = null)
+        private List<List<KVertex>> criticalPaths = new();
+        public List<List<KVertex>> GetCriticalPath(KVertex? vertex = null)
         {
             bool forceBreak = false;
 
             List<KVertex> visitedVertices = new List<KVertex>();
-            if (Vertices.Count <= 0) return criticalPath;
+            if (Vertices.Count <= 0) return criticalPaths;
             if (vertex == null)
                 vertex = Vertices.First();
             verticesStack.Push(vertex);
@@ -215,11 +216,19 @@
                 {
                     criticalPath = verticesStack.ToList();
                     criticalPath.Reverse();
+                    // если в списке путей пути меньшей длины чем найденый
+                    // обнуляем найденное
+                    if (criticalPaths.Count == 0 
+                        || criticalPath.Sum(v => v.Weight) > criticalPaths.First().Sum(v => v.Weight))
+                    {
+                        criticalPaths = new();
+                        criticalPaths.Add(criticalPath);
+                    } else if(criticalPaths.Count == 0
+                        || criticalPath.Sum(v => v.Weight) == criticalPaths.First().Sum(v => v.Weight))
+                        criticalPaths.Add(criticalPath);
                     forceBreak = true;
-
-                    //if (criticalPath.Count == 0 || criticalPath.Sum(v => v.Weight) <= verticesStack.Sum(v => v.Weight))
-                        //Print(criticalPath);
                 }
+
 
             if (vertex.Neighbours.Count > 0 && !forceBreak)
             {
@@ -236,7 +245,7 @@
             }
 
             KVertex? testVertex1 = verticesStack.Pop();
-            return criticalPath;
+            return criticalPaths;
         }
 
         public void Print(List<KVertex>? path = null)

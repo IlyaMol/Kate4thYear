@@ -49,11 +49,14 @@
             this.crtiticalPathLengthLabel = new System.Windows.Forms.Label();
             this.criticalPathLengthValue = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.criticalPathCountValue = new System.Windows.Forms.Label();
+            this.criticalPathCountLabel = new System.Windows.Forms.Label();
+            this.selectedPathUpDown = new System.Windows.Forms.NumericUpDown();
             this.drawPanel = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.processorCountNumUpDownValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.blockCountNumUpDownValue)).BeginInit();
@@ -69,6 +72,7 @@
             this.tableLayoutPanel4.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.selectedPathUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // processorCountNumUpDownValue
@@ -288,16 +292,16 @@
             // 
             this.resultMatrixView.BackColor = System.Drawing.SystemColors.Control;
             this.resultMatrixView.ColumnCount = 0;
-            this.resultMatrixView.Location = new System.Drawing.Point(3, 24);
+            this.resultMatrixView.Location = new System.Drawing.Point(3, 39);
             this.resultMatrixView.Name = "resultMatrixView";
             this.resultMatrixView.RowCount = 0;
-            this.resultMatrixView.Size = new System.Drawing.Size(349, 33);
+            this.resultMatrixView.Size = new System.Drawing.Size(544, 33);
             this.resultMatrixView.TabIndex = 14;
             // 
             // crtiticalPathLengthLabel
             // 
             this.crtiticalPathLengthLabel.AutoSize = true;
-            this.crtiticalPathLengthLabel.Location = new System.Drawing.Point(3, 0);
+            this.crtiticalPathLengthLabel.Location = new System.Drawing.Point(3, 15);
             this.crtiticalPathLengthLabel.Name = "crtiticalPathLengthLabel";
             this.crtiticalPathLengthLabel.Size = new System.Drawing.Size(152, 15);
             this.crtiticalPathLengthLabel.TabIndex = 15;
@@ -306,7 +310,7 @@
             // criticalPathLengthValue
             // 
             this.criticalPathLengthValue.AutoSize = true;
-            this.criticalPathLengthValue.Location = new System.Drawing.Point(161, 0);
+            this.criticalPathLengthValue.Location = new System.Drawing.Point(248, 15);
             this.criticalPathLengthValue.Name = "criticalPathLengthValue";
             this.criticalPathLengthValue.Size = new System.Drawing.Size(38, 15);
             this.criticalPathLengthValue.TabIndex = 16;
@@ -321,15 +325,27 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.flowLayoutPanel1);
             this.splitContainer1.Panel1.Controls.Add(this.panel1);
+            this.splitContainer1.Panel1.Controls.Add(this.flowLayoutPanel1);
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.flowLayoutPanel2);
-            this.splitContainer1.Size = new System.Drawing.Size(583, 530);
+            this.splitContainer1.Size = new System.Drawing.Size(778, 530);
             this.splitContainer1.SplitterDistance = 212;
             this.splitContainer1.TabIndex = 17;
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.AutoScroll = true;
+            this.panel1.AutoSize = true;
+            this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel1.Location = new System.Drawing.Point(3, 116);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(0, 0);
+            this.panel1.TabIndex = 15;
             // 
             // flowLayoutPanel1
             // 
@@ -364,18 +380,6 @@
             this.tableLayoutPanel4.Size = new System.Drawing.Size(0, 31);
             this.tableLayoutPanel4.TabIndex = 16;
             // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.AutoScroll = true;
-            this.panel1.AutoSize = true;
-            this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panel1.Location = new System.Drawing.Point(3, 116);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(0, 0);
-            this.panel1.TabIndex = 15;
-            // 
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -389,7 +393,7 @@
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(361, 524);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(556, 524);
             this.flowLayoutPanel2.TabIndex = 16;
             this.flowLayoutPanel2.WrapContents = false;
             // 
@@ -399,32 +403,73 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel2.AutoSize = true;
             this.tableLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnCount = 3;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.criticalPathLengthValue, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.crtiticalPathLengthLabel, 0, 0);
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.Controls.Add(this.criticalPathLengthValue, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.criticalPathCountValue, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.crtiticalPathLengthLabel, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.criticalPathCountLabel, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.selectedPathUpDown, 2, 0);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(349, 15);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(544, 30);
             this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // criticalPathCountValue
+            // 
+            this.criticalPathCountValue.AutoSize = true;
+            this.criticalPathCountValue.Location = new System.Drawing.Point(248, 0);
+            this.criticalPathCountValue.Name = "criticalPathCountValue";
+            this.criticalPathCountValue.Size = new System.Drawing.Size(38, 15);
+            this.criticalPathCountValue.TabIndex = 18;
+            this.criticalPathCountValue.Text = "label1";
+            // 
+            // criticalPathCountLabel
+            // 
+            this.criticalPathCountLabel.AutoSize = true;
+            this.criticalPathCountLabel.Location = new System.Drawing.Point(3, 0);
+            this.criticalPathCountLabel.Name = "criticalPathCountLabel";
+            this.criticalPathCountLabel.Size = new System.Drawing.Size(239, 15);
+            this.criticalPathCountLabel.TabIndex = 19;
+            this.criticalPathCountLabel.Text = "Количество найденых критических путей:";
+            // 
+            // selectedPathUpDown
+            // 
+            this.selectedPathUpDown.Location = new System.Drawing.Point(292, 3);
+            this.selectedPathUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.selectedPathUpDown.Name = "selectedPathUpDown";
+            this.tableLayoutPanel2.SetRowSpan(this.selectedPathUpDown, 2);
+            this.selectedPathUpDown.Size = new System.Drawing.Size(48, 23);
+            this.selectedPathUpDown.TabIndex = 17;
+            this.selectedPathUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // drawPanel
             // 
             this.drawPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.drawPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.drawPanel.Location = new System.Drawing.Point(3, 63);
+            this.drawPanel.Location = new System.Drawing.Point(3, 78);
             this.drawPanel.Name = "drawPanel";
-            this.drawPanel.Size = new System.Drawing.Size(349, 126);
+            this.drawPanel.Size = new System.Drawing.Size(544, 147);
             this.drawPanel.TabIndex = 15;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(583, 530);
+            this.ClientSize = new System.Drawing.Size(778, 530);
             this.Controls.Add(this.splitContainer1);
             this.Name = "MainForm";
             this.Text = "Form1";
@@ -448,6 +493,7 @@
             this.flowLayoutPanel2.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.selectedPathUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -479,5 +525,8 @@
         private TableLayoutPanel tableLayoutPanel4;
         private FlowLayoutPanel flowLayoutPanel2;
         private Panel drawPanel;
+        private Label criticalPathCountValue;
+        private Label criticalPathCountLabel;
+        private NumericUpDown selectedPathUpDown;
     }
 }

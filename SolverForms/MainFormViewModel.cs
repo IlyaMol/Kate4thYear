@@ -9,15 +9,48 @@ namespace SolverForms
     public class MainFormViewModel : INotifyPropertyChanged
     {
         #region Fields
+        private bool isNotBusy = true;
         private int processorCount = 0;
         private int[,] sourceMatrix = new int[0, 0];
         private int[,] resultMatrix = new int[0, 0];
         private int criticalPathLength = 0;
-        private List<KVertex> criticalPath = new List<KVertex>();
+        private int selectedCriticalPathIndex = 1;
+        private List<List<KVertex>> criticalPaths = new();
+        private List<KVertex> selectedCriticalPath = new();
         private KGraph? graph;
         #endregion
 
         #region Properties
+        public bool IsNotBusy
+        {
+            get { return isNotBusy; }
+            set
+            {
+                if (isNotBusy == value) return;
+                isNotBusy = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int CriticalPathCount
+        {
+            get
+            {
+                return criticalPaths.Count;
+            }
+        }
+        public int SelectedCriticalPathIndex
+        {
+            get { return selectedCriticalPathIndex; }
+            set
+            {
+                if (selectedCriticalPathIndex == value) return;
+                selectedCriticalPathIndex= value;
+                RedrawGraphics();
+                OnPropertyChanged();
+            }
+        }
+
         public int ProcessorCount
         {
             get { return processorCount; }
@@ -72,7 +105,7 @@ namespace SolverForms
             get
             {
                 List<Coordinates> result = new List<Coordinates>();
-                foreach (KVertex vertex in criticalPath)
+                foreach (KVertex vertex in selectedCriticalPath)
                     result.Add(new Coordinates() { RowIndex = vertex.RowIndex, ColumnIndex = vertex.ColumnIndex});
                 return result;
             }
@@ -100,26 +133,37 @@ namespace SolverForms
 
         public void RecalcResult()
         {
+            if (IsNotBusy) IsNotBusy = false;
+            SelectedCriticalPathIndex = 1;
             SubProcess = KGraph.GetSubProcesses(SourceMatrix, processorCount);
             int[,] preparedMatrix = KGraph.PrepareMatrix(SourceMatrix, processorCount);
             ResultMatrix = preparedMatrix;
 
             if(KGraph.TryBuid(preparedMatrix, out graph))
             {
-                criticalPath = graph.GetCriticalPath();
-                CriticalPathLength = criticalPath.Sum(v => v.Weight);
+                criticalPaths = graph.GetCriticalPath();
             }
             RedrawGraphics();
         }
 
         public void RedrawGraphics()
         {
-            if (graph == null) return;
+            if (IsNotBusy) IsNotBusy = false;
+            if (graph == null)
+            {
+                if (!IsNotBusy) IsNotBusy = true;
+                return;
+            }
+            if (criticalPaths.Count > 0 && selectedCriticalPathIndex > 0)
+                selectedCriticalPath = criticalPaths[selectedCriticalPathIndex - 1];
+            CriticalPathLength = selectedCriticalPath.Sum(v => v.Weight);
+
             // TODO(wwaffe): here start of test graphics code
             SceneGenerator generator = new(CurrentSceneWidth, CurrentSceneHeight) { CoordPadding = new Padding(20) };
             ICollection<KGLine> scene = generator.GetCoordPlane(ProcessorCount);
             OnFrameUpdate?.Invoke(scene);
-            //eng draw algo
+            //end draw algo
+            if (!IsNotBusy) IsNotBusy = true;
         }
         #endregion
 

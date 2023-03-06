@@ -15,6 +15,7 @@ namespace SolverForms
             resultMatrixView.AutoSize = true;
             resultMatrixView.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             resultMatrixView.Enabled= true;
+            selectedPathUpDown.Minimum = 1;
             CompleteDataBindings();
         }
 
@@ -38,6 +39,22 @@ namespace SolverForms
                 nameof(sourceMatrixView.ColumnCount),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged);
+            criticalPathCountValue.DataBindings.Add(
+                nameof(criticalPathCountValue.Text),
+                ViewModel,
+                nameof(ViewModel.CriticalPathCount));
+            selectedPathUpDown.DataBindings.Add(
+                nameof(selectedPathUpDown.Maximum),
+                ViewModel,
+                nameof(ViewModel.CriticalPathCount)
+                );
+            selectedPathUpDown.DataBindings.Add(
+                nameof(selectedPathUpDown.Value),
+                ViewModel,
+                nameof(ViewModel.SelectedCriticalPathIndex),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged);
+
             criticalPathLengthValue.DataBindings.Add(
                 nameof(criticalPathLengthValue.Text),
                 ViewModel,
@@ -58,6 +75,15 @@ namespace SolverForms
                 false,
                 DataSourceUpdateMode.OnPropertyChanged);
 
+            //this.DataBindings.Add(
+            //    nameof(this.),
+            //    ViewModel,
+            //    nameof(ViewModel.IsNotBusy),
+            //    false,
+            //    DataSourceUpdateMode.OnPropertyChanged);
+
+            this.DoubleBuffered = true;
+            panel1.UseWaitCursor= true;
             drawPanel.Paint += (sender, e) => drawPanel_OnPaint(sender, e);
             drawPanel.SizeChanged += (sender, e) => { ViewModel.RedrawGraphics(); };
             sourceMatrixView.DataSourceChanged += ViewModel.DataSourceChangedDelegate;
@@ -90,16 +116,17 @@ namespace SolverForms
         private void button1_Click(object sender, EventArgs e)
         {
             ViewModel.ProcessorCount = 3;
-            sourceMatrixView.DataSource = new int[8, 4]
+            sourceMatrixView.DataSource = new int[9, 4]
             {
-                { 3,2,1,4 },
                 { 1,2,3,1 },
-                { 4,1,3,2 },
-                { 2,1,1,3 },
-                { 1,3,1,1 },
-                { 4,3,3,1 },
-                { 2,2,3,2 },
-                { 1,2,1,5 }
+                { 2,3,1,2 },
+                { 3,1,2,1 },
+                { 1,2,1,1 },
+                { 2,1,1,2 },
+                { 2,1,3,1 },
+                { 3,2,1,1 },
+                { 1,1,3,2 },
+                { 2,1,2,3 },
             };
         }
     }
