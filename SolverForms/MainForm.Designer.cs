@@ -291,7 +291,7 @@
             this.resultMatrixView.Location = new System.Drawing.Point(3, 24);
             this.resultMatrixView.Name = "resultMatrixView";
             this.resultMatrixView.RowCount = 0;
-            this.resultMatrixView.Size = new System.Drawing.Size(202, 33);
+            this.resultMatrixView.Size = new System.Drawing.Size(349, 33);
             this.resultMatrixView.TabIndex = 14;
             // 
             // crtiticalPathLengthLabel
@@ -328,7 +328,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.flowLayoutPanel2);
             this.splitContainer1.Size = new System.Drawing.Size(583, 530);
-            this.splitContainer1.SplitterDistance = 202;
+            this.splitContainer1.SplitterDistance = 212;
             this.splitContainer1.TabIndex = 17;
             // 
             // flowLayoutPanel1
@@ -344,7 +344,7 @@
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(196, 524);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(206, 524);
             this.flowLayoutPanel1.TabIndex = 16;
             this.flowLayoutPanel1.WrapContents = false;
             // 
@@ -389,7 +389,7 @@
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(371, 524);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(361, 524);
             this.flowLayoutPanel2.TabIndex = 16;
             this.flowLayoutPanel2.WrapContents = false;
             // 
@@ -408,7 +408,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(202, 15);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(349, 15);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // drawPanel
@@ -417,7 +417,7 @@
             this.drawPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.drawPanel.Location = new System.Drawing.Point(3, 63);
             this.drawPanel.Name = "drawPanel";
-            this.drawPanel.Size = new System.Drawing.Size(202, 126);
+            this.drawPanel.Size = new System.Drawing.Size(349, 126);
             this.drawPanel.TabIndex = 15;
             // 
             // MainForm

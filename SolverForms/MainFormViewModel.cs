@@ -1,5 +1,6 @@
-﻿using problemOne.Model;
+﻿using ProblemOne.Model;
 using SolverForms.Controls;
+using SolverForms.DrawLib;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -78,6 +79,12 @@ namespace SolverForms
         }
         #endregion
 
+        public delegate void UpdateFrameDelegate(ICollection<KGLine> scene);
+        public event UpdateFrameDelegate OnFrameUpdate;
+
+        public float CurrentSceneWidth { get; set; }
+        public float CurrentSceneHeight { get; set; }
+
         public Dictionary<int, int[,]>? SubProcess { get; private set; }
 
         #region Methods
@@ -91,7 +98,7 @@ namespace SolverForms
             RecalcResult();
         }
 
-        private void RecalcResult()
+        public void RecalcResult()
         {
             SubProcess = KGraph.GetSubProcesses(SourceMatrix, processorCount);
             int[,] preparedMatrix = KGraph.PrepareMatrix(SourceMatrix, processorCount);
@@ -102,6 +109,17 @@ namespace SolverForms
                 criticalPath = graph.GetCriticalPath();
                 CriticalPathLength = criticalPath.Sum(v => v.Weight);
             }
+            RedrawGraphics();
+        }
+
+        public void RedrawGraphics()
+        {
+            if (graph == null) return;
+            // TODO(wwaffe): here start of test graphics code
+            SceneGenerator generator = new(CurrentSceneWidth, CurrentSceneHeight) { CoordPadding = new Padding(20) };
+            ICollection<KGLine> scene = generator.GetCoordPlane(ProcessorCount);
+            OnFrameUpdate?.Invoke(scene);
+            //eng draw algo
         }
         #endregion
 

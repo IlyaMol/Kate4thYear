@@ -1,3 +1,5 @@
+using SolverForms.DrawLib;
+
 namespace SolverForms
 {
     public partial class MainForm : Form
@@ -56,7 +58,33 @@ namespace SolverForms
                 false,
                 DataSourceUpdateMode.OnPropertyChanged);
 
+            drawPanel.Paint += (sender, e) => drawPanel_OnPaint(sender, e);
+            drawPanel.SizeChanged += (sender, e) => { ViewModel.RedrawGraphics(); };
             sourceMatrixView.DataSourceChanged += ViewModel.DataSourceChangedDelegate;
+            ViewModel.OnFrameUpdate += ViewModel_OnFrameUpdate;
+            
+        }
+
+        private ICollection<KGLine> scene = new HashSet<KGLine>();
+        private void drawPanel_OnPaint(object? sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+
+            ViewModel.CurrentSceneHeight = g.VisibleClipBounds.Height;
+            ViewModel.CurrentSceneWidth = g.VisibleClipBounds.Width;
+
+            g.Clear(drawPanel.BackColor);
+
+            foreach (KGLine line in scene)
+            {
+                g.DrawLine(new Pen(Color.Black), line.StartPoint, line.EndPoint);
+            }
+        }
+
+        private void ViewModel_OnFrameUpdate(ICollection<KGLine> scene)
+        {
+            this.scene = scene;
+            drawPanel.Refresh();
         }
 
         private void button1_Click(object sender, EventArgs e)
