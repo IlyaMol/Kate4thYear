@@ -52,12 +52,14 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.resultFlowLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.criticalPathCountValue = new System.Windows.Forms.Label();
             this.criticalPathCountLabel = new System.Windows.Forms.Label();
             this.selectedPathUpDown = new System.Windows.Forms.NumericUpDown();
             this.drawPanel = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.processorCountNumUpDownValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.blockCountNumUpDownValue)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -70,9 +72,10 @@
             this.splitContainer1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
-            this.flowLayoutPanel2.SuspendLayout();
+            this.resultFlowLayout.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectedPathUpDown)).BeginInit();
+            this.tableLayoutPanel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // processorCountNumUpDownValue
@@ -80,7 +83,7 @@
             this.processorCountNumUpDownValue.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.processorCountNumUpDownValue.Location = new System.Drawing.Point(138, 3);
+            this.processorCountNumUpDownValue.Location = new System.Drawing.Point(147, 3);
             this.processorCountNumUpDownValue.Maximum = new decimal(new int[] {
             10,
             0,
@@ -105,7 +108,7 @@
             this.blockCountNumUpDownValue.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.blockCountNumUpDownValue.Location = new System.Drawing.Point(138, 69);
+            this.blockCountNumUpDownValue.Location = new System.Drawing.Point(147, 69);
             this.blockCountNumUpDownValue.Maximum = new decimal(new int[] {
             50,
             0,
@@ -123,7 +126,7 @@
             this.processorCountLabel.AutoSize = true;
             this.processorCountLabel.Location = new System.Drawing.Point(3, 0);
             this.processorCountLabel.Name = "processorCountLabel";
-            this.processorCountLabel.Size = new System.Drawing.Size(129, 33);
+            this.processorCountLabel.Size = new System.Drawing.Size(138, 33);
             this.processorCountLabel.TabIndex = 2;
             this.processorCountLabel.Text = "Процессоры (p)";
             this.processorCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -136,7 +139,7 @@
             this.blockCountLabel.AutoSize = true;
             this.blockCountLabel.Location = new System.Drawing.Point(3, 66);
             this.blockCountLabel.Name = "blockCountLabel";
-            this.blockCountLabel.Size = new System.Drawing.Size(129, 35);
+            this.blockCountLabel.Size = new System.Drawing.Size(138, 35);
             this.blockCountLabel.TabIndex = 3;
             this.blockCountLabel.Text = "Блоки (s)";
             this.blockCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -162,7 +165,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33332F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(180, 101);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(189, 101);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
             // processCountNumUpDownValue
@@ -170,7 +173,7 @@
             this.processCountNumUpDownValue.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.processCountNumUpDownValue.Location = new System.Drawing.Point(138, 36);
+            this.processCountNumUpDownValue.Location = new System.Drawing.Point(147, 36);
             this.processCountNumUpDownValue.Maximum = new decimal(new int[] {
             50,
             0,
@@ -188,7 +191,7 @@
             this.processCountLabel.AutoSize = true;
             this.processCountLabel.Location = new System.Drawing.Point(3, 33);
             this.processCountLabel.Name = "processCountLabel";
-            this.processCountLabel.Size = new System.Drawing.Size(129, 33);
+            this.processCountLabel.Size = new System.Drawing.Size(138, 33);
             this.processCountLabel.TabIndex = 4;
             this.processCountLabel.Text = "Процессы (n)";
             this.processCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -231,7 +234,7 @@
             this.importButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.importButton.Location = new System.Drawing.Point(3, 3);
             this.importButton.Name = "importButton";
-            this.importButton.Size = new System.Drawing.Size(1, 25);
+            this.importButton.Size = new System.Drawing.Size(61, 25);
             this.importButton.TabIndex = 8;
             this.importButton.Text = "Импорт";
             this.importButton.UseVisualStyleBackColor = true;
@@ -246,9 +249,9 @@
             this.exportButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.exportButton.AutoSize = true;
             this.exportButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.exportButton.Location = new System.Drawing.Point(3, 3);
+            this.exportButton.Location = new System.Drawing.Point(129, 3);
             this.exportButton.Name = "exportButton";
-            this.exportButton.Size = new System.Drawing.Size(1, 25);
+            this.exportButton.Size = new System.Drawing.Size(62, 25);
             this.exportButton.TabIndex = 9;
             this.exportButton.Text = "Экспорт";
             this.exportButton.UseVisualStyleBackColor = true;
@@ -262,8 +265,6 @@
             // 
             // sourceDataLayout
             // 
-            this.sourceDataLayout.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.sourceDataLayout.ColumnCount = 2;
             this.sourceDataLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.sourceDataLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -272,7 +273,7 @@
             this.sourceDataLayout.Name = "sourceDataLayout";
             this.sourceDataLayout.RowCount = 1;
             this.sourceDataLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.sourceDataLayout.Size = new System.Drawing.Size(0, 107);
+            this.sourceDataLayout.Size = new System.Drawing.Size(194, 107);
             this.sourceDataLayout.TabIndex = 14;
             // 
             // sourceMatrixView
@@ -285,7 +286,7 @@
             this.sourceMatrixView.Location = new System.Drawing.Point(3, 116);
             this.sourceMatrixView.Name = "sourceMatrixView";
             this.sourceMatrixView.RowCount = 0;
-            this.sourceMatrixView.Size = new System.Drawing.Size(0, 16);
+            this.sourceMatrixView.Size = new System.Drawing.Size(194, 16);
             this.sourceMatrixView.TabIndex = 14;
             // 
             // resultMatrixView
@@ -320,7 +321,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -330,9 +331,9 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.flowLayoutPanel2);
-            this.splitContainer1.Size = new System.Drawing.Size(778, 530);
-            this.splitContainer1.SplitterDistance = 212;
+            this.splitContainer1.Panel2.Controls.Add(this.resultFlowLayout);
+            this.splitContainer1.Size = new System.Drawing.Size(829, 516);
+            this.splitContainer1.SplitterDistance = 215;
             this.splitContainer1.TabIndex = 17;
             // 
             // panel1
@@ -360,7 +361,7 @@
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(206, 524);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(206, 510);
             this.flowLayoutPanel1.TabIndex = 16;
             this.flowLayoutPanel1.WrapContents = false;
             // 
@@ -377,25 +378,25 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(0, 31);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(194, 31);
             this.tableLayoutPanel4.TabIndex = 16;
             // 
-            // flowLayoutPanel2
+            // resultFlowLayout
             // 
-            this.flowLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.resultFlowLayout.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.flowLayoutPanel2.AutoScroll = true;
-            this.flowLayoutPanel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.flowLayoutPanel2.Controls.Add(this.tableLayoutPanel2);
-            this.flowLayoutPanel2.Controls.Add(this.resultMatrixView);
-            this.flowLayoutPanel2.Controls.Add(this.drawPanel);
-            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(556, 524);
-            this.flowLayoutPanel2.TabIndex = 16;
-            this.flowLayoutPanel2.WrapContents = false;
+            this.resultFlowLayout.AutoScroll = true;
+            this.resultFlowLayout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.resultFlowLayout.Controls.Add(this.tableLayoutPanel2);
+            this.resultFlowLayout.Controls.Add(this.resultMatrixView);
+            this.resultFlowLayout.Controls.Add(this.drawPanel);
+            this.resultFlowLayout.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.resultFlowLayout.Location = new System.Drawing.Point(3, 3);
+            this.resultFlowLayout.Name = "resultFlowLayout";
+            this.resultFlowLayout.Size = new System.Drawing.Size(604, 510);
+            this.resultFlowLayout.TabIndex = 16;
+            this.resultFlowLayout.WrapContents = false;
             // 
             // tableLayoutPanel2
             // 
@@ -465,12 +466,36 @@
             this.drawPanel.Size = new System.Drawing.Size(544, 147);
             this.drawPanel.TabIndex = 15;
             // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 1;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Controls.Add(this.splitContainer1, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.progressBar1, 0, 1);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 2;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(835, 542);
+            this.tableLayoutPanel5.TabIndex = 19;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.progressBar1.Location = new System.Drawing.Point(3, 525);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(209, 14);
+            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.progressBar1.TabIndex = 18;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(778, 530);
-            this.Controls.Add(this.splitContainer1);
+            this.ClientSize = new System.Drawing.Size(835, 542);
+            this.Controls.Add(this.tableLayoutPanel5);
             this.Name = "MainForm";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.processorCountNumUpDownValue)).EndInit();
@@ -489,11 +514,12 @@
             this.flowLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
-            this.flowLayoutPanel2.ResumeLayout(false);
-            this.flowLayoutPanel2.PerformLayout();
+            this.resultFlowLayout.ResumeLayout(false);
+            this.resultFlowLayout.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectedPathUpDown)).EndInit();
+            this.tableLayoutPanel5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -523,10 +549,12 @@
         private Panel panel1;
         private FlowLayoutPanel flowLayoutPanel1;
         private TableLayoutPanel tableLayoutPanel4;
-        private FlowLayoutPanel flowLayoutPanel2;
+        private FlowLayoutPanel resultFlowLayout;
         private Panel drawPanel;
         private Label criticalPathCountValue;
         private Label criticalPathCountLabel;
         private NumericUpDown selectedPathUpDown;
+        private TableLayoutPanel tableLayoutPanel5;
+        private ProgressBar progressBar1;
     }
 }

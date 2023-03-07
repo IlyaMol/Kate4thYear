@@ -319,5 +319,10 @@ namespace SolverForms
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
+
+        private void KMatrixView_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

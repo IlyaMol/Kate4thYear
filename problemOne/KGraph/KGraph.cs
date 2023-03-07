@@ -1,4 +1,6 @@
-﻿namespace ProblemOne.Model
+﻿using System.Diagnostics;
+
+namespace ProblemOne.Model
 {
     public class KGraph
     {
@@ -60,7 +62,6 @@
             }
             subMatrixDict.Add(subMatrixIndex, subMatrix);
             // <---
-
             return subMatrixDict;
         }
 
@@ -130,8 +131,6 @@
                         break;
                     }
                 subMatrixColumnIndex = 0;
-
-                //PrintMatrix(resultMatrix);
             }
             //<---
             return resultMatrix;
@@ -200,7 +199,7 @@
         private Stack<KVertex> verticesStack = new();
         private List<KVertex> criticalPath = new();
         private List<List<KVertex>> criticalPaths = new();
-        public List<List<KVertex>> GetCriticalPath(KVertex? vertex = null)
+        public List<List<KVertex>> GetCriticalPath(KVertex? vertex = null, bool firstRun = true, KGraph? graph = null)
         {
             bool forceBreak = false;
 
@@ -229,7 +228,6 @@
                     forceBreak = true;
                 }
 
-
             if (vertex.Neighbours.Count > 0 && !forceBreak)
             {
                 // если вершины равновесны - тестим обе
@@ -246,46 +244,6 @@
 
             KVertex? testVertex1 = verticesStack.Pop();
             return criticalPaths;
-        }
-
-        public void Print(List<KVertex>? path = null)
-        {
-            Console.Clear();
-            int index = 0;
-            do
-            {
-                ICollection<KVertex> verticesRow = Vertices.Where(v => v.RowIndex == index).ToList();
-                foreach(KVertex v in verticesRow)
-                {
-                    if (path != null && path.Any(vt => vt.Id == v.Id))
-                        Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    else
-                        Console.ForegroundColor = ConsoleColor.White;
-
-                    Console.Write(v.Weight);
-
-                    Console.ForegroundColor = ConsoleColor.White;
-
-                    if (v != verticesRow.Last())
-                        Console.Write(" ");
-                }
-                Console.WriteLine();
-                index++;
-            } while (Vertices.Any(v => v.RowIndex >= index));
-            Thread.Sleep(100);
-        }
-        public static void PrintMatrix(int[,] matrix)
-        {
-            Console.Clear();
-            for (int rowIndex = 0; rowIndex < matrix.GetLength(0); rowIndex++)
-            {
-                for (int columnIndex = 0; columnIndex < matrix.GetLength(1); columnIndex++)
-                {
-                    Console.Write(matrix[rowIndex, columnIndex] + " ");
-                }
-                Console.WriteLine();
-            }
-                
         }
     }
 }

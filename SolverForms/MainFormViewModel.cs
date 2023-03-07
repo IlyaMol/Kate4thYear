@@ -1,7 +1,9 @@
-﻿using ProblemOne.Model;
+﻿using ProblemOne;
+using ProblemOne.Model;
 using SolverForms.Controls;
 using SolverForms.DrawLib;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace SolverForms
@@ -9,7 +11,7 @@ namespace SolverForms
     public class MainFormViewModel : INotifyPropertyChanged
     {
         #region Fields
-        private bool isNotBusy = true;
+        private bool isBusy = false;
         private int processorCount = 0;
         private int[,] sourceMatrix = new int[0, 0];
         private int[,] resultMatrix = new int[0, 0];
@@ -21,16 +23,26 @@ namespace SolverForms
         #endregion
 
         #region Properties
-        public bool IsNotBusy
+        public bool IsBusy
         {
-            get { return isNotBusy; }
+            get { return isBusy; }
             set
             {
-                if (isNotBusy == value) return;
-                isNotBusy = value;
+                if (isBusy == value) return;
+                isBusy = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(IsNotBusy));
             }
         }
+        public bool IsNotBusy
+        {
+            get
+            {
+                return !isBusy;
+            }
+        }
+
+        public ICollection<int[,]>? SubProcess { get; private set; }
 
         public int CriticalPathCount
         {
@@ -118,7 +130,7 @@ namespace SolverForms
         public float CurrentSceneWidth { get; set; }
         public float CurrentSceneHeight { get; set; }
 
-        public Dictionary<int, int[,]>? SubProcess { get; private set; }
+
 
         #region Methods
         public void DataSourceChangedDelegate(int[,] newDataSource)
@@ -131,27 +143,28 @@ namespace SolverForms
             RecalcResult();
         }
 
+        //Thread th1 = new Thread(new ThreadStart(RecalcResult));
+
         public void RecalcResult()
         {
-            if (IsNotBusy) IsNotBusy = false;
+            if (!IsBusy) IsBusy = true;
             SelectedCriticalPathIndex = 1;
-            SubProcess = KGraph.GetSubProcesses(SourceMatrix, processorCount);
-            int[,] preparedMatrix = KGraph.PrepareMatrix(SourceMatrix, processorCount);
-            ResultMatrix = preparedMatrix;
 
-            if(KGraph.TryBuid(preparedMatrix, out graph))
-            {
+            SubProcess = KMatrixTransform.SplitMatrix(SourceMatrix, processorCount);
+            int[,] preparedMatrix = KMatrixTransform.BuildProcTimeMatrix(SubProcess);
+
+            if (KGraph.TryBuid(preparedMatrix, out graph))
                 criticalPaths = graph.GetCriticalPath();
-            }
+
+            ResultMatrix = preparedMatrix;
+            if (IsBusy) IsBusy = false;
             RedrawGraphics();
         }
 
         public void RedrawGraphics()
         {
-            if (IsNotBusy) IsNotBusy = false;
             if (graph == null)
             {
-                if (!IsNotBusy) IsNotBusy = true;
                 return;
             }
             if (criticalPaths.Count > 0 && selectedCriticalPathIndex > 0)
@@ -163,7 +176,6 @@ namespace SolverForms
             ICollection<KGLine> scene = generator.GetCoordPlane(ProcessorCount);
             OnFrameUpdate?.Invoke(scene);
             //end draw algo
-            if (!IsNotBusy) IsNotBusy = true;
         }
         #endregion
 

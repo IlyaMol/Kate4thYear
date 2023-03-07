@@ -75,13 +75,19 @@ namespace SolverForms
                 false,
                 DataSourceUpdateMode.OnPropertyChanged);
 
-            //this.DataBindings.Add(
-            //    nameof(this.),
-            //    ViewModel,
-            //    nameof(ViewModel.IsNotBusy),
-            //    false,
-            //    DataSourceUpdateMode.OnPropertyChanged);
+            resultFlowLayout.DataBindings.Add(
+                nameof(resultFlowLayout.Visible),
+                ViewModel,
+                nameof(ViewModel.IsNotBusy),
+                false,
+                DataSourceUpdateMode.OnPropertyChanged);
 
+            progressBar1.DataBindings.Add(
+                nameof(progressBar1.Visible),
+                ViewModel,
+                nameof(ViewModel.IsBusy));
+
+            //progressBar1.Value= 1;
             this.DoubleBuffered = true;
             panel1.UseWaitCursor= true;
             drawPanel.Paint += (sender, e) => drawPanel_OnPaint(sender, e);
@@ -93,7 +99,7 @@ namespace SolverForms
 
         private ICollection<KGLine> scene = new HashSet<KGLine>();
         private void drawPanel_OnPaint(object? sender, PaintEventArgs e)
-        {
+        { 
             Graphics g = e.Graphics;
 
             ViewModel.CurrentSceneHeight = g.VisibleClipBounds.Height;
