@@ -7,11 +7,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="MainForm.Designer.cs~RF1d2a3f.TMP" />
-  </ItemGroup>
-
+	
   <ItemGroup>
     <ProjectReference Include="..\ProblemOne\ProblemOne.csproj" />
   </ItemGroup>

@@ -30,12 +30,8 @@ namespace SolverForms.Controls
             this.Size = new Size(23, 23);
             this.TabIndex = 0;
             this.TextAlign = HorizontalAlignment.Center;
+            this.Multiline = false;
             this.IsSelected= isSelected;
-            if (isSelected)
-            {
-                this.BackColor = SelectedColor;
-                this.ForeColor = Color.White;
-            }
         }
 
         private void CellTextBox_KeyPress(object? sender, KeyPressEventArgs e)

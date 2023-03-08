@@ -47,7 +47,6 @@
             this.Controls.Add(this.matrixRepresentationContainer);
             this.Name = "KMatrixView";
             this.Size = new System.Drawing.Size(106, 106);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.KMatrixView_Paint);
             this.ResumeLayout(false);
 
         }

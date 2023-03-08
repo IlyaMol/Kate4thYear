@@ -3,7 +3,6 @@ using ProblemOne.Model;
 using SolverForms.Controls;
 using SolverForms.DrawLib;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace SolverForms
@@ -21,6 +20,8 @@ namespace SolverForms
         private List<KVertex> selectedCriticalPath = new();
         private KGraph? graph;
         #endregion
+
+        public event EventHandler? NeedCalculatePaths;
 
         #region Properties
         public bool IsBusy
@@ -48,7 +49,9 @@ namespace SolverForms
         {
             get
             {
-                return criticalPaths.Count;
+                if(criticalPaths.Count > 0)
+                    return criticalPaths.Count;
+                else return 1;
             }
         }
         public int SelectedCriticalPathIndex
@@ -102,17 +105,22 @@ namespace SolverForms
                 OnPropertyChanged();
             }
         }
+        
         public int CriticalPathLength
         {
-            get { return criticalPathLength; }
+            get 
+            {
+                if (selectedCriticalPath.Count > 0)
+                    return selectedCriticalPath.Sum(v => v.Weight);
+                else return 0;
+            }
             set
             {
-                if(criticalPathLength == value) return;
-                criticalPathLength = value;
                 OnPropertyChanged();
             }
         }
-        public List<Coordinates> CriticalPath
+        
+        public List<Coordinates> SelectedCriticalPath
         {
             get
             {
@@ -125,12 +133,10 @@ namespace SolverForms
         #endregion
 
         public delegate void UpdateFrameDelegate(ICollection<KGLine> scene);
-        public event UpdateFrameDelegate OnFrameUpdate;
+        public event UpdateFrameDelegate? OnFrameUpdate;
 
         public float CurrentSceneWidth { get; set; }
         public float CurrentSceneHeight { get; set; }
-
-
 
         #region Methods
         public void DataSourceChangedDelegate(int[,] newDataSource)
@@ -147,17 +153,15 @@ namespace SolverForms
 
         public void RecalcResult()
         {
-            if (!IsBusy) IsBusy = true;
             SelectedCriticalPathIndex = 1;
 
             SubProcess = KMatrixTransform.SplitMatrix(SourceMatrix, processorCount);
             int[,] preparedMatrix = KMatrixTransform.BuildProcTimeMatrix(SubProcess);
 
             if (KGraph.TryBuid(preparedMatrix, out graph))
-                criticalPaths = graph.GetCriticalPath();
+                NeedCalculatePaths?.Invoke(this, new EventArgs());
 
             ResultMatrix = preparedMatrix;
-            if (IsBusy) IsBusy = false;
             RedrawGraphics();
         }
 
@@ -169,7 +173,6 @@ namespace SolverForms
             }
             if (criticalPaths.Count > 0 && selectedCriticalPathIndex > 0)
                 selectedCriticalPath = criticalPaths[selectedCriticalPathIndex - 1];
-            CriticalPathLength = selectedCriticalPath.Sum(v => v.Weight);
 
             // TODO(wwaffe): here start of test graphics code
             SceneGenerator generator = new(CurrentSceneWidth, CurrentSceneHeight) { CoordPadding = new Padding(20) };
