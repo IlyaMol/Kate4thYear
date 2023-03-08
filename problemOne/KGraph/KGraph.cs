@@ -151,7 +151,13 @@ namespace ProblemOne.Model
         {
             Stack<KVertex> verticesStack = new();
 
+            KVertex? startVertex = graph.Vertices.FirstOrDefault();
+            if (startVertex == null) throw new Exception();
 
+            while(verticesStack.Count > 0)
+            {
+                KVertex vertex = verticesStack.Pop();
+            }
 
         }
     }
