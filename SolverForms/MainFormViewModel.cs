@@ -1,7 +1,9 @@
 ﻿using ProblemOne;
+using ProblemOne.KGraph;
 using ProblemOne.Model;
 using SolverForms.Controls;
 using SolverForms.DrawLib;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -14,14 +16,13 @@ namespace SolverForms
         private int processorCount = 0;
         private int[,] sourceMatrix = new int[0, 0];
         private int[,] resultMatrix = new int[0, 0];
-        private int criticalPathLength = 0;
+
         private int selectedCriticalPathIndex = 1;
-        private List<List<KVertex>> criticalPaths = new();
-        private List<KVertex> selectedCriticalPath = new();
+        private ConcurrentBag<KPath<KVertex>> criticalPaths = new();
+        private KPath<KVertex> selectedCriticalPath = new();
+
         private KGraph? graph;
         #endregion
-
-        public event EventHandler? NeedCalculatePaths;
 
         #region Properties
         public bool IsBusy
@@ -44,27 +45,6 @@ namespace SolverForms
         }
 
         public ICollection<int[,]>? SubProcess { get; private set; }
-
-        public int CriticalPathCount
-        {
-            get
-            {
-                if(criticalPaths.Count > 0)
-                    return criticalPaths.Count;
-                else return 1;
-            }
-        }
-        public int SelectedCriticalPathIndex
-        {
-            get { return selectedCriticalPathIndex; }
-            set
-            {
-                if (selectedCriticalPathIndex == value) return;
-                selectedCriticalPathIndex= value;
-                RedrawGraphics();
-                OnPropertyChanged();
-            }
-        }
 
         public int ProcessorCount
         {
@@ -105,13 +85,22 @@ namespace SolverForms
                 OnPropertyChanged();
             }
         }
-        
+
+        public int CriticalPathCount
+        {
+            get
+            {
+                if (criticalPaths.Count > 0)
+                    return criticalPaths.Count;
+                else return 1;
+            }
+        }
         public int CriticalPathLength
         {
             get 
             {
                 if (selectedCriticalPath.Count > 0)
-                    return selectedCriticalPath.Sum(v => v.Weight);
+                    return selectedCriticalPath.Length;
                 else return 0;
             }
             set
@@ -119,15 +108,22 @@ namespace SolverForms
                 OnPropertyChanged();
             }
         }
-        
-        public List<Coordinates> SelectedCriticalPath
+        public int SelectedCriticalPathIndex
+        {
+            get { return selectedCriticalPathIndex; }
+            set
+            {
+                if (selectedCriticalPathIndex == value) return;
+                selectedCriticalPathIndex = value;
+                RedrawGraphics();
+                OnPropertyChanged();
+            }
+        }
+        public IEnumerable<KCoordinates> SelectedCriticalPath
         {
             get
             {
-                List<Coordinates> result = new List<Coordinates>();
-                foreach (KVertex vertex in selectedCriticalPath)
-                    result.Add(new Coordinates() { RowIndex = vertex.RowIndex, ColumnIndex = vertex.ColumnIndex});
-                return result;
+                return selectedCriticalPath.AsCoordinates();
             }
         }
         #endregion
@@ -149,8 +145,6 @@ namespace SolverForms
             RecalcResult();
         }
 
-        //Thread th1 = new Thread(new ThreadStart(RecalcResult));
-
         public void RecalcResult()
         {
             SelectedCriticalPathIndex = 1;
@@ -158,8 +152,11 @@ namespace SolverForms
             SubProcess = KMatrixTransform.SplitMatrix(SourceMatrix, processorCount);
             int[,] preparedMatrix = KMatrixTransform.BuildProcTimeMatrix(SubProcess);
 
+            CancellationTokenSource s = new CancellationTokenSource();
             if (KGraph.TryBuid(preparedMatrix, out graph))
-                NeedCalculatePaths?.Invoke(this, new EventArgs());
+                KGraph.GetCriticalPath(graph, s.Token);
+
+            criticalPaths = graph.CriticalPaths;
 
             ResultMatrix = preparedMatrix;
             RedrawGraphics();
@@ -172,7 +169,16 @@ namespace SolverForms
                 return;
             }
             if (criticalPaths.Count > 0 && selectedCriticalPathIndex > 0)
-                selectedCriticalPath = criticalPaths[selectedCriticalPathIndex - 1];
+            {
+                int count = 0;
+                foreach(KPath<KVertex> kp in criticalPaths) 
+                {
+                    count++;
+                    if(count == selectedCriticalPathIndex)
+                        selectedCriticalPath = kp;
+                }
+            }
+                
 
             // TODO(wwaffe): here start of test graphics code
             SceneGenerator generator = new(CurrentSceneWidth, CurrentSceneHeight) { CoordPadding = new Padding(20) };

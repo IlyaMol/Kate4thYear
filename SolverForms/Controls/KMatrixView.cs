@@ -1,4 +1,5 @@
-﻿using SolverForms.Controls;
+﻿using ProblemOne;
+using SolverForms.Controls;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -67,8 +68,8 @@ namespace SolverForms
             }
         }
 
-        public List<Coordinates> selectedCells = new List<Coordinates>();
-        public List<Coordinates> SelectedCells
+        public HashSet<KCoordinates> selectedCells = new HashSet<KCoordinates>();
+        public HashSet<KCoordinates> SelectedCells
         {
             get
             {
