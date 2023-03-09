@@ -1,7 +1,6 @@
 ﻿using ProblemOne;
 using ProblemOne.KGraph;
 using ProblemOne.Model;
-using SolverForms.Controls;
 using SolverForms.DrawLib;
 using System.Collections.Concurrent;
 using System.ComponentModel;
@@ -12,13 +11,14 @@ namespace SolverForms
     public class MainFormViewModel : INotifyPropertyChanged
     {
         #region Fields
-        private bool isBusy = false;
-        private int processorCount = 0;
-        private int[,] sourceMatrix = new int[0, 0];
-        private int[,] resultMatrix = new int[0, 0];
+        private bool _isBusy = false;
+        private int _processorCount = 0;
 
-        private int selectedCriticalPathIndex = 1;
-        private ConcurrentBag<KPath<KVertex>> criticalPaths = new();
+        private int[,] _sourceMatrix = new int[0, 0];
+        private int[,] _resultMatrix = new int[0, 0];
+
+        private int _selectedCriticalPathIndex = 1;
+        private ConcurrentBag<KPath<KVertex>> _criticalPaths = new();
         private KPath<KVertex> selectedCriticalPath = new();
 
         private KGraph? graph;
@@ -27,62 +27,64 @@ namespace SolverForms
         #region Properties
         public bool IsBusy
         {
-            get { return isBusy; }
+            get { return _isBusy; }
             set
             {
-                if (isBusy == value) return;
-                isBusy = value;
+                if (_isBusy == value) return;
+                _isBusy = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsNotBusy));
             }
         }
         public bool IsNotBusy
         {
-            get
-            {
-                return !isBusy;
-            }
+            get { return !_isBusy; }
         }
 
         public ICollection<int[,]>? SubProcess { get; private set; }
 
         public int ProcessorCount
         {
-            get { return processorCount; }
+            get { return _processorCount; }
             set
             {
-                if (processorCount == value) return;
-                processorCount = value;
+                if (_processorCount == value) return;
+                _processorCount = value;
                 RecalcResult();
                 OnPropertyChanged();
             }
         }
-        public int ProcessCount
-        {
-            get { return sourceMatrix.GetLength(0); }
-        }
-        public int BlockCount
-        {
-            get { return sourceMatrix.GetLength(1); }
-        }
         public int[,] SourceMatrix
         {
-            get { return sourceMatrix; }
+            get { return _sourceMatrix; }
             set
             {
-                if (sourceMatrix == value) return;
-                sourceMatrix = value;
+                if (_sourceMatrix == value) return;
+                _sourceMatrix = value;
                 OnPropertyChanged();
             }
         }
         public int[,] ResultMatrix
         {
-            get { return resultMatrix; }
+            get { return _resultMatrix; }
             set
             {
-                if (resultMatrix == value) return;
-                resultMatrix = value;
+                if (_resultMatrix == value) return;
+                _resultMatrix = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public ConcurrentBag<KPath<KVertex>> criticalPaths
+        {
+            get { return _criticalPaths; }
+            set
+            {
+                if (_criticalPaths == value) return;
+                _criticalPaths = value;
+                SelectedCriticalPathIndex = 1;
+                OnPropertyChanged(nameof(CriticalPathLength));
+                OnPropertyChanged(nameof(CriticalPathCount));
             }
         }
 
@@ -103,36 +105,51 @@ namespace SolverForms
                     return selectedCriticalPath.Length;
                 else return 0;
             }
-            set
-            {
-                OnPropertyChanged();
-            }
         }
         public int SelectedCriticalPathIndex
         {
-            get { return selectedCriticalPathIndex; }
+            get { return _selectedCriticalPathIndex; }
             set
             {
-                if (selectedCriticalPathIndex == value) return;
-                selectedCriticalPathIndex = value;
+                if (_selectedCriticalPathIndex == value) return;
+                _selectedCriticalPathIndex = value;
                 RedrawGraphics();
                 OnPropertyChanged();
             }
         }
         public IEnumerable<KCoordinates> SelectedCriticalPath
         {
-            get
-            {
-                return selectedCriticalPath.AsCoordinates();
-            }
+            get { return selectedCriticalPath.AsCoordinates(); }
         }
         #endregion
 
         public delegate void UpdateFrameDelegate(ICollection<KGLine> scene);
         public event UpdateFrameDelegate? OnFrameUpdate;
 
-        public float CurrentSceneWidth { get; set; }
-        public float CurrentSceneHeight { get; set; }
+        private float currentSceneWidth = 0;
+        public float CurrentSceneWidth 
+        { 
+            get { return currentSceneWidth; }
+            set
+            {
+                if (currentSceneWidth == value) return;
+                currentSceneWidth = value;
+                OnPropertyChanged();
+                RedrawGraphics();
+            }
+        }
+        private float currentSceneHeight = 0;
+        public float CurrentSceneHeight 
+        { 
+            get { return currentSceneHeight; }
+            set
+            {
+                if (currentSceneHeight == value) return;
+                currentSceneHeight = value;
+                OnPropertyChanged();
+                RedrawGraphics();
+            }
+        }
 
         #region Methods
         public void DataSourceChangedDelegate(int[,] newDataSource)
@@ -147,9 +164,7 @@ namespace SolverForms
 
         public void RecalcResult()
         {
-            SelectedCriticalPathIndex = 1;
-
-            SubProcess = KMatrixTransform.SplitMatrix(SourceMatrix, processorCount);
+            SubProcess = KMatrixTransform.SplitMatrix(SourceMatrix, _processorCount);
             int[,] preparedMatrix = KMatrixTransform.BuildProcTimeMatrix(SubProcess);
 
             CancellationTokenSource s = new CancellationTokenSource();
@@ -159,26 +174,23 @@ namespace SolverForms
             criticalPaths = graph.CriticalPaths;
 
             ResultMatrix = preparedMatrix;
+
             RedrawGraphics();
         }
 
         public void RedrawGraphics()
         {
-            if (graph == null)
-            {
-                return;
-            }
-            if (criticalPaths.Count > 0 && selectedCriticalPathIndex > 0)
+            if (graph == null) { return; }
+            if (criticalPaths.Count > 0 && _selectedCriticalPathIndex > 0)
             {
                 int count = 0;
                 foreach(KPath<KVertex> kp in criticalPaths) 
                 {
                     count++;
-                    if(count == selectedCriticalPathIndex)
+                    if(count == _selectedCriticalPathIndex)
                         selectedCriticalPath = kp;
                 }
             }
-                
 
             // TODO(wwaffe): here start of test graphics code
             SceneGenerator generator = new(CurrentSceneWidth, CurrentSceneHeight) { CoordPadding = new Padding(20) };

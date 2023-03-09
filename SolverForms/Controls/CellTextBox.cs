@@ -13,7 +13,7 @@ namespace SolverForms.Controls
             set; 
         } = false;
 
-        public Color SelectedColor { get; set; } = Color.DarkGreen;
+        public Color SelectedColor { get; set; } = Color.LightGreen;
 
         public delegate void CellEventHandler(object sender, CellEventArgs args);
         public new event CellEventHandler? TextChanged;

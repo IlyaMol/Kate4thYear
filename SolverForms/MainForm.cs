@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace SolverForms
+﻿namespace SolverForms
 {
     public partial class MainForm : Form
     {
@@ -23,19 +21,35 @@ namespace SolverForms
             sourceMatrixView.ResumeLayout();
             sourceMatrixView.PerformLayout();
 
+            viewModel.CurrentSceneHeight = drawPanel.Height;
+            viewModel.CurrentSceneWidth = drawPanel.Width;
+
             sourceMatrixView.DataSourceChanged += viewModel.DataSourceChangedDelegate;
+            drawPanel.Resize += DrawPanel_Resize;
+            viewModel.OnFrameUpdate += ViewModel_OnFrameUpdate;
             UpdateDataBindings();
+        }
+
+        private void DrawPanel_Resize(object? sender, EventArgs e)
+        {
+            viewModel.CurrentSceneHeight = drawPanel.Height;
+            viewModel.CurrentSceneWidth = drawPanel.Width;
+        }
+
+        private void ViewModel_OnFrameUpdate(ICollection<DrawLib.KGLine> scene)
+        {
+            drawPanel.Scene = scene;
         }
 
         private void UpdateDataBindings()
         {
             sourceMatrixView.DataBindings.Add
                 (
-                    nameof(sourceMatrixView.DataSource),
-                    viewModel,
-                    nameof(viewModel.SourceMatrix),
-                    false,
-                    DataSourceUpdateMode.OnPropertyChanged
+                nameof(sourceMatrixView.DataSource),
+                viewModel,
+                nameof(viewModel.SourceMatrix),
+                false,
+                DataSourceUpdateMode.OnPropertyChanged
                 );
             resultMatrixView.DataBindings.Add
                 (
@@ -51,14 +65,32 @@ namespace SolverForms
                 viewModel,
                 nameof(viewModel.SelectedCriticalPath)
                 );
-            processUpDown.DataBindings.Add
+
+            processorUpDown.DataBindings.Add
                 (
-                nameof(processUpDown.Value),
+                nameof(processorUpDown.Value),
                 viewModel,
                 nameof(viewModel.ProcessorCount),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged
                 );
+            processUpDown.DataBindings.Add
+                (
+                nameof(processUpDown.Value),
+                sourceMatrixView,
+                nameof(sourceMatrixView.RowCount),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged
+                );
+            blockUpDown.DataBindings.Add
+                (
+                nameof(blockUpDown.Value),
+                sourceMatrixView,
+                nameof(sourceMatrixView.ColumnCount),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged
+                );
+
             selectedPathIndexUpDown.DataBindings.Add
                 (
                 nameof(selectedPathIndexUpDown.Value),
@@ -75,15 +107,24 @@ namespace SolverForms
                 true,
                 DataSourceUpdateMode.OnPropertyChanged
                 );
-            progressBar1.DataBindings.Add
+            criticalPathCountValue.DataBindings.Add(
+                nameof(criticalPathCountValue.Text),
+                viewModel,
+                nameof(viewModel.CriticalPathCount)
+                );
+            criticalPathLengthValue.DataBindings.Add(
+                nameof(criticalPathLengthValue.Text),
+                viewModel,
+                nameof(viewModel.CriticalPathLength)
+                );
+            busyBar.DataBindings.Add
                 (
-                nameof(progressBar1.Visible),
+                nameof(busyBar.Visible),
                 viewModel,
                 nameof(viewModel.IsBusy)
                 );
         }
-
-        private void loadDataButton_Click(object sender, EventArgs e)
+        private void LoadDataButton_Click(object sender, EventArgs e)
         {
             viewModel.ProcessorCount = 3;
             viewModel.SourceMatrix = new[,]

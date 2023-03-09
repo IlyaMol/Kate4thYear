@@ -104,7 +104,6 @@ namespace SolverForms
                 for (int columnIndex = 0; columnIndex < ColumnCount; columnIndex++)
                     newSource[rowIndex, columnIndex] = dataSource[rowIndex, columnIndex];
             dataSource = newSource;
-            //AddRowInView(count);
         }
         private void RemoveRow(int count = 1)
         {
@@ -113,7 +112,6 @@ namespace SolverForms
                 for (int columnIndex = 0; columnIndex < newSource.GetLength(1); columnIndex++)
                     newSource[rowIndex, columnIndex] = dataSource[rowIndex, columnIndex];
             dataSource = newSource;
-            //RemoveRowInView(count);
         }
         private void AddColumn(int count = 1)
         {
@@ -122,7 +120,6 @@ namespace SolverForms
                 for (int columnIndex = 0; columnIndex < ColumnCount; columnIndex++)
                     newSource[rowIndex, columnIndex] = dataSource[rowIndex, columnIndex];
             dataSource = newSource;
-            //AddColumnInView(count);
         } 
         private void RemoveColumn(int count = 1)
         {
@@ -131,7 +128,6 @@ namespace SolverForms
                 for (int columnIndex = 0; columnIndex < newSource.GetLength(1); columnIndex++)
                     newSource[rowIndex, columnIndex] = dataSource[rowIndex, columnIndex];
             dataSource = newSource;
-            //RemoveColumnInView(count);
         }
         
         private void AddRowInView(int count = 1)
@@ -191,8 +187,6 @@ namespace SolverForms
         private CellTextBox CreateCell(int rowIndex, int columnindex)
         {
             bool isSelected = false;
-            //if (SelectedCells.Any(cell => cell.ColumnIndex == columnindex && cell.RowIndex == rowIndex))
-            //    isSelected = true;
             CellTextBox cellBox = new CellTextBox(isSelected: isSelected);
             cellBox.Name = $"matrixCellTextBox{rowIndex + columnindex}";
             cellBox.RowIndex= rowIndex;
@@ -212,9 +206,6 @@ namespace SolverForms
             tableLayoutPanel.Name = $"matrixRowContainer{rowIndex}";
             tableLayoutPanel.RowCount = 1;
             tableLayoutPanel.Index= rowIndex;
-
-            //Random rnd = new();
-            //tableLayoutPanel.BackColor = Color.FromArgb(rnd.Next(255), rnd.Next(255), rnd.Next(255));
 
             return tableLayoutPanel;
         }
