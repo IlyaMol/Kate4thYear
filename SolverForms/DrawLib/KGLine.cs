@@ -13,6 +13,15 @@
 
         public float Lenth { get; set; }
 
+        public Padding Padding { get; set; } = new Padding(10);
+        public float UsefullLength
+        {
+            get
+            {
+                return Lenth - Padding.Left - Padding.Right;
+            }
+        }
+
         private float angleRad = 0;
         public float Angle 
         {

@@ -162,9 +162,14 @@ namespace SolverForms
             RecalcResult();
         }
 
+        public KStateMachine? Machine { get; private set; } = null;
         public void RecalcResult()
         {
             SubProcess = KMatrixTransform.SplitMatrix(SourceMatrix, _processorCount);
+            if (SubProcess.Count < 1) return;
+            Machine = KStateMachine.BuildFromMatrix(SubProcess);
+            Machine.Execute(KProcType.Async);
+
             int[,] preparedMatrix = KMatrixTransform.BuildProcTimeMatrix(SubProcess);
 
             CancellationTokenSource s = new CancellationTokenSource();
