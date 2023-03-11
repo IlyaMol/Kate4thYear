@@ -124,6 +124,14 @@
                 viewModel,
                 nameof(viewModel.IsBusy)
                 );
+            buildCombinedCheckBox.DataBindings.Add
+                (
+                nameof(buildCombinedCheckBox.Checked),
+                viewModel,
+                nameof(viewModel.BulidCombined),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged
+                );
         }
         private void LoadDataButton_Click(object sender, EventArgs e)
         {

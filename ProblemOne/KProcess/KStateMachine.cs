@@ -1,4 +1,5 @@
-﻿using System.Reflection.PortableExecutable;
+﻿using System.Diagnostics;
+using System.Reflection.PortableExecutable;
 
 namespace ProblemOne
 {
@@ -12,7 +13,6 @@ namespace ProblemOne
 
     public class KStateMachine
     {
-        public ICollection<KProcessor> Processors { get; private set; } = new List<KProcessor>();
         public ICollection<KProcess> Processes { get; private set; } = new List<KProcess>();
         public ICollection<KBlock> Blocks { get; private set; } = new List<KBlock>();
 
@@ -21,8 +21,6 @@ namespace ProblemOne
         public static KStateMachine BuildFromMatrix(in ICollection<int[,]> subMatrixArgs)
         {
             KStateMachine machine= new KStateMachine();
-
-            machine.Processors = KProcessor.CreateBatch(subMatrixArgs.First().GetLength(0)).OrderBy(p => p.Index).ToList();
 
             int threadIndex = 0;
             foreach(int[,] submatrix in subMatrixArgs)
@@ -55,26 +53,53 @@ namespace ProblemOne
             return machine;
         }
 
-        public bool Execute(KProcType procType)
+        public bool Execute(KProcType procType, bool combined = true)
         {
-            if (procType == LastExecuteType) return true;
             Reset();
             // NOTE(wwaffe): one iteration of this while loop = one tick for our machine
             int tickCount = 0;
-            int currentBlockIndex = 0;
-            while(Blocks.Any(b => b.Status != KStatus.Done))
+            int currentThreadIndex = 0;
+            List<int> busyBlockIndex = new List<int>();
+            while(Processes.Any(p => p.Status != KStatus.Done))
             {
                 foreach(KProcess process in Processes)
                 {
-                    if (process.Status == KStatus.Busy)
+                    if(process.Status == KStatus.Busy || process.Status == KStatus.Done)
                     {
-                        if (process.CurrentBlock!.Duration + process.CurrentBlock!.StartTime <= tickCount)
-                            process.CurrentBlock!.Status = KStatus.Done;
-                        if(process.CurrentBlock!.)
+                        if (process.CurrentBlock != null
+                            && process.CurrentBlock.Duration + process.CurrentBlock.StartTime <= tickCount)
+                        {
+                            busyBlockIndex.Remove(process.CurrentBlock.PipelineIndex);
+                            process.CurrentBlock.Status = KStatus.Done;
+                        }
+                    }
+                }
+
+                if(!combined)
+                    if (Processes.SelectMany(p => p.Blocks).Where(b => b.ThreadIndex == currentThreadIndex).All(b => b.Status == KStatus.Done)) currentThreadIndex++;
+
+                foreach (KProcess process in Processes)
+                {
+                    if (process.Status == KStatus.Idle)
+                    {
+                        KBlock? nexBlock = process.NextBlock;
+                        if (nexBlock != null)
+                        {
+                            if (!combined && nexBlock.ThreadIndex != currentThreadIndex) continue;
+
+                            if (!busyBlockIndex.Contains(nexBlock.PipelineIndex))
+                            {
+                                process.CurrentBlock = nexBlock;
+                                nexBlock.StartTime = tickCount;
+                                busyBlockIndex.Add(nexBlock.PipelineIndex);
+                            }
+                        }
+                        
                     }
                 }
                 tickCount++;
             }
+            LastExecuteType = procType;
             return true;
         }
 

@@ -9,11 +9,11 @@
         { 
             get
             {
-                if(CurrentBlock == null || CurrentBlock.Status == KStatus.Idle || CurrentBlock.Status == KStatus.Done)
+                if (NextBlock == null) return KStatus.Done;
+
+                if (CurrentBlock == null || CurrentBlock.Status == KStatus.Idle || CurrentBlock.Status == KStatus.Done)
                     return KStatus.Idle;
                 
-                if(NextBlock == null) return KStatus.Done;
-                    
                 return KStatus.Busy;
             } 
         }

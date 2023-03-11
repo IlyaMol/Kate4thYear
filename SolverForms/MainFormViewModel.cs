@@ -12,6 +12,7 @@ namespace SolverForms
     {
         #region Fields
         private bool _isBusy = false;
+        private bool _buildCombined = false;
         private int _processorCount = 0;
 
         private int[,] _sourceMatrix = new int[0, 0];
@@ -121,6 +122,18 @@ namespace SolverForms
         {
             get { return selectedCriticalPath.AsCoordinates(); }
         }
+
+        public bool BulidCombined 
+        { 
+            get { return _buildCombined; } 
+            set
+            {
+                if (value == _buildCombined) return;
+                _buildCombined = value;
+                OnPropertyChanged();
+                RedrawGraphics();
+            }
+        }
         #endregion
 
         public delegate void UpdateFrameDelegate(ICollection<KGLine> scene);
@@ -167,8 +180,8 @@ namespace SolverForms
         {
             SubProcess = KMatrixTransform.SplitMatrix(SourceMatrix, _processorCount);
             if (SubProcess.Count < 1) return;
+
             Machine = KStateMachine.BuildFromMatrix(SubProcess);
-            Machine.Execute(KProcType.Async);
 
             int[,] preparedMatrix = KMatrixTransform.BuildProcTimeMatrix(SubProcess);
 
@@ -196,6 +209,8 @@ namespace SolverForms
                         selectedCriticalPath = kp;
                 }
             }
+
+            Machine?.Execute(KProcType.Async, BulidCombined);
 
             // TODO(wwaffe): here start of test graphics code
             SceneGenerator generator = new(CurrentSceneWidth, CurrentSceneHeight) { CoordPadding = new Padding(20) };

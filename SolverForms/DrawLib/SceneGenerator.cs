@@ -1,5 +1,7 @@
 ﻿namespace SolverForms.DrawLib
 {
+
+
     public class SceneGenerator
     {
         public float Width { get; set; }

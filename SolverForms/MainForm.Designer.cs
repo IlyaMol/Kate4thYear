@@ -54,6 +54,7 @@
             this.criticalPathLengthValue = new System.Windows.Forms.Label();
             this.drawPanel = new SolverForms.Controls.UserControl1();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.buildCombinedCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.processorUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectedPathIndexUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -276,6 +277,7 @@
             this.flowLayoutPanel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
             this.flowLayoutPanel2.Controls.Add(this.tableLayoutPanel1);
             this.flowLayoutPanel2.Controls.Add(this.resultMatrixView);
+            this.flowLayoutPanel2.Controls.Add(this.buildCombinedCheckBox);
             this.flowLayoutPanel2.Controls.Add(this.drawPanel);
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
@@ -342,7 +344,7 @@
             // 
             // drawPanel
             // 
-            this.drawPanel.Location = new System.Drawing.Point(3, 152);
+            this.drawPanel.Location = new System.Drawing.Point(3, 177);
             this.drawPanel.Name = "drawPanel";
             this.drawPanel.Size = new System.Drawing.Size(567, 174);
             this.drawPanel.TabIndex = 8;
@@ -351,6 +353,16 @@
             // 
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // buildCombinedCheckBox
+            // 
+            this.buildCombinedCheckBox.AutoSize = true;
+            this.buildCombinedCheckBox.Location = new System.Drawing.Point(3, 152);
+            this.buildCombinedCheckBox.Name = "buildCombinedCheckBox";
+            this.buildCombinedCheckBox.Size = new System.Drawing.Size(105, 19);
+            this.buildCombinedCheckBox.TabIndex = 9;
+            this.buildCombinedCheckBox.Text = "Совмещенная";
+            this.buildCombinedCheckBox.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -373,6 +385,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.blockUpDown)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
@@ -405,5 +418,6 @@
         private NumericUpDown processUpDown;
         private NumericUpDown blockUpDown;
         private Controls.UserControl1 drawPanel;
+        private CheckBox buildCombinedCheckBox;
     }
 }
