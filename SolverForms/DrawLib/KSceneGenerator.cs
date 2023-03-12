@@ -2,7 +2,7 @@
 {
 
 
-    public class SceneGenerator
+    public class KSceneGenerator
     {
         public float Width { get; set; }
         public float Height { get; set; }
@@ -12,7 +12,7 @@
 
         public Padding CoordPadding { get; set; } = new Padding();
 
-        public SceneGenerator(float width, float height)
+        public KSceneGenerator(float width, float height)
         {
             Width = width;
             Height = height;

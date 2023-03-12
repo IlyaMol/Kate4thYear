@@ -1,7 +1,9 @@
 ﻿namespace SolverForms.DrawLib
 {
-    public class KGLine
+    public class KGLine : IKGShape
     {
+        public IKGShapeType Type { get; } = IKGShapeType.LINE;
+
         public PointF StartPoint { get; set; }
         public PointF EndPoint 
         {

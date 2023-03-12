@@ -1,4 +1,6 @@
-﻿namespace SolverForms
+﻿using SolverForms.DrawLib;
+
+namespace SolverForms
 {
     public partial class MainForm : Form
     {
@@ -36,7 +38,7 @@
             viewModel.CurrentSceneWidth = drawPanel.Width;
         }
 
-        private void ViewModel_OnFrameUpdate(ICollection<DrawLib.KGLine> scene)
+        private void ViewModel_OnFrameUpdate(KGScene scene)
         {
             drawPanel.Scene = scene;
             drawPanel.Refresh();

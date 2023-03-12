@@ -40,5 +40,12 @@
         {
             Id = Guid.NewGuid();
         }
+
+        public void Reset()
+        {
+            foreach (KBlock block in Blocks)
+                block.Reset();
+
+        }
     }
 }

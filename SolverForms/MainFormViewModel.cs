@@ -136,7 +136,7 @@ namespace SolverForms
         }
         #endregion
 
-        public delegate void UpdateFrameDelegate(ICollection<KGLine> scene);
+        public delegate void UpdateFrameDelegate(KGScene scene);
         public event UpdateFrameDelegate? OnFrameUpdate;
 
         private float currentSceneWidth = 0;
@@ -210,11 +210,14 @@ namespace SolverForms
                 }
             }
 
-            Machine?.Execute(KProcType.Async, BulidCombined);
+            KGLayer? machineResultGraphics = Machine?.Execute(KProcType.Async, BulidCombined).BuildGraphics();
 
             // TODO(wwaffe): here start of test graphics code
-            SceneGenerator generator = new(CurrentSceneWidth, CurrentSceneHeight) { CoordPadding = new Padding(20) };
-            ICollection<KGLine> scene = generator.GetCoordPlane(ProcessorCount);
+            KGScene scene = KGScene.NewScene()
+                                   .SetDimensions(width: CurrentSceneWidth, height: CurrentSceneHeight, padding: new Padding(10))
+                                   .UseCoordPlane(xDelimeters: 40, yDelimeters: 3)
+                                   .AddLayer(machineResultGraphics)
+                                   .Build();
             OnFrameUpdate?.Invoke(scene);
             //end draw algo
         }

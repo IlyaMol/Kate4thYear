@@ -1,22 +1,8 @@
-﻿using System.Diagnostics;
-using System.Reflection.PortableExecutable;
-
-namespace ProblemOne
+﻿namespace ProblemOne
 {
-    public enum KProcType
-    {
-        None,
-        Async,
-        SyncFirst,
-        SyncSecond
-    }
-
     public class KStateMachine
     {
         public ICollection<KProcess> Processes { get; private set; } = new List<KProcess>();
-        public ICollection<KBlock> Blocks { get; private set; } = new List<KBlock>();
-
-        public KProcType LastExecuteType { get; private set; } = KProcType.None;
 
         public static KStateMachine BuildFromMatrix(in ICollection<int[,]> subMatrixArgs)
         {
@@ -44,7 +30,6 @@ namespace ProblemOne
                             ThreadIndex= threadIndex
                         };
                         process.Blocks.Add(block);
-                        machine.Blocks.Add(block);
                     }
                 }
                 threadIndex++;
@@ -53,13 +38,14 @@ namespace ProblemOne
             return machine;
         }
 
-        public bool Execute(KProcType procType, bool combined = true)
+        public KStateMachine Execute(KProcType procType, bool combined = true)
         {
-            Reset();
             // NOTE(wwaffe): one iteration of this while loop = one tick for our machine
             int tickCount = 0;
             int currentThreadIndex = 0;
             List<int> busyBlockIndex = new List<int>();
+            foreach (KProcess process in Processes)
+                process.Reset();
             while(Processes.Any(p => p.Status != KStatus.Done))
             {
                 foreach(KProcess process in Processes)
@@ -99,15 +85,7 @@ namespace ProblemOne
                 }
                 tickCount++;
             }
-            LastExecuteType = procType;
-            return true;
-        }
-
-        public void Reset()
-        {
-            foreach (KBlock block in Blocks)
-                if (block.Status != KStatus.Idle)
-                    block.Status = KStatus.Idle;
+            return this;
         }
     }
 }
