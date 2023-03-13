@@ -41,6 +41,8 @@ namespace SolverForms
             }
         }
 
+        public bool ReadOnly { get; set; } = false;
+
         public int RowCount 
         { 
             get { return dataSource.GetLength(0); }
@@ -195,6 +197,7 @@ namespace SolverForms
                 columnindex < DataSource.GetLength(1))
             cellBox.Text = DataSource[rowIndex, columnindex].ToString();
             cellBox.Validated += CellBox_Validated;
+            cellBox.ReadOnly = this.ReadOnly;
             return cellBox;
         }
         private RowLayoutPanel CreateRow(int cellCount = 0, int rowIndex = 0)

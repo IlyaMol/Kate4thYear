@@ -11,22 +11,14 @@ namespace SolverForms.DrawLib
             foreach (KProcess process in stateMachine.Processes)
                 foreach (KBlock block in process.Blocks)
                 {
-                    layer.AddShape(new KGLine() // Штрих левый
-                    {
-                        StartPoint = new PointF(block.StartTime, 3f),
-                        Lenth = 0.5f,
-                        Angle = 90
-                    }, process.Index);
+                    if (block.Duration == 0) continue;
                     layer.AddShape(new KGLine // Линия
                     {
                         StartPoint = new PointF(block.StartTime, 0),
-                        Lenth = block.Duration
-                    }, process.Index);
-                    layer.AddShape(new KGLine() // Штрих правый
-                    {
-                        StartPoint = new PointF(block.EndTime, 3f),
-                        Lenth = 0.5f,
-                        Angle = 90
+                        Lenth = block.Duration,
+                        MainPen = new Pen(new SolidBrush(Color.Black), 1),
+                        StartLineCap = KGLineCap.VerticalLine(8),
+                        EndLineCap = KGLineCap.VerticalLine(-8),
                     }, process.Index);
                 }
             return layer;

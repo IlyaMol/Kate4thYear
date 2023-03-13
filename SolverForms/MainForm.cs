@@ -17,6 +17,7 @@ namespace SolverForms
             sourceMatrixView.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             resultMatrixView.AutoSize = true;
             resultMatrixView.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            resultMatrixView.ReadOnly= true;
 
             resultMatrixView.ResumeLayout();
             resultMatrixView.PerformLayout();
@@ -120,17 +121,19 @@ namespace SolverForms
                 viewModel,
                 nameof(viewModel.CriticalPathLength)
                 );
-            busyBar.DataBindings.Add
-                (
-                nameof(busyBar.Visible),
-                viewModel,
-                nameof(viewModel.IsBusy)
-                );
             buildCombinedCheckBox.DataBindings.Add
                 (
                 nameof(buildCombinedCheckBox.Checked),
                 viewModel,
                 nameof(viewModel.BulidCombined),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged
+                );
+            offsetSliderValue.DataBindings.Add
+                (
+                nameof(offsetSliderValue.Value),
+                viewModel,
+                nameof(viewModel.DrawingScale),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged
                 );
@@ -158,6 +161,15 @@ namespace SolverForms
                 { 1,4,1 },
                 { 3,3,2 },
                 { 3,1,2 }
+            };*/
+
+            /*viewModel.ProcessorCount = 4;
+            viewModel.SourceMatrix = new[,]
+            {
+                { 2,1,4,1 },
+                { 1,3,2,3 },
+                { 2,4,1,2 },
+                { 3,2,3,1 }
             };*/
         }
     }

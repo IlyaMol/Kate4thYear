@@ -22,31 +22,41 @@ namespace SolverForms.Controls
         public CellTextBox(bool isSelected = false) : base()
         {
             InitializeComponent();
+            this.SuspendLayout();
             base.TextChanged += CellTextBox_TextChanged;
             base.Validated += CellTextBox_Validated;
-            base.KeyUp += CellTextBox_KeyUp;
             base.KeyPress += CellTextBox_KeyPress;
+            base.ReadOnlyChanged += CellTextBox_ReadOnlyChanged;
             this.Location = new Point(3, 3);
             this.Size = new Size(23, 23);
             this.TabIndex = 0;
             this.TextAlign = HorizontalAlignment.Center;
             this.Multiline = false;
             this.IsSelected= isSelected;
+            this.ResumeLayout(false);
+            this.PerformLayout();
+        }
+
+        private void CellTextBox_ReadOnlyChanged(object? sender, EventArgs e)
+        {
+            if(sender == null) return;
+
+            this.SuspendLayout();
+            if (((CellTextBox)sender).ReadOnly)
+            {
+                ((CellTextBox)sender).BorderStyle = BorderStyle.FixedSingle;
+                ((CellTextBox)sender).Margin = new Padding(0);
+            }
+            else
+                ((CellTextBox)sender).BorderStyle = BorderStyle.Fixed3D;
+            this.ResumeLayout(false);
+            this.PerformLayout();
         }
 
         private void CellTextBox_KeyPress(object? sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
-                e.Handled = true;
-            }
-        }
-
-        private void CellTextBox_KeyUp(object? sender, KeyEventArgs e)
-        {
-            if(e.KeyCode == Keys.Enter)
-            {
-                Debug.WriteLine($"Enter key on: r:{RowIndex} c:{ColumnIndex}");
                 e.Handled = true;
             }
         }

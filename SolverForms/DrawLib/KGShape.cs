@@ -4,6 +4,8 @@
     {
         IKGShapeType Type { get; }
 
+        Pen MainPen { get; set; }
+
         PointF StartPoint { get; set; }
         PointF EndPoint { get; }
 

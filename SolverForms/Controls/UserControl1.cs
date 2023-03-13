@@ -16,10 +16,14 @@ namespace SolverForms.Controls
             base.OnPaint(e);
             e.Graphics.Clear(this.BackColor);
             if (Scene == null) return;
-            foreach(IKGShape shape in Scene.Shapes)
+            foreach (IKGShape shape in Scene.Shapes)
             {
                 if(shape.Type == IKGShapeType.LINE)
-                    e.Graphics.DrawLine(new Pen(Color.Black), shape.StartPoint, shape.EndPoint);
+                {
+                    shape.MainPen.CustomStartCap = ((KGLine)shape).StartLineCap;
+                    shape.MainPen.CustomEndCap = ((KGLine)shape).EndLineCap;
+                    e.Graphics.DrawLine(shape.MainPen, shape.StartPoint, shape.EndPoint);
+                }
             }
         }
     }

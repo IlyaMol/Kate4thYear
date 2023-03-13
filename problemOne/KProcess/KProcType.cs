@@ -1,10 +1,12 @@
-﻿namespace ProblemOne
+﻿using System.ComponentModel;
+
+namespace ProblemOne
 {
     public enum KProcType
     {
-        None,
-        Async,
-        SyncFirst,
-        SyncSecond
+        None = 0,
+        Async = 1,
+        SyncFirst = 2,
+        SyncSecond = 3
     }
 }

@@ -34,7 +34,6 @@
                 }
                 threadIndex++;
             }
-
             return machine;
         }
 
@@ -48,6 +47,8 @@
                 process.Reset();
             while(Processes.Any(p => p.Status != KStatus.Done))
             {
+
+
                 foreach(KProcess process in Processes)
                 {
                     if(process.Status == KStatus.Busy || process.Status == KStatus.Done)
@@ -55,6 +56,15 @@
                         if (process.CurrentBlock != null
                             && process.CurrentBlock.Duration + process.CurrentBlock.StartTime <= tickCount)
                         {
+                            int nextBlockIndex = -1;
+                            if (combined)
+                                if (process.CurrentBlock.ThreadIndex > 0)
+                                    nextBlockIndex = process.CurrentBlock.PipelineIndex + 2 ^ process.Index;
+                                else
+                                    nextBlockIndex = process.CurrentBlock.PipelineIndex;
+                            else
+                                nextBlockIndex = process.CurrentBlock.PipelineIndex;
+
                             busyBlockIndex.Remove(process.CurrentBlock.PipelineIndex);
                             process.CurrentBlock.Status = KStatus.Done;
                         }
@@ -62,22 +72,37 @@
                 }
 
                 if(!combined)
-                    if (Processes.SelectMany(p => p.Blocks).Where(b => b.ThreadIndex == currentThreadIndex).All(b => b.Status == KStatus.Done)) currentThreadIndex++;
+                    if(Processes
+                        .SelectMany(p => p.Blocks)
+                        .Where(b => b.ThreadIndex == currentThreadIndex)
+                        .All(b => b.Status == KStatus.Done)
+                      )
+                        currentThreadIndex++;
 
                 foreach (KProcess process in Processes)
                 {
                     if (process.Status == KStatus.Idle)
                     {
-                        KBlock? nexBlock = process.NextBlock;
-                        if (nexBlock != null)
-                        {
-                            if (!combined && nexBlock.ThreadIndex != currentThreadIndex) continue;
+                        KBlock? nextBlock = process.NextBlock;
 
-                            if (!busyBlockIndex.Contains(nexBlock.PipelineIndex))
+                        if (nextBlock != null)
+                        {
+                            int nextBlockIndex = -1;
+                            if (combined)
+                                if (nextBlock.ThreadIndex > 0)
+                                    nextBlockIndex = nextBlock.PipelineIndex + 2^process.Index;
+                                else
+                                    nextBlockIndex = nextBlock.PipelineIndex;
+                            else
+                                nextBlockIndex = nextBlock.PipelineIndex;
+
+                            if (!combined && nextBlock.ThreadIndex != currentThreadIndex) continue;
+
+                            if (!busyBlockIndex.Contains(nextBlockIndex))
                             {
-                                process.CurrentBlock = nexBlock;
-                                nexBlock.StartTime = tickCount;
-                                busyBlockIndex.Add(nexBlock.PipelineIndex);
+                                process.CurrentBlock = nextBlock;
+                                nextBlock.StartTime = tickCount;
+                                busyBlockIndex.Add(nextBlockIndex);
                             }
                         }
                         

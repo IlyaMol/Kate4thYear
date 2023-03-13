@@ -43,7 +43,6 @@ namespace SolverForms
         }
 
         public ICollection<int[,]>? SubProcess { get; private set; }
-
         public int ProcessorCount
         {
             get { return _processorCount; }
@@ -134,6 +133,19 @@ namespace SolverForms
                 RedrawGraphics();
             }
         }
+
+        private float _drawingScale = 5;
+        public float DrawingScale 
+        { 
+            get { return _drawingScale; }
+            set
+            {
+                if (_drawingScale == value) return;
+                _drawingScale = value;
+                OnPropertyChanged();
+                RedrawGraphics();
+            }
+        }
         #endregion
 
         public delegate void UpdateFrameDelegate(KGScene scene);
@@ -211,11 +223,10 @@ namespace SolverForms
             }
 
             KGLayer? machineResultGraphics = Machine?.Execute(KProcType.Async, BulidCombined).BuildGraphics();
-
             // TODO(wwaffe): here start of test graphics code
             KGScene scene = KGScene.NewScene()
-                                   .SetDimensions(width: CurrentSceneWidth, height: CurrentSceneHeight, padding: new Padding(10))
-                                   .UseCoordPlane(xDelimeters: 40, yDelimeters: 3)
+                                   .SetDimensions(width: CurrentSceneWidth, height: CurrentSceneHeight, padding: new Padding(20))
+                                   .UseCoordPlane(yDelimeters: ProcessorCount, scale: DrawingScale)
                                    .AddLayer(machineResultGraphics)
                                    .Build();
             OnFrameUpdate?.Invoke(scene);
