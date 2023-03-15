@@ -39,6 +39,7 @@
 
         public KStateMachine Execute(KProcType procType, bool combined = true)
         {
+            bool firstRun = true;
             // NOTE(wwaffe): one iteration of this while loop = one tick for our machine
             int tickCount = 0;
             int currentThreadIndex = 0;
@@ -86,19 +87,18 @@
                         {
                             if (!combined && nextBlock.ThreadIndex != currentThreadIndex) continue;
 
+                            int nextBlockIndex = -1;
+                            if (combined)
+                                if (nextBlock.ThreadIndex > 0)
+                                    nextBlockIndex = nextBlock.PipelineIndex + (int)Math.Pow(2, nextBlock.ThreadIndex) + nextBlock.ThreadIndex;
+                                else
+                                    nextBlockIndex = nextBlock.PipelineIndex;
+                            else
+                                nextBlockIndex = nextBlock.PipelineIndex;
+
                             switch (procType)
                             {
                                 case KProcType.Async:
-
-                                    int nextBlockIndex = -1;
-                                    if (combined)
-                                        if (nextBlock.ThreadIndex > 0)
-                                            nextBlockIndex = nextBlock.PipelineIndex + (int)Math.Pow(2, nextBlock.ThreadIndex) + nextBlock.ThreadIndex;
-                                        else
-                                            nextBlockIndex = nextBlock.PipelineIndex;
-                                    else
-                                        nextBlockIndex = nextBlock.PipelineIndex;
-
                                     if (!busyBlockIndex.Contains(nextBlockIndex))
                                     {
                                         process.CurrentBlock = nextBlock;
@@ -108,17 +108,17 @@
                                     break;
                                 case KProcType.SyncFirst:
                                     KProcess? nextProcess = Processes.FirstOrDefault(p => p.Index == process.Index + 1);
-                                    if (nextProcess == null 
-                                        || nextProcess.NextBlock == null)
-                                        continue;
-
-                                    //if (process.CurrentBlock == null || nextBlock.Duration + tickCount)
-                                    //    if (!busyBlockIndex.Contains(nextBlock.PipelineIndex))
-                                    //    {
-                                    //        process.CurrentBlock = nextBlock;
-                                    //        nextBlock.StartTime = tickCount;
-                                    //        busyBlockIndex.Add(nextBlock.PipelineIndex);
-                                    //    }
+                                    if (nextProcess == null || nextProcess.NextBlock == null || firstRun
+                                        || nextProcess.NextBlock.Duration + tickCount == tickCount + nextBlock.Duration)
+                                    {
+                                        firstRun = false;
+                                        if (!busyBlockIndex.Contains(nextBlockIndex))
+                                        {
+                                            process.CurrentBlock = nextBlock;
+                                            nextBlock.StartTime = tickCount;
+                                            busyBlockIndex.Add(nextBlockIndex);
+                                        }
+                                    }
                                     break;
                             }
                         }
