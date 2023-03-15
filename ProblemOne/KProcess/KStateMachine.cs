@@ -11,22 +11,22 @@
             int threadIndex = 0;
             foreach(int[,] submatrix in subMatrixArgs)
             {
-                for (int rowIndex = 0; rowIndex< submatrix.GetLength(0); rowIndex++)
+                for (int columnIndex = 0; columnIndex < submatrix.GetLength(1); columnIndex++)
                 {
-                    KProcess? process = machine.Processes.FirstOrDefault(pr => pr.Index == rowIndex);
+                    KProcess? process = machine.Processes.FirstOrDefault(pr => pr.Index == columnIndex);
                     if(process == null)
                     {
-                        process = new KProcess() { Index = rowIndex };
+                        process = new KProcess() { Index = columnIndex };
                         machine.Processes.Add(process);
                     }
 
-                    for (int columnIndex = 0; columnIndex < submatrix.GetLength(1); columnIndex++)
+                    for (int rowIndex = 0; rowIndex < submatrix.GetLength(0); rowIndex++)
                     {
                         KBlock block = new KBlock()
                         {
                             ProcessId = process.Id,
                             Duration= submatrix[rowIndex, columnIndex],
-                            PipelineIndex= columnIndex,
+                            PipelineIndex= rowIndex,
                             ThreadIndex= threadIndex
                         };
                         process.Blocks.Add(block);
@@ -54,7 +54,15 @@
                         if (process.CurrentBlock != null
                             && process.CurrentBlock.Duration + process.CurrentBlock.StartTime <= tickCount)
                         {
-                            busyBlockIndex.Remove(process.CurrentBlock.PipelineIndex);
+                            int currentBlockIndex = -1;
+                            if (combined)
+                                if (process.CurrentBlock.ThreadIndex > 0)
+                                    currentBlockIndex = process.CurrentBlock.PipelineIndex + (int)Math.Pow(2, process.CurrentBlock.ThreadIndex) + process.CurrentBlock.ThreadIndex;
+                                else
+                                    currentBlockIndex = process.CurrentBlock.PipelineIndex;
+                            else
+                                currentBlockIndex = process.CurrentBlock.PipelineIndex;
+                            busyBlockIndex.Remove(currentBlockIndex);
                             process.CurrentBlock.Status = KStatus.Done;
                         }
                     }
@@ -81,11 +89,21 @@
                             switch (procType)
                             {
                                 case KProcType.Async:
-                                    if (!busyBlockIndex.Contains(nextBlock.PipelineIndex))
+
+                                    int nextBlockIndex = -1;
+                                    if (combined)
+                                        if (nextBlock.ThreadIndex > 0)
+                                            nextBlockIndex = nextBlock.PipelineIndex + (int)Math.Pow(2, nextBlock.ThreadIndex) + nextBlock.ThreadIndex;
+                                        else
+                                            nextBlockIndex = nextBlock.PipelineIndex;
+                                    else
+                                        nextBlockIndex = nextBlock.PipelineIndex;
+
+                                    if (!busyBlockIndex.Contains(nextBlockIndex))
                                     {
                                         process.CurrentBlock = nextBlock;
                                         nextBlock.StartTime = tickCount;
-                                        busyBlockIndex.Add(nextBlock.PipelineIndex);
+                                        busyBlockIndex.Add(nextBlockIndex);
                                     }
                                     break;
                                 case KProcType.SyncFirst:

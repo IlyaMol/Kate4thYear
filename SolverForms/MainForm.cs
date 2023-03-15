@@ -140,7 +140,7 @@ namespace SolverForms
         }
         private void LoadDataButton_Click(object sender, EventArgs e)
         {
-            viewModel.ProcessorCount = 3;
+            /*viewModel.ProcessorCount = 3;
             viewModel.SourceMatrix = new[,]
             {
                 { 1,2,3,1 },
@@ -152,16 +152,16 @@ namespace SolverForms
                 { 3,2,1,1 },
                 { 1,1,3,2 },
                 { 2,1,2,3 },
-            };
+            };*/
 
-            /*viewModel.ProcessorCount = 3;
+            viewModel.ProcessorCount = 3;
             viewModel.SourceMatrix = new[,]
             {
                 { 4,2,3 },
                 { 1,4,1 },
                 { 3,3,2 },
                 { 3,1,2 }
-            };*/
+            };
 
             /*viewModel.ProcessorCount = 4;
             viewModel.SourceMatrix = new[,]
