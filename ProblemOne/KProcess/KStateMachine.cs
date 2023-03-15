@@ -93,7 +93,6 @@
                                     if (nextProcess == null 
                                         || nextProcess.NextBlock == null)
                                         continue;
-
                                     //if (process.CurrentBlock == null || nextBlock.Duration + tickCount)
                                     //    if (!busyBlockIndex.Contains(nextBlock.PipelineIndex))
                                     //    {
