@@ -47,8 +47,6 @@
                 process.Reset();
             while(Processes.Any(p => p.Status != KStatus.Done))
             {
-
-
                 foreach(KProcess process in Processes)
                 {
                     if(process.Status == KStatus.Busy || process.Status == KStatus.Done)
@@ -56,15 +54,6 @@
                         if (process.CurrentBlock != null
                             && process.CurrentBlock.Duration + process.CurrentBlock.StartTime <= tickCount)
                         {
-                            int nextBlockIndex = -1;
-                            if (combined)
-                                if (process.CurrentBlock.ThreadIndex > 0)
-                                    nextBlockIndex = process.CurrentBlock.PipelineIndex + 2 ^ process.Index;
-                                else
-                                    nextBlockIndex = process.CurrentBlock.PipelineIndex;
-                            else
-                                nextBlockIndex = process.CurrentBlock.PipelineIndex;
-
                             busyBlockIndex.Remove(process.CurrentBlock.PipelineIndex);
                             process.CurrentBlock.Status = KStatus.Done;
                         }
@@ -87,25 +76,34 @@
 
                         if (nextBlock != null)
                         {
-                            int nextBlockIndex = -1;
-                            if (combined)
-                                if (nextBlock.ThreadIndex > 0)
-                                    nextBlockIndex = nextBlock.PipelineIndex + 2^process.Index;
-                                else
-                                    nextBlockIndex = nextBlock.PipelineIndex;
-                            else
-                                nextBlockIndex = nextBlock.PipelineIndex;
-
                             if (!combined && nextBlock.ThreadIndex != currentThreadIndex) continue;
 
-                            if (!busyBlockIndex.Contains(nextBlockIndex))
+                            switch (procType)
                             {
-                                process.CurrentBlock = nextBlock;
-                                nextBlock.StartTime = tickCount;
-                                busyBlockIndex.Add(nextBlockIndex);
+                                case KProcType.Async:
+                                    if (!busyBlockIndex.Contains(nextBlock.PipelineIndex))
+                                    {
+                                        process.CurrentBlock = nextBlock;
+                                        nextBlock.StartTime = tickCount;
+                                        busyBlockIndex.Add(nextBlock.PipelineIndex);
+                                    }
+                                    break;
+                                case KProcType.SyncFirst:
+                                    KProcess? nextProcess = Processes.FirstOrDefault(p => p.Index == process.Index + 1);
+                                    if (nextProcess == null 
+                                        || nextProcess.NextBlock == null)
+                                        continue;
+
+                                    //if (process.CurrentBlock == null || nextBlock.Duration + tickCount)
+                                    //    if (!busyBlockIndex.Contains(nextBlock.PipelineIndex))
+                                    //    {
+                                    //        process.CurrentBlock = nextBlock;
+                                    //        nextBlock.StartTime = tickCount;
+                                    //        busyBlockIndex.Add(nextBlock.PipelineIndex);
+                                    //    }
+                                    break;
                             }
                         }
-                        
                     }
                 }
                 tickCount++;

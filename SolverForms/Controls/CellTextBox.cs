@@ -33,6 +33,7 @@ namespace SolverForms.Controls
             this.TextAlign = HorizontalAlignment.Center;
             this.Multiline = false;
             this.IsSelected= isSelected;
+            this.HideSelection = true;
             this.ResumeLayout(false);
             this.PerformLayout();
         }
