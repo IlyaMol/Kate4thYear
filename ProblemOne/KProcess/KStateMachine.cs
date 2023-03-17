@@ -108,8 +108,8 @@
                                     break;
                                 case KProcType.SyncFirst:
                                     KProcess? nextProcess = Processes.FirstOrDefault(p => p.Index == process.Index + 1);
-                                    if (nextProcess == null || nextProcess.NextBlock == null || firstRun
-                                        || nextProcess.NextBlock.Duration + tickCount == tickCount + nextBlock.Duration)
+                                    if (nextProcess == null || nextProcess.Status != KStatus.Busy
+                                        || nextProcess.NextBlock!.Duration + tickCount == tickCount + nextBlock.Duration)
                                     {
                                         firstRun = false;
                                         if (!busyBlockIndex.Contains(nextBlockIndex))

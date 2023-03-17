@@ -1,4 +1,7 @@
-﻿using SolverForms.DrawLib;
+﻿using ProblemOne;
+using SolverForms.DrawLib;
+using SolverForms.Helpers;
+using SolverForms.ViewModels;
 
 namespace SolverForms
 {
@@ -12,18 +15,21 @@ namespace SolverForms
 
             sourceMatrixView.SuspendLayout();
             resultMatrixView.SuspendLayout();
+            buildCombinedCheckBox.SuspendLayout();
 
             sourceMatrixView.AutoSize = true;
             sourceMatrixView.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             resultMatrixView.AutoSize = true;
             resultMatrixView.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             resultMatrixView.ReadOnly= true;
+            buildCombinedCheckBox.Checked = true;
 
             resultMatrixView.ResumeLayout();
             resultMatrixView.PerformLayout();
             sourceMatrixView.ResumeLayout();
             sourceMatrixView.PerformLayout();
-
+            buildCombinedCheckBox.ResumeLayout();
+            buildCombinedCheckBox.PerformLayout();
             viewModel.CurrentSceneHeight = drawPanel.Height;
             viewModel.CurrentSceneWidth = drawPanel.Width;
 
@@ -140,6 +146,15 @@ namespace SolverForms
         }
         private void LoadDataButton_Click(object sender, EventArgs e)
         {
+            DialogResult result = openFileDialog1.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                SourceData data = FileHelper.ReadFromBytes<SourceData>(openFileDialog1.FileName);
+                viewModel.ProcessorCount = data.ProcessorCount;
+                viewModel.BulidCombined = data.BulidCombined;
+                viewModel.DrawingScale = data.DrawingScale;
+                viewModel.SourceMatrix = data.Data;
+            }
             /*viewModel.ProcessorCount = 3;
             viewModel.SourceMatrix = new[,]
             {
@@ -152,9 +167,11 @@ namespace SolverForms
                 { 3,2,1,1 },
                 { 1,1,3,2 },
                 { 2,1,2,3 },
-            };*/
+            };
 
-            viewModel.ProcessorCount = 3;
+           /* viewModel.ProcessorCount = 3;
+            viewModel.BulidCombined = true;
+            viewModel.DrawingScale = 8;
             viewModel.SourceMatrix = new[,]
             {
                 { 4,2,3 },
@@ -162,7 +179,7 @@ namespace SolverForms
                 { 3,3,2 },
                 { 3,1,2 }
             };
-
+           */
             /*viewModel.ProcessorCount = 4;
             viewModel.SourceMatrix = new[,]
             {
@@ -171,6 +188,21 @@ namespace SolverForms
                 { 2,4,1,2 },
                 { 3,2,3,1 }
             };*/
+        }
+
+        private void saveDataButton_Click(object sender, EventArgs e)
+        {
+            DialogResult result = saveFileDialog1.ShowDialog(this);
+            if(result == DialogResult.OK)
+            {
+                FileHelper.WriteAsBytes(new SourceData()
+                {
+                    BulidCombined = viewModel.BulidCombined,
+                    Data = viewModel.SourceMatrix,
+                    DrawingScale = viewModel.DrawingScale,
+                    ProcessorCount = viewModel.ProcessorCount
+                }, saveFileDialog1.FileName);
+            }
         }
     }
 }

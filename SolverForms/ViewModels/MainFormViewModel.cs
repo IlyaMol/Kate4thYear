@@ -6,13 +6,13 @@ using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace SolverForms
+namespace SolverForms.ViewModels
 {
     public class MainFormViewModel : INotifyPropertyChanged
     {
         #region Fields
         private bool _isBusy = false;
-        private bool _buildCombined = false;
+        private bool _buildCombined = true;
         private int _processorCount = 0;
 
         private int[,] _sourceMatrix = new int[0, 0];
@@ -59,6 +59,7 @@ namespace SolverForms
             get { return _sourceMatrix; }
             set
             {
+                if (_sourceMatrix == null) return;
                 if (_sourceMatrix == value) return;
                 _sourceMatrix = value;
                 OnPropertyChanged();
@@ -99,7 +100,7 @@ namespace SolverForms
         }
         public int CriticalPathLength
         {
-            get 
+            get
             {
                 if (selectedCriticalPath.Count > 0)
                     return selectedCriticalPath.Length;
@@ -122,9 +123,9 @@ namespace SolverForms
             get { return selectedCriticalPath.AsCoordinates(); }
         }
 
-        public bool BulidCombined 
-        { 
-            get { return _buildCombined; } 
+        public bool BulidCombined
+        {
+            get { return _buildCombined; }
             set
             {
                 if (value == _buildCombined) return;
@@ -135,8 +136,8 @@ namespace SolverForms
         }
 
         private float _drawingScale = 5;
-        public float DrawingScale 
-        { 
+        public float DrawingScale
+        {
             get { return _drawingScale; }
             set
             {
@@ -152,8 +153,8 @@ namespace SolverForms
         public event UpdateFrameDelegate? OnFrameUpdate;
 
         private float currentSceneWidth = 0;
-        public float CurrentSceneWidth 
-        { 
+        public float CurrentSceneWidth
+        {
             get { return currentSceneWidth; }
             set
             {
@@ -164,8 +165,8 @@ namespace SolverForms
             }
         }
         private float currentSceneHeight = 0;
-        public float CurrentSceneHeight 
-        { 
+        public float CurrentSceneHeight
+        {
             get { return currentSceneHeight; }
             set
             {
@@ -214,15 +215,15 @@ namespace SolverForms
             if (criticalPaths.Count > 0 && _selectedCriticalPathIndex > 0)
             {
                 int count = 0;
-                foreach(KPath<KVertex> kp in criticalPaths) 
+                foreach (KPath<KVertex> kp in criticalPaths)
                 {
                     count++;
-                    if(count == _selectedCriticalPathIndex)
+                    if (count == _selectedCriticalPathIndex)
                         selectedCriticalPath = kp;
                 }
             }
 
-            KGLayer? machineResultGraphics = Machine?.Execute(KProcType.Async, BulidCombined).BuildGraphics();
+            KGLayer? machineResultGraphics = Machine?.Execute(KProcType.SyncFirst, BulidCombined).BuildGraphics();
             // TODO(wwaffe): here start of test graphics code
             KGScene scene = KGScene.NewScene()
                                    .SetDimensions(width: CurrentSceneWidth, height: CurrentSceneHeight, padding: new Padding(20))
