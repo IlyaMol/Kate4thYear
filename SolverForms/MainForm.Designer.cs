@@ -416,14 +416,14 @@
             // 
             // saveFileDialog1
             // 
-            this.saveFileDialog1.DefaultExt = "bin";
-            this.saveFileDialog1.Filter = "Bin files|*.bin";
+            this.saveFileDialog1.DefaultExt = "json";
+            this.saveFileDialog1.Filter = "Json files|*.json";
             // 
             // openFileDialog1
             // 
-            this.openFileDialog1.DefaultExt = "bin";
+            this.openFileDialog1.DefaultExt = "json";
             this.openFileDialog1.FileName = "openFileDialog1";
-            this.openFileDialog1.Filter = "Bin files|*.bin|All files|*.*";
+            this.openFileDialog1.Filter = "Json files|*.json|All files|*.*";
             // 
             // MainForm
             // 

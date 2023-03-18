@@ -23,6 +23,8 @@ namespace SolverForms.ViewModels
         private KPath<KVertex> selectedCriticalPath = new();
 
         private KGraph? graph;
+
+        private float _drawingScale = 5;
         #endregion
 
         #region Properties
@@ -76,7 +78,7 @@ namespace SolverForms.ViewModels
             }
         }
 
-        public ConcurrentBag<KPath<KVertex>> criticalPaths
+        private ConcurrentBag<KPath<KVertex>> criticalPaths
         {
             get { return _criticalPaths; }
             set
@@ -88,7 +90,6 @@ namespace SolverForms.ViewModels
                 OnPropertyChanged(nameof(CriticalPathCount));
             }
         }
-
         public int CriticalPathCount
         {
             get
@@ -135,7 +136,10 @@ namespace SolverForms.ViewModels
             }
         }
 
-        private float _drawingScale = 5;
+        public delegate void UpdateFrameDelegate(KGScene scene);
+        public event UpdateFrameDelegate? OnFrameUpdate;
+
+        
         public float DrawingScale
         {
             get { return _drawingScale; }
@@ -147,11 +151,6 @@ namespace SolverForms.ViewModels
                 RedrawGraphics();
             }
         }
-        #endregion
-
-        public delegate void UpdateFrameDelegate(KGScene scene);
-        public event UpdateFrameDelegate? OnFrameUpdate;
-
         private float currentSceneWidth = 0;
         public float CurrentSceneWidth
         {
@@ -176,6 +175,7 @@ namespace SolverForms.ViewModels
                 RedrawGraphics();
             }
         }
+        #endregion
 
         #region Methods
         public void DataSourceChangedDelegate(int[,] newDataSource)

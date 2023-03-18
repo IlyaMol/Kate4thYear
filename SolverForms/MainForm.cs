@@ -149,27 +149,17 @@ namespace SolverForms
             DialogResult result = openFileDialog1.ShowDialog(this);
             if (result == DialogResult.OK)
             {
-                SourceData data = FileHelper.ReadFromBytes<SourceData>(openFileDialog1.FileName);
+                string jsonData = FileHelper.ReadFromFile(openFileDialog1.FileName);
+                SourceData? data = Json.Deserialize<SourceData>(jsonData);
+
+                if (data == null) return;
+
                 viewModel.ProcessorCount = data.ProcessorCount;
                 viewModel.BulidCombined = data.BulidCombined;
                 viewModel.DrawingScale = data.DrawingScale;
-                viewModel.SourceMatrix = data.Data;
+                viewModel.SourceMatrix = data.Data.ToTwoDimArray(data.BlockCount);
             }
             /*viewModel.ProcessorCount = 3;
-            viewModel.SourceMatrix = new[,]
-            {
-                { 1,2,3,1 },
-                { 2,3,1,2 },
-                { 3,1,2,1 },
-                { 1,2,1,1 },
-                { 2,1,1,2 },
-                { 2,1,3,1 },
-                { 3,2,1,1 },
-                { 1,1,3,2 },
-                { 2,1,2,3 },
-            };
-
-           /* viewModel.ProcessorCount = 3;
             viewModel.BulidCombined = true;
             viewModel.DrawingScale = 8;
             viewModel.SourceMatrix = new[,]
@@ -178,15 +168,6 @@ namespace SolverForms
                 { 1,4,1 },
                 { 3,3,2 },
                 { 3,1,2 }
-            };
-           */
-            /*viewModel.ProcessorCount = 4;
-            viewModel.SourceMatrix = new[,]
-            {
-                { 2,1,4,1 },
-                { 1,3,2,3 },
-                { 2,4,1,2 },
-                { 3,2,3,1 }
             };*/
         }
 
@@ -195,13 +176,15 @@ namespace SolverForms
             DialogResult result = saveFileDialog1.ShowDialog(this);
             if(result == DialogResult.OK)
             {
-                FileHelper.WriteAsBytes(new SourceData()
+                string jsonString = Json.Serialize(new SourceData()
                 {
                     BulidCombined = viewModel.BulidCombined,
-                    Data = viewModel.SourceMatrix,
+                    Data = viewModel.SourceMatrix.ToOneDimArray(),
                     DrawingScale = viewModel.DrawingScale,
-                    ProcessorCount = viewModel.ProcessorCount
-                }, saveFileDialog1.FileName);
+                    ProcessorCount = viewModel.ProcessorCount,
+                    BlockCount = viewModel.SourceMatrix.GetLength(1)
+                });
+                FileHelper.WriteToFile(jsonString, saveFileDialog1.FileName);
             }
         }
     }
