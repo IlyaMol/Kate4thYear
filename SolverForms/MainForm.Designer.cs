@@ -52,10 +52,12 @@
             this.criticalPathLengthValue = new System.Windows.Forms.Label();
             this.drawingModeFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.buildCombinedCheckBox = new System.Windows.Forms.CheckBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.drawingTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.drawPanel = new SolverForms.Controls.UserControl1();
             this.offsetSliderValue = new System.Windows.Forms.TrackBar();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.processorUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectedPathIndexUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -262,6 +264,7 @@
             this.saveDataButton.TabIndex = 2;
             this.saveDataButton.Text = "SAVE";
             this.saveDataButton.UseVisualStyleBackColor = true;
+            this.saveDataButton.Click += new System.EventHandler(this.SaveDataButton_Click);
             // 
             // flowLayoutPanel2
             // 
@@ -361,6 +364,14 @@
             this.buildCombinedCheckBox.Text = "Совмещенная";
             this.buildCombinedCheckBox.UseVisualStyleBackColor = true;
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(114, 3);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(85, 23);
+            this.comboBox1.TabIndex = 14;
+            // 
             // drawingTableLayoutPanel
             // 
             this.drawingTableLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -403,13 +414,16 @@
             this.offsetSliderValue.TabIndex = 9;
             this.offsetSliderValue.Value = 1;
             // 
-            // comboBox1
+            // saveFileDialog1
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(114, 3);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(85, 23);
-            this.comboBox1.TabIndex = 14;
+            this.saveFileDialog1.DefaultExt = "json";
+            this.saveFileDialog1.Filter = "Json|*.json";
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.DefaultExt = "json";
+            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.Filter = "Json|*.json|All files|*.*";
             // 
             // MainForm
             // 
@@ -473,5 +487,7 @@
         private TableLayoutPanel drawingTableLayoutPanel;
         private TrackBar offsetSliderValue;
         private ComboBox comboBox1;
+        private SaveFileDialog saveFileDialog1;
+        private OpenFileDialog openFileDialog1;
     }
 }

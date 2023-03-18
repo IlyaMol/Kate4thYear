@@ -1,4 +1,8 @@
-﻿using SolverForms.DrawLib;
+﻿using ProblemOne;
+using SolverForms.DrawLib;
+using SolverForms.Extensions;
+using SolverForms.Helpers;
+using System.Windows.Forms;
 
 namespace SolverForms
 {
@@ -138,39 +142,37 @@ namespace SolverForms
                 DataSourceUpdateMode.OnPropertyChanged
                 );
         }
+        private void SaveDataButton_Click(object sender, EventArgs e)
+        {
+            DialogResult result = saveFileDialog1.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                string jsonString = Json.Serialize(new SourceData()
+                {
+                    BulidCombined = viewModel.BulidCombined,
+                    Data = viewModel.SourceMatrix.ToOneDimArray(),
+                    DrawingScale = viewModel.DrawingScale,
+                    ProcessorCount = viewModel.ProcessorCount,
+                    BlockCount = viewModel.SourceMatrix.GetLength(1)
+                });
+                FileHelper.WriteToFile(jsonString, saveFileDialog1.FileName);
+            }
+        }
         private void LoadDataButton_Click(object sender, EventArgs e)
         {
-            viewModel.ProcessorCount = 3;
-            viewModel.SourceMatrix = new[,]
+            DialogResult result = openFileDialog1.ShowDialog(this);
+            if (result == DialogResult.OK)
             {
-                { 1,2,3,1 },
-                { 2,3,1,2 },
-                { 3,1,2,1 },
-                { 1,2,1,1 },
-                { 2,1,1,2 },
-                { 2,1,3,1 },
-                { 3,2,1,1 },
-                { 1,1,3,2 },
-                { 2,1,2,3 },
-            };
+                string jsonData = FileHelper.ReadFromFile(openFileDialog1.FileName);
+                SourceData? data = Json.Deserialize<SourceData>(jsonData);
 
-            /*viewModel.ProcessorCount = 3;
-            viewModel.SourceMatrix = new[,]
-            {
-                { 4,2,3 },
-                { 1,4,1 },
-                { 3,3,2 },
-                { 3,1,2 }
-            };*/
+                if (data == null) return;
 
-            /*viewModel.ProcessorCount = 4;
-            viewModel.SourceMatrix = new[,]
-            {
-                { 2,1,4,1 },
-                { 1,3,2,3 },
-                { 2,4,1,2 },
-                { 3,2,3,1 }
-            };*/
+                viewModel.ProcessorCount = data.ProcessorCount;
+                viewModel.BulidCombined = data.BulidCombined;
+                viewModel.DrawingScale = data.DrawingScale;
+                viewModel.SourceMatrix = data.Data.ToTwoDimArray(data.BlockCount);
+            }
         }
     }
 }
