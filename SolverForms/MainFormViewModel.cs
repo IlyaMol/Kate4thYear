@@ -2,6 +2,7 @@
 using ProblemOne.KGraph;
 using ProblemOne.Model;
 using SolverForms.DrawLib;
+using SolverForms.Helpers;
 using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -35,6 +36,7 @@ namespace SolverForms
                 _isBusy = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsNotBusy));
+
             }
         }
         public bool IsNotBusy
