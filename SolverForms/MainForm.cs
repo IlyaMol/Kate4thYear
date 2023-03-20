@@ -2,7 +2,6 @@
 using SolverForms.DrawLib;
 using SolverForms.Extensions;
 using SolverForms.Helpers;
-using System.Windows.Forms;
 
 namespace SolverForms
 {

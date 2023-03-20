@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolverForms", "SolverForms\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Problems", "Problems", "{112822DA-8249-4D63-81FC-76E3F77D632F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProblemOne", "ProblemOne\ProblemOne.csproj", "{DB5AAC15-F239-4506-AA98-2C19F02D9F68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProblemOne", "ProblemOne\ProblemOne.csproj", "{DB5AAC15-F239-4506-AA98-2C19F02D9F68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProblemTwo", "ProblemTwo\ProblemTwo.csproj", "{82AC850B-8BDD-434A-9DBC-D7CD98F2C664}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +25,17 @@ Global
 		{DB5AAC15-F239-4506-AA98-2C19F02D9F68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB5AAC15-F239-4506-AA98-2C19F02D9F68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB5AAC15-F239-4506-AA98-2C19F02D9F68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82AC850B-8BDD-434A-9DBC-D7CD98F2C664}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82AC850B-8BDD-434A-9DBC-D7CD98F2C664}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82AC850B-8BDD-434A-9DBC-D7CD98F2C664}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82AC850B-8BDD-434A-9DBC-D7CD98F2C664}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DB5AAC15-F239-4506-AA98-2C19F02D9F68} = {112822DA-8249-4D63-81FC-76E3F77D632F}
+		{82AC850B-8BDD-434A-9DBC-D7CD98F2C664} = {112822DA-8249-4D63-81FC-76E3F77D632F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B2AF157B-4933-41D2-A398-C9D15E064D1F}
