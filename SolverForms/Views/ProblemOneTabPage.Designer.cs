@@ -1,16 +1,16 @@
-﻿namespace SolverForms
+﻿namespace SolverForms.Views
 {
-    partial class MainForm
+    partial class ProblemOneTabPage
     {
-        /// <summary>
-        /// Required designer variable.
+        /// <summary> 
+        /// Обязательная переменная конструктора.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
+        /// <summary> 
+        /// Освободить все используемые ресурсы.
         /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,15 +20,16 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
+        #region Код, автоматически созданный конструктором компонентов
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
+        /// <summary> 
+        /// Требуемый метод для поддержки конструктора — не изменяйте 
+        /// содержимое этого метода с помощью редактора кода.
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProblemOneTabPage));
             this.sourceMatrixView = new SolverForms.KMatrixView();
             this.loadDataButton = new System.Windows.Forms.Button();
             this.resultMatrixView = new SolverForms.KMatrixView();
@@ -54,7 +55,7 @@
             this.buildCombinedCheckBox = new System.Windows.Forms.CheckBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.drawingTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.drawPanel = new SolverForms.Controls.UserControl1();
+            this.drawPanel = new SolverForms.Views.Controls.UserControl1();
             this.offsetSliderValue = new System.Windows.Forms.TrackBar();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -155,8 +156,8 @@
             // 
             // inputDataFlowLayoutPanel
             // 
-            this.inputDataFlowLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.inputDataFlowLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.inputDataFlowLayoutPanel.AutoScroll = true;
             this.inputDataFlowLayoutPanel.BackColor = System.Drawing.SystemColors.ControlLight;
@@ -192,7 +193,7 @@
             // 
             // processorCountLabel
             // 
-            this.processorCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.processorCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.processorCountLabel.AutoSize = true;
             this.processorCountLabel.Location = new System.Drawing.Point(3, 0);
@@ -204,7 +205,7 @@
             // 
             // processCountLabel
             // 
-            this.processCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.processCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.processCountLabel.AutoSize = true;
             this.processCountLabel.Location = new System.Drawing.Point(3, 29);
@@ -216,7 +217,7 @@
             // 
             // blockCountLabel
             // 
-            this.blockCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.blockCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.blockCountLabel.AutoSize = true;
             this.blockCountLabel.Location = new System.Drawing.Point(3, 58);
@@ -268,8 +269,8 @@
             // 
             // flowLayoutPanel2
             // 
-            this.flowLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.flowLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel2.AutoScroll = true;
             this.flowLayoutPanel2.BackColor = System.Drawing.SystemColors.Control;
@@ -354,7 +355,7 @@
             // 
             // buildCombinedCheckBox
             // 
-            this.buildCombinedCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.buildCombinedCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.buildCombinedCheckBox.AutoSize = true;
             this.buildCombinedCheckBox.Location = new System.Drawing.Point(3, 3);
@@ -374,7 +375,7 @@
             // 
             // drawingTableLayoutPanel
             // 
-            this.drawingTableLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.drawingTableLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.drawingTableLayoutPanel.ColumnCount = 2;
             this.drawingTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -390,8 +391,8 @@
             // 
             // drawPanel
             // 
-            this.drawPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.drawPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.drawPanel.AutoScroll = true;
             this.drawPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
@@ -404,7 +405,7 @@
             // 
             // offsetSliderValue
             // 
-            this.offsetSliderValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.offsetSliderValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.offsetSliderValue.Location = new System.Drawing.Point(519, 3);
             this.offsetSliderValue.Minimum = 1;
@@ -427,9 +428,6 @@
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(805, 578);
             this.Controls.Add(this.splitContainer1);
             this.Name = "MainForm";
             this.Text = "MainForm";
@@ -455,10 +453,8 @@
             this.drawingTableLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.offsetSliderValue)).EndInit();
             this.ResumeLayout(false);
-
         }
 
-        #endregion
 
         private KMatrixView sourceMatrixView;
         private Button loadDataButton;
@@ -481,7 +477,7 @@
         private Label blockCountLabel;
         private NumericUpDown processUpDown;
         private NumericUpDown blockUpDown;
-        private Controls.UserControl1 drawPanel;
+        private Views.Controls.UserControl1 drawPanel;
         private CheckBox buildCombinedCheckBox;
         private FlowLayoutPanel drawingModeFlowLayoutPanel;
         private TableLayoutPanel drawingTableLayoutPanel;
@@ -489,5 +485,6 @@
         private ComboBox comboBox1;
         private SaveFileDialog saveFileDialog1;
         private OpenFileDialog openFileDialog1;
+        #endregion
     }
 }

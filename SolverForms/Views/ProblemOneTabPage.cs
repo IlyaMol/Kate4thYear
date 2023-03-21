@@ -2,15 +2,17 @@
 using SolverForms.DrawLib;
 using SolverForms.Extensions;
 using SolverForms.Helpers;
+using SolverForms.Views.ViewModels;
 
-namespace SolverForms
+namespace SolverForms.Views
 {
-    public partial class MainForm : Form
+    public partial class ProblemOneTabPage : TabPage
     {
-        private MainFormViewModel viewModel;
-        public MainForm()
+        private ProblemOneViewModel viewModel;
+
+        public ProblemOneTabPage()
         {
-            viewModel = new MainFormViewModel();
+            viewModel = new ProblemOneViewModel();
             InitializeComponent();
 
             sourceMatrixView.SuspendLayout();
@@ -20,7 +22,7 @@ namespace SolverForms
             sourceMatrixView.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             resultMatrixView.AutoSize = true;
             resultMatrixView.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            resultMatrixView.ReadOnly= true;
+            resultMatrixView.ReadOnly = true;
 
             resultMatrixView.ResumeLayout();
             resultMatrixView.PerformLayout();

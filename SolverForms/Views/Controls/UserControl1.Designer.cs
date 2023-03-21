@@ -1,4 +1,4 @@
-﻿namespace SolverForms.Controls
+﻿namespace SolverForms.Views.Controls
 {
     partial class UserControl1
     {

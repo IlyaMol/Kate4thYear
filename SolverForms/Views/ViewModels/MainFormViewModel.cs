@@ -7,9 +7,9 @@ using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace SolverForms
+namespace SolverForms.Views.ViewModels
 {
-    public class MainFormViewModel : INotifyPropertyChanged
+    public class ProblemOneViewModel : INotifyPropertyChanged
     {
         #region Fields
         private bool _isBusy = false;
@@ -101,7 +101,7 @@ namespace SolverForms
         }
         public int CriticalPathLength
         {
-            get 
+            get
             {
                 if (selectedCriticalPath.Count > 0)
                     return selectedCriticalPath.Length;
@@ -124,9 +124,9 @@ namespace SolverForms
             get { return selectedCriticalPath.AsCoordinates(); }
         }
 
-        public bool BulidCombined 
-        { 
-            get { return _buildCombined; } 
+        public bool BulidCombined
+        {
+            get { return _buildCombined; }
             set
             {
                 if (value == _buildCombined) return;
@@ -137,8 +137,8 @@ namespace SolverForms
         }
 
         private float _drawingScale = 5;
-        public float DrawingScale 
-        { 
+        public float DrawingScale
+        {
             get { return _drawingScale; }
             set
             {
@@ -154,8 +154,8 @@ namespace SolverForms
         public event UpdateFrameDelegate? OnFrameUpdate;
 
         private float currentSceneWidth = 0;
-        public float CurrentSceneWidth 
-        { 
+        public float CurrentSceneWidth
+        {
             get { return currentSceneWidth; }
             set
             {
@@ -166,8 +166,8 @@ namespace SolverForms
             }
         }
         private float currentSceneHeight = 0;
-        public float CurrentSceneHeight 
-        { 
+        public float CurrentSceneHeight
+        {
             get { return currentSceneHeight; }
             set
             {
@@ -216,10 +216,10 @@ namespace SolverForms
             if (criticalPaths.Count > 0 && _selectedCriticalPathIndex > 0)
             {
                 int count = 0;
-                foreach(KPath<KVertex> kp in criticalPaths) 
+                foreach (KPath<KVertex> kp in criticalPaths)
                 {
                     count++;
-                    if(count == _selectedCriticalPathIndex)
+                    if (count == _selectedCriticalPathIndex)
                         selectedCriticalPath = kp;
                 }
             }

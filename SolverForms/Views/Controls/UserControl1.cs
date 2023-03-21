@@ -1,6 +1,6 @@
 ﻿using SolverForms.DrawLib;
 
-namespace SolverForms.Controls
+namespace SolverForms.Views.Controls
 {
     public partial class UserControl1 : UserControl
     {
