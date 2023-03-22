@@ -256,7 +256,7 @@ namespace SolverForms
                                         cellCandidat.Text = dataSource[rowIndex, columnindex].ToString();
                                     }
                                     //TODO(wwaffe): refactor color change algorythm
-                                    if (SelectedCells.Any(cell => cell.RowIndex == cellCandidat.RowIndex && cell.ColumnIndex == cellCandidat.ColumnIndex))
+                                    /*if (SelectedCells.Any(cell => cell.RowIndex == cellCandidat.RowIndex && cell.ColumnIndex == cellCandidat.ColumnIndex))
                                     {
                                         if (cellCandidat.IsSelected == false)
                                         {
@@ -268,7 +268,7 @@ namespace SolverForms
                                     {
                                         cellCandidat.IsSelected = false;
                                         cellCandidat.BackColor = matrixRepresentationContainer.BackColor;
-                                    }
+                                    }*/
                                     break;
                                 }
                         }

@@ -2,7 +2,6 @@
 using ProblemOne.KGraph;
 using ProblemOne.Model;
 using SolverForms.DrawLib;
-using SolverForms.Helpers;
 using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -148,10 +147,7 @@ namespace SolverForms.Views.ViewModels
                 RedrawGraphics();
             }
         }
-        #endregion
 
-        public delegate void UpdateFrameDelegate(KGScene scene);
-        public event UpdateFrameDelegate? OnFrameUpdate;
 
         private float currentSceneWidth = 0;
         public float CurrentSceneWidth
@@ -177,6 +173,15 @@ namespace SolverForms.Views.ViewModels
                 RedrawGraphics();
             }
         }
+        #endregion
+
+        #region Delegates
+        public delegate void UpdateFrameDelegate(KGScene scene);
+        #endregion
+
+        #region Events
+        public event UpdateFrameDelegate? OnFrameUpdate;
+        #endregion
 
         #region Methods
         public void DataSourceChangedDelegate(int[,] newDataSource)

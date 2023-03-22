@@ -429,8 +429,8 @@
             // MainForm
             // 
             this.Controls.Add(this.splitContainer1);
-            this.Name = "MainForm";
-            this.Text = "MainForm";
+            this.Name = "Problem one";
+            this.Text = "Problem one";
             ((System.ComponentModel.ISupportInitialize)(this.processorUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectedPathIndexUpDown)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -454,7 +454,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.offsetSliderValue)).EndInit();
             this.ResumeLayout(false);
         }
-
 
         private KMatrixView sourceMatrixView;
         private Button loadDataButton;
