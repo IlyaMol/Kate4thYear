@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using SolverForms.Views.ViewModels;
 
 namespace SolverForms.Views
 {
     public partial class ProblemTwoTabPage : Form
     {
+        private ProblemTwoViewModel viewModel;
+        
         public ProblemTwoTabPage()
         {
+            viewModel = new ProblemTwoViewModel();
             InitializeComponent();
         }
+
+
     }
 }
