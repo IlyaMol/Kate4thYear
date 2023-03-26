@@ -14,6 +14,7 @@
 	
   <ItemGroup>
     <ProjectReference Include="..\ProblemOne\ProblemOne.csproj" />
+    <ProjectReference Include="..\ProblemTwo\ProblemTwo.csproj" />
   </ItemGroup>
 
   <ItemGroup>

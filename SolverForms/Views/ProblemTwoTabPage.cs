@@ -10,9 +10,17 @@ namespace SolverForms.Views
         {
             viewModel = new ProblemTwoViewModel();
             InitializeComponent();
+            UpdateDataBindings();
+
+            sourceQueueTextBox.DataSourceChanged += SourceQueueTextBox_DataSourceChanged;
         }
 
-        public void DataBindings()
+        private void SourceQueueTextBox_DataSourceChanged(double[] newDataSource)
+        {
+            viewModel.SourceQueue = newDataSource;
+        }
+
+        public void UpdateDataBindings()
         {
             processorUpDown.DataBindings.Add
                 (
@@ -30,12 +38,52 @@ namespace SolverForms.Views
                 true,
                 DataSourceUpdateMode.OnPropertyChanged
                 );
-            processorUpDown.DataBindings.Add
+            tauUpDown.DataBindings.Add
                 (
-                nameof(processorUpDown.Value),
+                nameof(tauUpDown.Value),
                 viewModel,
-                nameof(viewModel.ProcessorCount),
+                nameof(viewModel.TauValue),
                 true,
+                DataSourceUpdateMode.OnPropertyChanged
+                );
+            resultTauLabel.DataBindings.Add
+                (
+                nameof(resultTauLabel.Text),
+                viewModel,
+                nameof(viewModel.TauLabelText),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged
+                );
+            resultTauValueLabel.DataBindings.Add
+                (
+                nameof(resultTauValueLabel.Text),
+                viewModel,
+                nameof(viewModel.ResultTauValue),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged
+                );
+            optimalBlockCountValueLabel.DataBindings.Add
+                (
+                nameof(optimalBlockCountValueLabel.Text),
+                viewModel,
+                nameof(viewModel.OptimalBlockCountValue),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged
+                );
+            sourceQueueTextBox.DataBindings.Add
+                (
+                nameof(sourceQueueTextBox.DataSource),
+                viewModel,
+                nameof(viewModel.SourceQueue),
+                false,
+                DataSourceUpdateMode.OnPropertyChanged
+                );
+            uniformedQueueTextBox.DataBindings.Add
+                (
+                nameof(uniformedQueueTextBox.DataSource),
+                viewModel,
+                nameof(viewModel.UniformQueue),
+                false,
                 DataSourceUpdateMode.OnPropertyChanged
                 );
         }
