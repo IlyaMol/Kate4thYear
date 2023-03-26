@@ -101,6 +101,9 @@
                                     //        busyBlockIndex.Add(nextBlock.PipelineIndex);
                                     //    }
                                     break;
+                                case KProcType.SyncSecond:
+                                    
+                                    break;
                             }
                         }
                     }
