@@ -93,13 +93,13 @@
                                     if (nextProcess == null 
                                         || nextProcess.NextBlock == null)
                                         continue;
-                                    //if (process.CurrentBlock == null || nextBlock.Duration + tickCount)
-                                    //    if (!busyBlockIndex.Contains(nextBlock.PipelineIndex))
-                                    //    {
-                                    //        process.CurrentBlock = nextBlock;
-                                    //        nextBlock.StartTime = tickCount;
-                                    //        busyBlockIndex.Add(nextBlock.PipelineIndex);
-                                    //    }
+                                    if (process.CurrentBlock == null || nextBlock.Duration + tickCount)
+                                        if (!busyBlockIndex.Contains(nextBlock.PipelineIndex))
+                                        {
+                                            process.CurrentBlock = nextBlock;
+                                            nextBlock.StartTime = tickCount;
+                                            busyBlockIndex.Add(nextBlock.PipelineIndex);
+                                        }
                                     break;
                                 case KProcType.SyncSecond:
                                     
