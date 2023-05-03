@@ -116,11 +116,6 @@
                                 case KProcType.SyncSecond:
                                     
                                     break;
-                                case KProcType.Sync:
-                                    process.CurrentBlock = nextBlock;
-                                    nextBlock.StartTime = Math.Max(tickCount, previousBlock.EndTime);
-                                    previousBlock = nextBlock;
-                                    break;
                             }
                         }
                     }
