@@ -68,6 +68,7 @@
                       )
                         currentThreadIndex++;
 
+                KBlock previousBlock= null;
                 foreach (KProcess process in Processes)
                 {
                     if (process.Status == KStatus.Idle)
@@ -89,20 +90,36 @@
                                     }
                                     break;
                                 case KProcType.SyncFirst:
-                                    KProcess? nextProcess = Processes.FirstOrDefault(p => p.Index == process.Index + 1);
-                                    if (nextProcess == null 
-                                        || nextProcess.NextBlock == null)
+                                    KProcess? prevProcess = Processes.FirstOrDefault(p => p.Index == process.Index - 1);
+
+                                    if (prevProcess != null && prevProcess.CurrentBlock != null && prevProcess.CurrentBlock.StartTime + prevProcess.CurrentBlock.Duration > tickCount)
+                                    {
+                                        // если предыдущий процесс еще выполняет свой блок, не переходим к следующему процессу
                                         continue;
-                                    if (process.CurrentBlock == null || nextBlock.Duration + tickCount)
-                                        if (!busyBlockIndex.Contains(nextBlock.PipelineIndex))
-                                        {
-                                            process.CurrentBlock = nextBlock;
-                                            nextBlock.StartTime = tickCount;
-                                            busyBlockIndex.Add(nextBlock.PipelineIndex);
-                                        }
+                                    }
+
+                                    KProcess? nextProcess = Processes.FirstOrDefault(p => p.Index == process.Index + 1);
+
+                                    if (nextProcess != null && nextProcess.CurrentBlock != null)
+                                    {
+                                        if (nextProcess.CurrentBlock.StartTime + tickCount > nextBlock.Duration + tickCount)
+                                            continue;
+                                    }
+
+                                    if (!busyBlockIndex.Contains(nextBlock.PipelineIndex))
+                                    {
+                                        process.CurrentBlock = nextBlock;
+                                        nextBlock.StartTime = tickCount;
+                                        busyBlockIndex.Add(nextBlock.PipelineIndex);
+                                    }
                                     break;
                                 case KProcType.SyncSecond:
                                     
+                                    break;
+                                case KProcType.Sync:
+                                    process.CurrentBlock = nextBlock;
+                                    nextBlock.StartTime = Math.Max(tickCount, previousBlock.EndTime);
+                                    previousBlock = nextBlock;
                                     break;
                             }
                         }

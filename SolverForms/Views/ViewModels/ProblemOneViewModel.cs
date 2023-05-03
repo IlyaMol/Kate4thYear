@@ -229,7 +229,7 @@ namespace SolverForms.Views.ViewModels
                 }
             }
 
-            KGLayer? machineResultGraphics = Machine?.Execute(KProcType.Async, BulidCombined).BuildGraphics();
+            KGLayer? machineResultGraphics = Machine?.Execute(KProcType.SyncFirst, BulidCombined).BuildGraphics();
             // TODO(wwaffe): here start of test graphics code
             KGScene scene = KGScene.NewScene()
                                    .SetDimensions(width: CurrentSceneWidth, height: CurrentSceneHeight, padding: new Padding(20))

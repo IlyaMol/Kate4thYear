@@ -24,6 +24,10 @@ namespace SolverForms.Views.Controls
                     shape.MainPen.CustomEndCap = ((KGLine)shape).EndLineCap;
                     e.Graphics.DrawLine(shape.MainPen, shape.StartPoint, shape.EndPoint);
                 }
+                if(shape.Type == IKGShapeType.SYMBOL)
+                {
+                    e.Graphics.DrawString(shape.ToString(), SystemFonts.DefaultFont, shape.MainPen.Brush, shape.StartPoint);
+                }
             }
         }
     }

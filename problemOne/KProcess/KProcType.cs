@@ -7,6 +7,7 @@ namespace ProblemOne
         None = 0,
         Async = 1,
         SyncFirst = 2,
-        SyncSecond = 3
+        SyncSecond = 3,
+        Sync = 4
     }
 }

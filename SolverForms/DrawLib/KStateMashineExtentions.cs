@@ -20,6 +20,12 @@ namespace SolverForms.DrawLib
                         StartLineCap = KGLineCap.VerticalLine(8),
                         EndLineCap = KGLineCap.VerticalLine(-8),
                     }, process.Index);
+                    layer.AddShape(new KGSymbol
+                    {
+                        Char = ((char)block.PipelineIndex),
+                        StartPoint = new PointF(block.StartTime/2, 0),
+                        MainPen = new Pen(new SolidBrush(Color.Black), 1),
+                    });
                 }
             return layer;
         }
