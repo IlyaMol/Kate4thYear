@@ -8,7 +8,7 @@ namespace SolverForms.DrawLib
         {
             KGLayer layer = new KGLayer();
 
-            foreach (KProcess process in stateMachine.Processes)
+            /*foreach (KProcess process in stateMachine.Processes)
                 foreach (KBlock block in process.Blocks)
                 {
                     if (block.Duration == 0) continue;
@@ -20,7 +20,7 @@ namespace SolverForms.DrawLib
                         StartLineCap = KGLineCap.VerticalLine(8),
                         EndLineCap = KGLineCap.VerticalLine(-8),
                     }, process.Index);
-                }
+                }*/
             return layer;
         }
     }

@@ -2,35 +2,35 @@
 {
     public class KProcessor
     {
-        private KBlock? _currentBlock = null;
+        private KProcess? _currentProcess = null;
 
         public EStatus Status
         {
             get
             {
-                if (_currentBlock != null) return EStatus.Busy;
+                if (_currentProcess != null && _currentProcess.Status == EStatus.Busy) return EStatus.Busy;
+                if(_currentProcess != null && _currentProcess.Status == EStatus.Done)
+                {
+                    _currentProcess = null;
+                    return EStatus.Idle;
+                }
                 return EStatus.Idle;
             }
             set 
             {
                 if(value == EStatus.Idle && Status == EStatus.Busy)
                 {
-                    _currentBlock!.Reset();
-                    _currentBlock = null;
+                    _currentProcess = null;
                 }
             }
         }
 
-        public KBlock? CurrentBlock
+        public KProcess? CurrentProcess
         {
-            get { return _currentBlock; }
+            get { return _currentProcess; }
             set
             {
-                _currentBlock = value;
-                
-                if (_currentBlock == null) return;
-                
-                _currentBlock.Status = EStatus.Busy;
+                _currentProcess = value;
             }
         }
     }

@@ -188,7 +188,7 @@ namespace SolverForms.ViewModels
             RecalcResult();
         }
 
-        public KStateMachine? Machine { get; private set; } = null;
+        public KStateMachine? Machine = null;
         public void RecalcResult()
         {
             SubProcess = KMatrixTransform.SplitMatrix(SourceMatrix, _processorCount);
@@ -201,8 +201,7 @@ namespace SolverForms.ViewModels
                 KGraph.GetCriticalPath(graph, s.Token);
             criticalPaths = graph.CriticalPaths;
             ResultMatrix = preparedMatrix;
-
-            //Machine = KStateMachine.BuildFromMatrix(SubProcess);
+            KStateMachine.TryBuildFromMatrix(SourceMatrix, out Machine);
             RedrawGraphics();
         }
 
@@ -220,9 +219,10 @@ namespace SolverForms.ViewModels
                 }
             }
 
-            //KGLayer? machineResultGraphics = Machine?.Execute(KProcType.SyncSecond, BulidCombined).BuildGraphics();
+            KGLayer? machineResultGraphics = Machine?.Execute(EProcType.SyncSecond, BulidCombined)
+                                                     .BuildGraphics();
             
-            // TODO(wwaffe): here start of test graphics code
+           // TODO(wwaffe): here start of test graphics code
            /* KGScene scene = KGScene.NewScene()
                                    .SetDimensions(width: CurrentSceneWidth, height: CurrentSceneHeight, padding: new Padding(20))
                                    .UseCoordPlane(yDelimeters: ProcessorCount, scale: DrawingScale)

@@ -4,21 +4,31 @@
     {
         public Guid Id { get; set; }
 
-        public ICollection<KBlockBinging> Bindings { get; } = new HashSet<KBlockBinging>(); 
-        public EStatus Status { get; set; }
+        public int PipelineIndex { get; set; }
+
+        public ICollection<KBlockBinging> Bindings { get; } = new HashSet<KBlockBinging>();
+
+        public KProcess? CurrentExecutor { get; set; } = null;
+            
+        public EStatus Status 
+        { 
+            get
+            {
+                if (Bindings.All(b => b.Status == EStatus.Done)) return EStatus.Done;
+                if (Bindings.Any(b => b.Status == EStatus.Busy)) return EStatus.Busy;
+                return EStatus.Idle;
+            }
+        }
 
         public KBlock()
         {
             Id = Guid.NewGuid();
+            PipelineIndex = 0;
         }
-
-        public void Reset()
+        public KBlock(int index)
         {
-            Status = EStatus.Idle;
-            foreach(var blockBinding in Bindings)
-            {
-                blockBinding.BlockStartTime = 0;
-            }
+            Id = Guid.NewGuid();
+            PipelineIndex = index;
         }
     }
 }
