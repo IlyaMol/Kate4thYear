@@ -1,51 +1,36 @@
 ﻿namespace ProblemOne
 {
+    public class KBlockBinging
+    {
+        public KBlock Block;
+        public KProcess Process;
+
+        public int BlockStartTime { get; set; }
+        public int BlockDuration { get; set; }
+        public int BlockEndTime { get { return BlockStartTime + BlockDuration; } }
+
+        public KBlockBinging(KProcess process, KBlock block)
+        {
+            Process = process;
+            Block = block;
+        }
+    }
+
     public class KProcess
     {
         public Guid Id { get; set; }
         public int Index { get; set; }
-        public int ThreadIndex { get; set; }
-        public KStatus Status 
-        { 
-            get
-            {
-                if (NextBlock == null) return KStatus.Done;
 
-                if (CurrentBlock == null || CurrentBlock.Status == KStatus.Idle || CurrentBlock.Status == KStatus.Done)
-                    return KStatus.Idle;
-                
-                return KStatus.Busy;
-            } 
-        }
+        public ICollection<KBlockBinging> BlockBindings { get; } = new List<KBlockBinging>();
 
-        public KBlock? CurrentBlock
-        {
-            get { return Blocks.FirstOrDefault(b => b.Status == KStatus.Busy); }
-            set
-            {
-                if (value == null) return;
-                KBlock? block = Blocks.FirstOrDefault(b => b.Id == value.Id);
-                if (block == null) return;
-                block.Status = KStatus.Busy;
-            }
-        }
         public KBlock? NextBlock
         {
-            get { return Blocks.FirstOrDefault(b => b.Status == KStatus.Idle); }
+            get { return BlockBindings.Select(bb => bb.Block).FirstOrDefault(b => b.Status == EStatus.Idle); }
         }
-
-        public ICollection<KBlock> Blocks { get; set; } = new List<KBlock>();
 
         public KProcess()
         {
             Id = Guid.NewGuid();
-        }
-
-        public void Reset()
-        {
-            foreach (KBlock block in Blocks)
-                block.Reset();
-
         }
     }
 }

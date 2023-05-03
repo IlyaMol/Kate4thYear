@@ -3,6 +3,7 @@
     public class KStateMachine
     {
         public ICollection<KProcess> Processes { get; private set; } = new List<KProcess>();
+        public ICollection<KProcessor> Processors { get; set; } = new List<KProcessor>();
 
         public static KStateMachine BuildFromMatrix(in ICollection<int[,]> subMatrixArgs)
         {
@@ -37,7 +38,7 @@
             return machine;
         }
 
-        public KStateMachine Execute(KProcType procType, bool combined = true)
+        public KStateMachine Execute(EProcType procType, bool combined = true)
         {
             bool firstRun = true;
             // NOTE(wwaffe): one iteration of this while loop = one tick for our machine
@@ -46,11 +47,12 @@
             List<int> busyBlockIndex = new List<int>();
             foreach (KProcess process in Processes)
                 process.Reset();
-            while(Processes.Any(p => p.Status != KStatus.Done))
+            while (Processes.Any(p => p.Status != EStatus.Done &&
+                          p.Status != EStatus.Idle))
             {
                 foreach(KProcess process in Processes)
                 {
-                    if(process.Status == KStatus.Busy || process.Status == KStatus.Done)
+                    if(process.Status == EStatus.Busy || process.Status == EStatus.Done)
                     {
                         if (process.CurrentBlock != null
                             && process.CurrentBlock.Duration + process.CurrentBlock.StartTime <= tickCount)
@@ -64,7 +66,7 @@
                             else
                                 currentBlockIndex = process.CurrentBlock.PipelineIndex;
                             busyBlockIndex.Remove(currentBlockIndex);
-                            process.CurrentBlock.Status = KStatus.Done;
+                            process.CurrentBlock.Status = EStatus.Done;
                         }
                     }
                 }
@@ -73,13 +75,13 @@
                     if(Processes
                         .SelectMany(p => p.Blocks)
                         .Where(b => b.ThreadIndex == currentThreadIndex)
-                        .All(b => b.Status == KStatus.Done)
+                        .All(b => b.Status == EStatus.Done)
                       )
                         currentThreadIndex++;
 
                 foreach (KProcess process in Processes)
                 {
-                    if (process.Status == KStatus.Idle)
+                    if (process.Status == EStatus.Idle)
                     {
                         KBlock? nextBlock = process.NextBlock;
 
@@ -98,7 +100,7 @@
 
                             switch (procType)
                             {
-                                case KProcType.Async:
+                                case EProcType.Async:
                                     if (!busyBlockIndex.Contains(nextBlockIndex))
                                     {
                                         process.CurrentBlock = nextBlock;
@@ -106,17 +108,25 @@
                                         busyBlockIndex.Add(nextBlockIndex);
                                     }
                                     break;
-                                case KProcType.SyncFirst:
+                                case EProcType.SyncFirst:
                                     KProcess? nextProcess = Processes.FirstOrDefault(p => p.Index == process.Index + 1);
-                                    if (nextProcess == null || nextProcess.Status != KStatus.Busy
-                                        || nextProcess.NextBlock!.Duration + tickCount == tickCount + nextBlock.Duration)
+                                    if (nextProcess != null && nextProcess.CurrentBlock != null)
                                     {
-                                        firstRun = false;
-                                        if (!busyBlockIndex.Contains(nextBlockIndex))
+                                        nextBlock = nextProcess.CurrentBlock;
+                                        KBlock currentBlock = process.CurrentBlock;
+
+                                        // Учитываем время выполнения текущего блока в первом процессе
+                                        int currentBlockFinishTime = currentBlock.Duration + currentBlock.StartTime;
+
+                                        // Проверяем, можно ли начать выполнение следующего блока во втором процессе
+                                        if (nextBlock.StartTime <= currentBlockFinishTime)
                                         {
-                                            process.CurrentBlock = nextBlock;
-                                            nextBlock.StartTime = tickCount;
-                                            busyBlockIndex.Add(nextBlockIndex);
+                                            if (!busyBlockIndex.Contains(nextBlock.PipelineIndex))
+                                            {
+                                                process.CurrentBlock = nextBlock;
+                                                nextBlock.StartTime = tickCount;
+                                                busyBlockIndex.Add(nextBlock.PipelineIndex);
+                                            }
                                         }
                                     }
                                     break;

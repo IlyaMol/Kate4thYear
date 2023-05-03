@@ -194,18 +194,15 @@ namespace SolverForms.ViewModels
             SubProcess = KMatrixTransform.SplitMatrix(SourceMatrix, _processorCount);
             if (SubProcess.Count < 1) return;
 
-            Machine = KStateMachine.BuildFromMatrix(SubProcess);
-
             int[,] preparedMatrix = KMatrixTransform.BuildProcTimeMatrix(SubProcess);
 
             CancellationTokenSource s = new CancellationTokenSource();
             if (KGraph.TryBuid(preparedMatrix, out graph))
                 KGraph.GetCriticalPath(graph, s.Token);
-
             criticalPaths = graph.CriticalPaths;
-
             ResultMatrix = preparedMatrix;
 
+            //Machine = KStateMachine.BuildFromMatrix(SubProcess);
             RedrawGraphics();
         }
 
@@ -223,15 +220,16 @@ namespace SolverForms.ViewModels
                 }
             }
 
-            KGLayer? machineResultGraphics = Machine?.Execute(KProcType.SyncFirst, BulidCombined).BuildGraphics();
+            //KGLayer? machineResultGraphics = Machine?.Execute(KProcType.SyncSecond, BulidCombined).BuildGraphics();
+            
             // TODO(wwaffe): here start of test graphics code
-            KGScene scene = KGScene.NewScene()
+           /* KGScene scene = KGScene.NewScene()
                                    .SetDimensions(width: CurrentSceneWidth, height: CurrentSceneHeight, padding: new Padding(20))
                                    .UseCoordPlane(yDelimeters: ProcessorCount, scale: DrawingScale)
                                    .AddLayer(machineResultGraphics)
                                    .Build();
             OnFrameUpdate?.Invoke(scene);
-            //end draw algo
+            //end draw algo*/
         }
         #endregion
 

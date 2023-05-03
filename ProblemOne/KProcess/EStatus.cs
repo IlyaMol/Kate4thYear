@@ -1,6 +1,6 @@
 ﻿namespace ProblemOne
 {
-    public enum KStatus
+    public enum EStatus
     {
         Idle,
         Busy,

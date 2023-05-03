@@ -3,14 +3,9 @@
     public class KBlock
     {
         public Guid Id { get; set; }
-        public int PipelineIndex { get; set; }
-        public int ThreadIndex { get; set; }
 
-        public Guid ProcessId { get; set; }
-        public KStatus Status { get; set; }
-        public int StartTime { get; set; }
-        public int Duration { get; set; }
-        public int EndTime { get { return StartTime + Duration; } }
+        public ICollection<KBlockBinging> Bindings { get; } = new HashSet<KBlockBinging>(); 
+        public EStatus Status { get; set; }
 
         public KBlock()
         {
@@ -19,8 +14,11 @@
 
         public void Reset()
         {
-            Status = KStatus.Idle;
-            StartTime = 0;
+            Status = EStatus.Idle;
+            foreach(var blockBinding in Bindings)
+            {
+                blockBinding.BlockStartTime = 0;
+            }
         }
     }
 }

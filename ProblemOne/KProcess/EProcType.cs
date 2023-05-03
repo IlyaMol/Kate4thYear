@@ -2,7 +2,7 @@
 
 namespace ProblemOne
 {
-    public enum KProcType
+    public enum EProcType
     {
         None = 0,
         Async = 1,
