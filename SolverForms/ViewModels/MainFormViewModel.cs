@@ -201,7 +201,7 @@ namespace SolverForms.ViewModels
                 KGraph.GetCriticalPath(graph, s.Token);
             criticalPaths = graph.CriticalPaths;
             ResultMatrix = preparedMatrix;
-            KStateMachine.TryBuildFromMatrix(SourceMatrix, out Machine);
+            KStateMachine.TryBuildFromMatrix(SourceMatrix, _processorCount, out Machine);
             RedrawGraphics();
         }
 

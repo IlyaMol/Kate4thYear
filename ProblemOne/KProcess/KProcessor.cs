@@ -1,37 +1,67 @@
 ﻿namespace ProblemOne
 {
+    public enum EProcStatus
+    {
+        Idle,   // процессору не назначен процесс
+        Ready,  // процессор выполнил блок и ждет возможности выполнить следующий
+        Busy    // процессор выполняет блок
+    }
+
+    public static class KProcessorExtensions
+    {
+        public static KProcessor BindProcess(this KProcessor processor, in KProcess? bindingProcess)
+        {
+            if(bindingProcess== null) return processor;
+
+            processor.CurrentProcess = bindingProcess;
+            bindingProcess.Executor = processor;
+
+            return processor;
+        }
+    }
+
     public class KProcessor
     {
-        private KProcess? _currentProcess = null;
-
-        public EStatus Status
+        public EProcStatus Status
         {
             get
             {
-                if (_currentProcess != null && _currentProcess.Status == EStatus.Busy) return EStatus.Busy;
-                if(_currentProcess != null && _currentProcess.Status == EStatus.Done)
+                if(CurrentProcess == null)
+                    return EProcStatus.Idle;
+                else if(CurrentProcess.NextBlock == null)
                 {
-                    _currentProcess = null;
-                    return EStatus.Idle;
+                    CurrentProcess.Executor = null;
+                    return EProcStatus.Idle;
                 }
-                return EStatus.Idle;
-            }
-            set 
-            {
-                if(value == EStatus.Idle && Status == EStatus.Busy)
+                else
                 {
-                    _currentProcess = null;
+                    if(CurrentProcess.NextBlock.Status == EStatus.Busy) return EProcStatus.Busy;
+                    else return EProcStatus.Ready;
                 }
             }
         }
 
-        public KProcess? CurrentProcess
+        public KProcess? CurrentProcess { get; set; }
+
+        public void ExecuteNext(int startStamp)
         {
-            get { return _currentProcess; }
-            set
+            if (Status == EProcStatus.Idle) return;
+
+            KBlockBinging? nextBlockBinding = CurrentProcess!.NextBlock;
+
+            if (Status == EProcStatus.Busy)
             {
-                _currentProcess = value;
+                if (startStamp >= nextBlockBinding!.BlockEndTime)
+                {
+                    nextBlockBinding.Status = EStatus.Done;
+                }
+                else return;
             }
+
+
+            if (nextBlockBinding == null) return;
+
+            CurrentProcess.LastExecutedBlockIndex = nextBlockBinding.ExecuteBlock(startStamp);
         }
     }
 }

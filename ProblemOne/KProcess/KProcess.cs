@@ -1,10 +1,17 @@
 ﻿namespace ProblemOne
 {
+    public enum EProcessStatus
+    {
+        Ready,
+        Binded,
+        Done
+    }
+
     public static class KProcessExtensions
     {
         public static KProcess AddBlockBinding(this KProcess process, KBlock block, int blockDuration)
         {
-            process.BlockBindings.Add(new KBlockBinging(process, block, blockDuration));
+            process.BlockBindings.Add(new KBlockBinging(block, blockDuration));
             return process;
         }
     }
@@ -12,51 +19,78 @@
     public class KBlockBinging
     {
         public KBlock Block { get; private set; }
-        public KProcess Process { get; set; }
 
-        // if it is equal to -1 - the block was not executed in any process
-        public int BlockStartTime { get; set; } = -1;
-
+        public int BlockStartTime { get; set; }
         public int BlockDuration { get; set; }
         public int BlockEndTime { get { return BlockStartTime + BlockDuration; } }
 
-        public EStatus Status { get; set; } = EStatus.Idle;
-
-        public KBlockBinging(KProcess process, KBlock block, int blockDuration)
+        private EStatus _status = EStatus.Idle;
+        public EStatus Status 
         {
-            Process = process;
+            get
+            {
+                if (Block.IsBlocked)
+                    _status = EStatus.Busy;
+                else
+                    _status = EStatus.Idle;
+                return _status;
+            }
+            set
+            {
+                if (value == EStatus.Busy)
+                {
+                    _status = EStatus.Busy;
+                    Block.IsBlocked = true;
+                }
+                else
+                {
+                    _status = value;
+                    Block.IsBlocked = false;
+                }
+            }
+        }
+
+        public KBlockBinging(KBlock block, int blockDuration)
+        {
             Block = block;
             BlockDuration = blockDuration;
-            Block.Bindings.Add(this);
+        }
+
+        public int ExecuteBlock(int startStamp)
+        {
+            Status= EStatus.Busy;
+            BlockStartTime = startStamp;
+            return Block.PipelineIndex;
         }
     }
 
     public class KProcess
     {
-        public Guid Id { get; set; }
         public int Index { get; set; }
 
         public ICollection<KBlockBinging> BlockBindings { get; } = new List<KBlockBinging>();
-        public EStatus Status
+
+        public KProcessor? Executor { get; set; } = null;
+
+        public int LastExecutedBlockIndex { get; set; } = -1;
+
+        public EProcessStatus Status
         {
             get
             {
-                if(BlockBindings.Any(bb => bb.Block.Status == EStatus.Busy))
-                    return EStatus.Busy;
-                if(BlockBindings.All(bb => bb.Block.Status == EStatus.Done))
-                    return EStatus.Done;
-                return EStatus.Idle;
+                if (Executor != null) return EProcessStatus.Binded;
+                if (BlockBindings.All(bb => bb.Status == EStatus.Done)) return EProcessStatus.Done;
+                return EProcessStatus.Ready;
             }
         }
 
-        public KBlock? NextBlock
+        public KBlockBinging? NextBlock
         {
-            get { return BlockBindings.Select(bb => bb.Block).FirstOrDefault(b => b.Status == EStatus.Idle); }
+            get { return BlockBindings.Where(bb => bb.Status != EStatus.Done).FirstOrDefault(b => b.Block.PipelineIndex == LastExecutedBlockIndex +1); }
         }
 
         public KProcess(int index)
         {
-            Id = Guid.NewGuid();
             Index = index;
         }
     }

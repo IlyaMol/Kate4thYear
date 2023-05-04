@@ -1,14 +1,24 @@
 ﻿namespace ProblemOne
 {
+    public static class KStateMachineExtensions
+    {
+        public static KStateMachine AddProcessors(this KStateMachine machine, int procCount)
+        {
+            for (int iteration = 0; iteration < procCount; iteration++)
+                machine.Processors.Add(new KProcessor());
+            return machine;
+        }
+    }
+
     public class KStateMachine
     {
         public ICollection<KBlock> Blocks { get; set; } = new List<KBlock>();
         public ICollection<KProcess> Processes { get; private set; } = new List<KProcess>();
         public ICollection<KProcessor> Processors { get; set; } = new List<KProcessor>();
 
-        public static bool TryBuildFromMatrix(in int[,] matrix, out KStateMachine machine)
+        public static bool TryBuildFromMatrix(in int[,] matrix, int processorCount, out KStateMachine machine)
         {
-            machine = new KStateMachine();
+            machine = new KStateMachine().AddProcessors(processorCount);
 
             for (int rowIndex = 0; rowIndex < matrix.GetLength(0); rowIndex++)
             {
@@ -36,28 +46,17 @@
             // NOTE(wwaffe): one iteration of this while loop = one tick for our machine
             int tickCount = 0;
 
-            while (Processes.Any(p => p.Status != EStatus.Done))
+            while (Processes.Any(p => p.Status != EProcessStatus.Done))
             {
-                // check all proceesors if any done it's work
-                foreach(var processor in Processors) 
-                { 
-                    
-                }
-
-                KProcess? nextIdleProcess = Processes.FirstOrDefault(p => p.Status == EStatus.Idle);
-
-                // all processes are busy but not done
-                if(nextIdleProcess == null) { tickCount++; continue; }
-
-                KBlock? nextBlock = nextIdleProcess.NextBlock;
-                if (nextBlock == null) throw new NullReferenceException("No blocks to exec, process stuck in idle state!");
-
-                KProcessor? idlePocessor = Processors.FirstOrDefault(p => p.Status == EStatus.Idle);
-
-                // all processors are busy, continue
-                if(idlePocessor == null) { tickCount++; continue; }
+                // назначаем свободным процессорам незанятые процессы по порядку
+                // либо превому освободившемуся процессору, первый доступный процесс
+                foreach (KProcessor processor in Processors.Where(p => p.Status == EProcStatus.Idle).ToList())
+                    processor.BindProcess(Processes.FirstOrDefault(p => p.Status == EProcessStatus.Ready));
                 
-
+                // пробуем запустить все ожидающие процессы
+                foreach(var processor in Processors)
+                    if(processor.Status == EProcStatus.Ready)
+                        processor.ExecuteNext(tickCount);
 
                 tickCount++;
             }
