@@ -1,12 +1,7 @@
-﻿namespace ProblemOne
-{
-    public enum EProcStatus
-    {
-        Idle,   // процессору не назначен процесс
-        Ready,  // процессор выполнил блок и ждет возможности выполнить следующий
-        Busy    // процессор выполняет блок
-    }
+﻿using ProblemOne.KStates;
 
+namespace ProblemOne
+{
     public static class KProcessorExtensions
     {
         public static KProcessor BindProcess(this KProcessor processor, in KProcess? bindingProcess)
@@ -22,46 +17,36 @@
 
     public class KProcessor
     {
-        public EProcStatus Status
+        public ProcessorState Status
         {
             get
             {
                 if(CurrentProcess == null)
-                    return EProcStatus.Idle;
-                else if(CurrentProcess.NextBlock == null)
+                    return ProcessorState.Idle;
+                else if(CurrentProcess.NextTask == null)
                 {
                     CurrentProcess.Executor = null;
-                    return EProcStatus.Idle;
+                    return ProcessorState.Idle;
                 }
                 else
                 {
-                    if(CurrentProcess.NextBlock.Status == EStatus.Busy) return EProcStatus.Busy;
-                    else return EProcStatus.Ready;
+                    if(CurrentProcess.NextTask.Status == BlockState.Busy) return ProcessorState.Ready;
+                    else return ProcessorState.Ready;
                 }
             }
         }
 
         public KProcess? CurrentProcess { get; set; }
 
-        public void ExecuteNext(int startStamp)
+        public void Execute(int startStamp)
         {
-            if (Status == EProcStatus.Idle) return;
+            if (Status == ProcessorState.Idle) return;
 
-            KBlockBinging? nextBlockBinding = CurrentProcess!.NextBlock;
-
-            if (Status == EProcStatus.Busy)
-            {
-                if (startStamp >= nextBlockBinding!.BlockEndTime)
-                {
-                    nextBlockBinding.Status = EStatus.Done;
-                }
-                else return;
-            }
-
+            KBlockBinging? nextBlockBinding = CurrentProcess!.NextTask;
 
             if (nextBlockBinding == null) return;
 
-            CurrentProcess.LastExecutedBlockIndex = nextBlockBinding.ExecuteBlock(startStamp);
+            nextBlockBinding.DoTick(startStamp);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace ProblemOne
+﻿using ProblemOne.KStates;
+
+namespace ProblemOne
 {
     public static class KStateMachineExtensions
     {
@@ -16,7 +18,7 @@
         public ICollection<KProcess> Processes { get; private set; } = new List<KProcess>();
         public ICollection<KProcessor> Processors { get; set; } = new List<KProcessor>();
 
-        public static bool TryBuildFromMatrix(in int[,] matrix, int processorCount, out KStateMachine machine)
+        public static bool TryBuild(in int[,] matrix, int processorCount, out KStateMachine machine)
         {
             machine = new KStateMachine().AddProcessors(processorCount);
 
@@ -46,17 +48,16 @@
             // NOTE(wwaffe): one iteration of this while loop = one tick for our machine
             int tickCount = 0;
 
-            while (Processes.Any(p => p.Status != EProcessStatus.Done))
+            while (Processes.Any(p => p.Status != ProcessState.Done))
             {
                 // назначаем свободным процессорам незанятые процессы по порядку
                 // либо превому освободившемуся процессору, первый доступный процесс
-                foreach (KProcessor processor in Processors.Where(p => p.Status == EProcStatus.Idle).ToList())
-                    processor.BindProcess(Processes.FirstOrDefault(p => p.Status == EProcessStatus.Ready));
+                foreach (KProcessor processor in Processors.Where(p => p.Status == ProcessorState.Idle).ToList())
+                    processor.BindProcess(Processes.FirstOrDefault(p => p.Status == ProcessState.Ready));
                 
-                // пробуем запустить все ожидающие процессы
+                // пробуем исполнить свободные блоки в ожидающих процессах
                 foreach(var processor in Processors)
-                    if(processor.Status == EProcStatus.Ready)
-                        processor.ExecuteNext(tickCount);
+                    processor.Execute(tickCount);
 
                 tickCount++;
             }

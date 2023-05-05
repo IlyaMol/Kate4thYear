@@ -4,9 +4,10 @@
     {
         public Guid Id { get; set; }
         public int PipelineIndex { get; set; }
+
         public bool IsBlocked { get; set; } = false;
 
-        public KProcess? CurrentExecutor { get; set; } = null;
+        public KProcess? CurrentProcess { get; set; }
 
         public KBlock()
         {
