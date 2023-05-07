@@ -33,6 +33,9 @@ namespace SolverForms
             viewModel.CurrentSceneHeight = drawPanel.Height;
             viewModel.CurrentSceneWidth = drawPanel.Width;
 
+            comboBox1.DisplayMember = "Name";
+            comboBox1.ValueMember = "Type";
+
             sourceMatrixView.DataSourceChanged += viewModel.DataSourceChangedDelegate;
             drawPanel.Resize += DrawPanel_Resize;
             viewModel.OnFrameUpdate += ViewModel_OnFrameUpdate;
@@ -140,6 +143,20 @@ namespace SolverForms
                 nameof(offsetSliderValue.Value),
                 viewModel,
                 nameof(viewModel.DrawingScale),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged
+                );
+            comboBox1.DataBindings.Add
+                (
+                nameof(comboBox1.DataSource),
+                viewModel,
+                nameof(viewModel.ProcTypes)
+                );
+            comboBox1.DataBindings.Add
+                (
+                nameof(comboBox1.SelectedValue),
+                viewModel,
+                nameof(viewModel.SelectedProcType),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged
                 );

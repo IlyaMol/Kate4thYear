@@ -1,4 +1,5 @@
 ﻿using ProblemOne.KStates;
+using System.Diagnostics;
 
 namespace ProblemOne
 {
@@ -7,7 +8,7 @@ namespace ProblemOne
         public static KStateMachine AddProcessors(this KStateMachine machine, int procCount)
         {
             for (int iteration = 0; iteration < procCount; iteration++)
-                machine.Processors.Add(new KProcessor());
+                machine.Processors.Add(new KProcessor(machine) { Index = iteration });
             return machine;
         }
     }
@@ -45,24 +46,51 @@ namespace ProblemOne
 
         public KStateMachine Execute(EProcType procType, bool combined = true)
         {
-            // NOTE(wwaffe): one iteration of this while loop = one tick for our machine
             int tickCount = 0;
-
+            ResetStates();
+            // одна итерация цикла - один такт машины
             while (Processes.Any(p => p.Status != ProcessState.Done))
             {
-                // назначаем свободным процессорам незанятые процессы по порядку
-                // либо превому освободившемуся процессору, первый доступный процесс
-                foreach (KProcessor processor in Processors.Where(p => p.Status == ProcessorState.Idle).ToList())
-                    processor.BindProcess(Processes.FirstOrDefault(p => p.Status == ProcessState.Ready));
-                
-                // пробуем исполнить свободные блоки в ожидающих процессах
-                foreach(var processor in Processors)
-                    processor.Execute(tickCount);
+                // TODO(wwaffe): выполняем две операции за такт, дабы не дать процессорам простаивать
+                for(int iterations = 0; iterations < 2; iterations++)
+                {
+                    // назначаем свободным процессорам незанятые процессы по порядку
+                    BindProcesses(combined);
+
+                    // либо превому освободившемуся процессору, первый доступный процесс
+                    // пробуем исполнить свободные блоки в ожидающих процессах
+                    ExecuteProcessors(tickCount, procType);
+                }
 
                 tickCount++;
             }
-
             return this;
+        }
+
+        public void ResetStates()
+        {
+            foreach (var block in Blocks)
+                block.Reset();
+            foreach (var process in Processes)
+                process.Reset();
+        }
+
+        private void BindProcesses(bool isCombined)
+        {
+            // в зависимости от необходимости совмещения
+            if(isCombined)
+                foreach (KProcessor processor in Processors.Where(p => p.Status == ProcessorState.Idle).ToList())
+                    processor.BindProcess(Processes.FirstOrDefault(p => p.Status == ProcessState.Ready));
+            else
+                if(Processors.All(p => p.Status == ProcessorState.Idle))
+                    foreach (KProcessor processor in Processors.Where(p => p.Status == ProcessorState.Idle).ToList())
+                        processor.BindProcess(Processes.FirstOrDefault(p => p.Status == ProcessState.Ready));
+        }
+
+        private void ExecuteProcessors(int tickCount, EProcType executionType)
+        {
+            foreach (var processor in Processors)
+                processor.Execute(tickCount, executionType);
         }
     }
 }

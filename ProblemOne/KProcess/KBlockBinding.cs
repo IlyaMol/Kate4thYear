@@ -2,7 +2,7 @@
 
 namespace ProblemOne
 {
-    public class KBlockBinging
+    public class KBlockBinding
     {
         public KBlock Block { get; private set; }
         public KProcess Process { get; private set; }
@@ -16,42 +16,90 @@ namespace ProblemOne
             get
             {
                 // если статус == выполнен, то иное не имеет смысла до вызова Reset()
-                if(_status == BlockState.Done) return _status;
+                if(_status == BlockState.Done) return BlockState.Done;
 
                 if (Block.IsBlocked)
-                    _status = BlockState.Busy;
+                {
+                    if(Block.CurrentProcess == Process)
+                        return BlockState.Busy;
+                    else
+                        return BlockState.Waiting;
+                }
                 else
-                    _status = BlockState.Ready;
-                return _status;
+                    return BlockState.Ready;
             }
         }
 
-        public KBlockBinging(KBlock block, KProcess process, int blockDuration)
+        public KBlockBinding(KBlock block, KProcess process, int blockDuration)
         {
             Block = block;
             Process = process;
             BlockDuration = blockDuration;
         }
 
-        public int DoTick(int currentTick)
+        public void DoTick(int currentTick, EProcType syncType)
         {
-            if (Block.IsBlocked && Block.CurrentProcess == Process)
+            var nextBlock = Process.BlockBindings.FirstOrDefault(bb => bb.Block.PipelineIndex == Block.PipelineIndex + 1);
+            var prevBlock = Process.BlockBindings.FirstOrDefault(bb => bb.Block.PipelineIndex == Block.PipelineIndex - 1);
+
+            if (Block.IsBlocked)
             {
-                // выполнение блока закончилось
-                if(BlockEndTime <= currentTick)
+                if (Block.CurrentProcess == Process)
                 {
-                    Block.IsBlocked = false;
-                    _status = BlockState.Done;
+                    // выполнение блока закончилось
+                    if (BlockEndTime <= currentTick)
+                    {
+                        Block.IsBlocked = false;
+                        _status = BlockState.Done;
+                        Block.CurrentProcess = null;
+
+                        if (syncType == EProcType.SyncFirst)
+                            if (prevBlock != null && prevBlock.BlockEndTime != BlockStartTime)
+                                prevBlock.BlockStartTime = BlockStartTime - prevBlock.BlockDuration;
+                    }
                 }
             }
             else
             {
+                if(syncType == EProcType.SyncFirst)
+                {
+                    // откладываем выполнение, если время окончания выполнения текущего блока
+                    // не совпадает со временем старта выполнения следующего
+                    // (относительно текущего тика машины)
+                    if(nextBlock != null && nextBlock.Block.IsBlocked)
+                        if(nextBlock.Block.CalculatedCurrentEndTime > currentTick + BlockDuration)
+                            return;
+                }
+                if (syncType == EProcType.SyncSecond)
+                {
+                    // откладываем назначение, если текущий блок не выполнен
+                    // на всех процессорах
+
+                }
+
                 // выполняем блок
-                Block.IsBlocked = true;
-                BlockStartTime = currentTick;
-                Block.CurrentProcess = this.Process;
+                // обеспечивая линейный порядок
+                // предоставления блоков процессорам
+                if (Block.LastExecutorIndex == this.Process.Executor!.ParentMachine.Processors.Count-1)
+                    Block.LastExecutorIndex = -1;
+
+                if(Block.LastExecutorIndex == Process.Executor!.Index 
+                    || Block.LastExecutorIndex == Process.Executor!.Index - 1 
+                    || Block.LastExecutorIndex == -1)
+                {
+                    Block.IsBlocked = true;
+                    BlockStartTime = currentTick;
+                    Block.CurrentProcess = this.Process;
+                    Block.LastExecutorIndex = this.Process.Executor!.Index;
+                }
             }
-            return Block.PipelineIndex;
+            return;
+        }
+
+        public void Reset()
+        {
+            BlockStartTime = 0;
+            _status = BlockState.Ready;
         }
     }
 }

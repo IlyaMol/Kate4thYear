@@ -10,6 +10,7 @@ namespace ProblemOne
 
             processor.CurrentProcess = bindingProcess;
             bindingProcess.Executor = processor;
+            bindingProcess.ExecutorIndex = processor.Index;
 
             return processor;
         }
@@ -17,36 +18,53 @@ namespace ProblemOne
 
     public class KProcessor
     {
+        public int Index { get; set; } = 0;
+        public KProcess? CurrentProcess { get; set; }
+
+        public KStateMachine ParentMachine { get; set; }
+
         public ProcessorState Status
         {
             get
             {
                 if(CurrentProcess == null)
                     return ProcessorState.Idle;
-                else if(CurrentProcess.NextTask == null)
+                else if(CurrentProcess.Status == ProcessState.Done)
                 {
                     CurrentProcess.Executor = null;
+                    CurrentProcess = null;
                     return ProcessorState.Idle;
                 }
                 else
                 {
-                    if(CurrentProcess.NextTask.Status == BlockState.Busy) return ProcessorState.Ready;
+                    if(CurrentProcess.Status == ProcessState.Busy) return ProcessorState.Busy;
                     else return ProcessorState.Ready;
                 }
             }
         }
 
-        public KProcess? CurrentProcess { get; set; }
+        public KProcessor(KStateMachine parentMachine)
+        {
+            ParentMachine= parentMachine;
+        }
 
-        public void Execute(int startStamp)
+        public void Execute(int startStamp, EProcType syncType)
         {
             if (Status == ProcessorState.Idle) return;
 
-            KBlockBinging? nextBlockBinding = CurrentProcess!.NextTask;
+            KBlockBinding? nextBlockBinding = CurrentProcess!.CurrentTask;
 
-            if (nextBlockBinding == null) return;
+            if (nextBlockBinding == null)
+                nextBlockBinding = CurrentProcess!.NextTask;
 
-            nextBlockBinding.DoTick(startStamp);
+            if (nextBlockBinding != null)
+            {
+                nextBlockBinding.DoTick(startStamp, syncType);
+
+                // если после предыдущего шага процессор готов - сразу же выполняем следующий блок
+                if (nextBlockBinding.Status == BlockState.Done && Status == ProcessorState.Ready)
+                    Execute(startStamp, syncType);
+            }
         }
     }
 }

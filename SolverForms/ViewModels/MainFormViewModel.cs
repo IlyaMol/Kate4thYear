@@ -12,7 +12,7 @@ namespace SolverForms.ViewModels
     {
         #region Fields
         private bool _isBusy = false;
-        private bool _buildCombined = true;
+        private bool _buildCombined = false;
         private int _processorCount = 0;
 
         private int[,] _sourceMatrix = new int[0, 0];
@@ -21,6 +21,25 @@ namespace SolverForms.ViewModels
         private int _selectedCriticalPathIndex = 1;
         private ConcurrentBag<KPath<KVertex>> _criticalPaths = new();
         private KPath<KVertex> selectedCriticalPath = new();
+
+        public IList<KProcType> ProcTypes { get; } = new List<KProcType>()
+        {
+            new KProcType() { Name = "Асинхронный", Type = EProcType.Async},
+            new KProcType() { Name = "Первый синх.", Type = EProcType.SyncFirst},
+            new KProcType() { Name = "Второй синх.", Type = EProcType.SyncSecond}
+        };
+        private EProcType _selectedProcType = EProcType.Async;
+        public EProcType SelectedProcType 
+        {
+            get { return _selectedProcType; }
+            set
+            {
+                if (_selectedProcType == value) return;
+                _selectedProcType = value;
+                RecalcResult();
+                OnPropertyChanged();
+            }
+        }
 
         private KGraph? graph;
 
@@ -202,11 +221,7 @@ namespace SolverForms.ViewModels
             criticalPaths = graph.CriticalPaths;
             ResultMatrix = preparedMatrix;
             KStateMachine.TryBuild(SourceMatrix, _processorCount, out Machine);
-            RedrawGraphics();
-        }
 
-        public void RedrawGraphics()
-        {
             if (graph == null) { return; }
             if (criticalPaths.Count > 0 && _selectedCriticalPathIndex > 0)
             {
@@ -219,17 +234,23 @@ namespace SolverForms.ViewModels
                 }
             }
 
-            KGLayer? machineResultGraphics = Machine?.Execute(EProcType.SyncSecond, BulidCombined)
+            RedrawGraphics();
+        }
+
+        public void RedrawGraphics()
+        {
+
+            KGLayer? machineResultGraphics = Machine?.Execute(SelectedProcType, BulidCombined)
                                                      .BuildGraphics();
             
            // TODO(wwaffe): here start of test graphics code
-           /* KGScene scene = KGScene.NewScene()
+           KGScene scene = KGScene.NewScene()
                                    .SetDimensions(width: CurrentSceneWidth, height: CurrentSceneHeight, padding: new Padding(20))
                                    .UseCoordPlane(yDelimeters: ProcessorCount, scale: DrawingScale)
                                    .AddLayer(machineResultGraphics)
                                    .Build();
             OnFrameUpdate?.Invoke(scene);
-            //end draw algo*/
+            //end draw algo
         }
         #endregion
 
