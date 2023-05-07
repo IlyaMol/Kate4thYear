@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProblemOneTabPage));
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.sourceMatrixView = new SolverForms.KMatrixView();
             this.loadDataButton = new System.Windows.Forms.Button();
             this.resultMatrixView = new SolverForms.KMatrixView();
@@ -59,6 +59,7 @@
             this.offsetSliderValue = new System.Windows.Forms.TrackBar();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.kProcTypeBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.processorUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectedPathIndexUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -75,6 +76,7 @@
             this.drawingModeFlowLayoutPanel.SuspendLayout();
             this.drawingTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.offsetSliderValue)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kProcTypeBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // sourceMatrixView
@@ -265,7 +267,7 @@
             this.saveDataButton.TabIndex = 2;
             this.saveDataButton.Text = "SAVE";
             this.saveDataButton.UseVisualStyleBackColor = true;
-            this.saveDataButton.Click += new System.EventHandler(this.SaveDataButton_Click);
+            this.saveDataButton.Click += new System.EventHandler(this.saveDataButton_Click);
             // 
             // flowLayoutPanel2
             // 
@@ -418,13 +420,17 @@
             // saveFileDialog1
             // 
             this.saveFileDialog1.DefaultExt = "json";
-            this.saveFileDialog1.Filter = "Json|*.json";
+            this.saveFileDialog1.Filter = "Json files|*.json";
             // 
             // openFileDialog1
             // 
             this.openFileDialog1.DefaultExt = "json";
             this.openFileDialog1.FileName = "openFileDialog1";
-            this.openFileDialog1.Filter = "Json|*.json|All files|*.*";
+            this.openFileDialog1.Filter = "Json files|*.json|All files|*.*";
+            // 
+            // kProcTypeBindingSource
+            // 
+            this.kProcTypeBindingSource.DataSource = typeof(ProblemOne.KProcType);
             // 
             // MainForm
             // 
@@ -452,6 +458,7 @@
             this.drawingTableLayoutPanel.ResumeLayout(false);
             this.drawingTableLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.offsetSliderValue)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.kProcTypeBindingSource)).EndInit();
             this.ResumeLayout(false);
         }
 
@@ -484,6 +491,6 @@
         private ComboBox comboBox1;
         private SaveFileDialog saveFileDialog1;
         private OpenFileDialog openFileDialog1;
-        #endregion
+        private BindingSource kProcTypeBindingSource;
     }
 }

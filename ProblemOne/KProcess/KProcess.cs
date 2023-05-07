@@ -1,51 +1,71 @@
-﻿namespace ProblemOne
+﻿using ProblemOne.KStates;
+
+namespace ProblemOne
 {
+    public static class KProcessExtensions
+    {
+        public static KProcess AddBlockBinding(this KProcess process, KBlock block, int blockDuration)
+        {
+            var binding = new KBlockBinding(block, process, blockDuration);
+            process.BlockBindings.Add(binding);
+            block.Bindings.Add(binding);
+            return process;
+        }
+    }
+
     public class KProcess
     {
-        public Guid Id { get; set; }
         public int Index { get; set; }
-        public int ThreadIndex { get; set; }
-        public KStatus Status 
-        { 
-            get
-            {
-                if (NextBlock == null) return KStatus.Done;
+        public int ExecutorIndex { get; set; } = -1;
 
-                if (CurrentBlock == null || CurrentBlock.Status == KStatus.Idle || CurrentBlock.Status == KStatus.Done)
-                    return KStatus.Idle;
-                
-                return KStatus.Busy;
-            } 
+        public ICollection<KBlockBinding> BlockBindings { get; } = new List<KBlockBinding>();
+
+        public KProcessor? Executor { get; set; } = null;
+
+        //public int LastExecutedBlockIndex { get; set; } = -1;
+
+        public KBlockBinding? CurrentTask
+        {
+            get { return BlockBindings.Where(bb => bb.Status != BlockState.Done).FirstOrDefault(bb => bb.Status == BlockState.Busy); }
         }
 
-        public KBlock? CurrentBlock
+        public KBlockBinding? NextTask
         {
-            get { return Blocks.FirstOrDefault(b => b.Status == KStatus.Busy); }
-            set
-            {
-                if (value == null) return;
-                KBlock? block = Blocks.FirstOrDefault(b => b.Id == value.Id);
-                if (block == null) return;
-                block.Status = KStatus.Busy;
+            get 
+            { 
+                if(CurrentTask == null)
+                    return BlockBindings.Where(bb => bb.Status != BlockState.Done).FirstOrDefault();
+                else
+                    return BlockBindings.Where(bb => bb.Status != BlockState.Done).FirstOrDefault(bb => bb.Block.PipelineIndex == CurrentTask.Block.PipelineIndex + 1);
             }
         }
-        public KBlock? NextBlock
+
+        public ProcessState Status
         {
-            get { return Blocks.FirstOrDefault(b => b.Status == KStatus.Idle); }
+            get
+            {
+                if (BlockBindings.All(bb => bb.Status == BlockState.Done)) return ProcessState.Done;
+                if (Executor == null) return ProcessState.Ready;
+                if (CurrentTask != null && CurrentTask.Status == BlockState.Busy) return ProcessState.Busy;
+                if (NextTask != null && NextTask.Status == BlockState.Waiting) return ProcessState.Waiting;
+                if (CurrentTask ==  null) return ProcessState.Idle;
+                if (Executor != null) return ProcessState.Binded;
+                
+                return ProcessState.Undefined;
+            }
         }
 
-        public ICollection<KBlock> Blocks { get; set; } = new List<KBlock>();
-
-        public KProcess()
+        public KProcess(int index)
         {
-            Id = Guid.NewGuid();
+            Index = index;
         }
 
         public void Reset()
         {
-            foreach (KBlock block in Blocks)
-                block.Reset();
-
+            ExecutorIndex = -1;
+            Executor = null;
+            foreach(var blockBindings in BlockBindings)
+                blockBindings.Reset();
         }
     }
 }

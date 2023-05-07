@@ -104,6 +104,9 @@ namespace ProblemOne.Model
         public Stack<KVertex> VerticesStack { get; } = new();
         public static void GetCriticalPath(KGraph graph, CancellationToken cancellationToken, KVertex? nextVertex = null, KPath<KVertex>? path = null)
         {
+            if (graph.Vertices.Count <= 0)
+                return;
+
             bool forceBreak = false;
 
             if (path == null)

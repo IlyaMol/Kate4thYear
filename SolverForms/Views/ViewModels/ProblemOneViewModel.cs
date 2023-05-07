@@ -6,7 +6,11 @@ using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
+<<<<<<<< HEAD:SolverForms/Views/ViewModels/ProblemOneViewModel.cs
 namespace SolverForms.Views.ViewModels
+========
+namespace SolverForms.ViewModels
+>>>>>>>> asTutor:SolverForms/ViewModels/MainFormViewModel.cs
 {
     public class ProblemOneViewModel : INotifyPropertyChanged
     {
@@ -22,7 +26,28 @@ namespace SolverForms.Views.ViewModels
         private ConcurrentBag<KPath<KVertex>> _criticalPaths = new();
         private KPath<KVertex> selectedCriticalPath = new();
 
+        public IList<KProcType> ProcTypes { get; } = new List<KProcType>()
+        {
+            new KProcType() { Name = "Асинхронный", Type = EProcType.Async},
+            new KProcType() { Name = "Первый синх.", Type = EProcType.SyncFirst},
+            new KProcType() { Name = "Второй синх.", Type = EProcType.SyncSecond}
+        };
+        private EProcType _selectedProcType = EProcType.Async;
+        public EProcType SelectedProcType 
+        {
+            get { return _selectedProcType; }
+            set
+            {
+                if (_selectedProcType == value) return;
+                _selectedProcType = value;
+                RecalcResult();
+                OnPropertyChanged();
+            }
+        }
+
         private KGraph? graph;
+
+        private float _drawingScale = 5;
         #endregion
 
         #region Properties
@@ -60,6 +85,7 @@ namespace SolverForms.Views.ViewModels
             get { return _sourceMatrix; }
             set
             {
+                if (_sourceMatrix == null) return;
                 if (_sourceMatrix == value) return;
                 _sourceMatrix = value;
                 OnPropertyChanged();
@@ -76,7 +102,7 @@ namespace SolverForms.Views.ViewModels
             }
         }
 
-        public ConcurrentBag<KPath<KVertex>> criticalPaths
+        private ConcurrentBag<KPath<KVertex>> criticalPaths
         {
             get { return _criticalPaths; }
             set
@@ -88,7 +114,6 @@ namespace SolverForms.Views.ViewModels
                 OnPropertyChanged(nameof(CriticalPathCount));
             }
         }
-
         public int CriticalPathCount
         {
             get
@@ -135,7 +160,14 @@ namespace SolverForms.Views.ViewModels
             }
         }
 
+<<<<<<<< HEAD:SolverForms/Views/ViewModels/ProblemOneViewModel.cs
         private float _drawingScale = 5;
+========
+        public delegate void UpdateFrameDelegate(KGScene scene);
+        public event UpdateFrameDelegate? OnFrameUpdate;
+
+        
+>>>>>>>> asTutor:SolverForms/ViewModels/MainFormViewModel.cs
         public float DrawingScale
         {
             get { return _drawingScale; }
@@ -147,8 +179,11 @@ namespace SolverForms.Views.ViewModels
                 RedrawGraphics();
             }
         }
+<<<<<<<< HEAD:SolverForms/Views/ViewModels/ProblemOneViewModel.cs
 
 
+========
+>>>>>>>> asTutor:SolverForms/ViewModels/MainFormViewModel.cs
         private float currentSceneWidth = 0;
         public float CurrentSceneWidth
         {
@@ -174,6 +209,7 @@ namespace SolverForms.Views.ViewModels
             }
         }
         #endregion
+<<<<<<<< HEAD:SolverForms/Views/ViewModels/ProblemOneViewModel.cs
 
         #region Delegates
         public delegate void UpdateFrameDelegate(KGScene scene);
@@ -182,6 +218,8 @@ namespace SolverForms.Views.ViewModels
         #region Events
         public event UpdateFrameDelegate? OnFrameUpdate;
         #endregion
+========
+>>>>>>>> asTutor:SolverForms/ViewModels/MainFormViewModel.cs
 
         #region Methods
         public void DataSourceChangedDelegate(int[,] newDataSource)
@@ -194,29 +232,39 @@ namespace SolverForms.Views.ViewModels
             RecalcResult();
         }
 
-        public KStateMachine? Machine { get; private set; } = null;
+        public KStateMachine? Machine = null;
         public void RecalcResult()
         {
             SubProcess = KMatrixTransform.SplitMatrix(SourceMatrix, _processorCount);
             if (SubProcess.Count < 1) return;
-
-            Machine = KStateMachine.BuildFromMatrix(SubProcess);
 
             int[,] preparedMatrix = KMatrixTransform.BuildProcTimeMatrix(SubProcess);
 
             CancellationTokenSource s = new CancellationTokenSource();
             if (KGraph.TryBuid(preparedMatrix, out graph))
                 KGraph.GetCriticalPath(graph, s.Token);
-
             criticalPaths = graph.CriticalPaths;
-
             ResultMatrix = preparedMatrix;
+            KStateMachine.TryBuild(SourceMatrix, _processorCount, out Machine);
+
+            if (graph == null) { return; }
+            if (criticalPaths.Count > 0 && _selectedCriticalPathIndex > 0)
+            {
+                int count = 0;
+                foreach (KPath<KVertex> kp in criticalPaths)
+                {
+                    count++;
+                    if (count == _selectedCriticalPathIndex)
+                        selectedCriticalPath = kp;
+                }
+            }
 
             RedrawGraphics();
         }
 
         public void RedrawGraphics()
         {
+<<<<<<<< HEAD:SolverForms/Views/ViewModels/ProblemOneViewModel.cs
             if (graph == null) { return; }
             if (criticalPaths.Count > 0 && _selectedCriticalPathIndex > 0)
             {
@@ -232,6 +280,14 @@ namespace SolverForms.Views.ViewModels
             KGLayer? machineResultGraphics = Machine?.Execute(KProcType.SyncFirst, BulidCombined).BuildGraphics();
             // TODO(wwaffe): here start of test graphics code
             KGScene scene = KGScene.NewScene()
+========
+
+            KGLayer? machineResultGraphics = Machine?.Execute(SelectedProcType, BulidCombined)
+                                                     .BuildGraphics();
+            
+           // TODO(wwaffe): here start of test graphics code
+           KGScene scene = KGScene.NewScene()
+>>>>>>>> asTutor:SolverForms/ViewModels/MainFormViewModel.cs
                                    .SetDimensions(width: CurrentSceneWidth, height: CurrentSceneHeight, padding: new Padding(20))
                                    .UseCoordPlane(yDelimeters: ProcessorCount, scale: DrawingScale)
                                    .AddLayer(machineResultGraphics)

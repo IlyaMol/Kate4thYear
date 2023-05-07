@@ -1,128 +1,96 @@
-﻿namespace ProblemOne
+﻿using ProblemOne.KStates;
+using System.Diagnostics;
+
+namespace ProblemOne
 {
-    public class KStateMachine
+    public static class KStateMachineExtensions
     {
-        public ICollection<KProcess> Processes { get; private set; } = new List<KProcess>();
-
-        public static KStateMachine BuildFromMatrix(in ICollection<int[,]> subMatrixArgs)
+        public static KStateMachine AddProcessors(this KStateMachine machine, int procCount)
         {
-            KStateMachine machine= new KStateMachine();
-
-            int threadIndex = 0;
-            foreach(int[,] submatrix in subMatrixArgs)
-            {
-                for (int rowIndex = 0; rowIndex< submatrix.GetLength(0); rowIndex++)
-                {
-                    KProcess? process = machine.Processes.FirstOrDefault(pr => pr.Index == rowIndex);
-                    if(process == null)
-                    {
-                        process = new KProcess() { Index = rowIndex };
-                        machine.Processes.Add(process);
-                    }
-
-                    for (int columnIndex = 0; columnIndex < submatrix.GetLength(1); columnIndex++)
-                    {
-                        KBlock block = new KBlock()
-                        {
-                            ProcessId = process.Id,
-                            Duration= submatrix[rowIndex, columnIndex],
-                            PipelineIndex= columnIndex,
-                            ThreadIndex= threadIndex
-                        };
-                        process.Blocks.Add(block);
-                    }
-                }
-                threadIndex++;
-            }
+            for (int iteration = 0; iteration < procCount; iteration++)
+                machine.Processors.Add(new KProcessor(machine) { Index = iteration });
             return machine;
         }
+    }
 
-        public KStateMachine Execute(KProcType procType, bool combined = true)
+    public class KStateMachine
+    {
+        public ICollection<KBlock> Blocks { get; set; } = new List<KBlock>();
+        public ICollection<KProcess> Processes { get; private set; } = new List<KProcess>();
+        public ICollection<KProcessor> Processors { get; set; } = new List<KProcessor>();
+
+        public static bool TryBuild(in int[,] matrix, int processorCount, out KStateMachine machine)
         {
-            // NOTE(wwaffe): one iteration of this while loop = one tick for our machine
-            int tickCount = 0;
-            int currentThreadIndex = 0;
-            List<int> busyBlockIndex = new List<int>();
-            foreach (KProcess process in Processes)
-                process.Reset();
-            while(Processes.Any(p => p.Status != KStatus.Done))
+            machine = new KStateMachine().AddProcessors(processorCount);
+
+            for (int rowIndex = 0; rowIndex < matrix.GetLength(0); rowIndex++)
             {
-                foreach(KProcess process in Processes)
+                KProcess? process = new KProcess(rowIndex);
+                machine.Processes.Add(process);
+
+                for (int columnIndex = 0; columnIndex < matrix.GetLength(1); columnIndex++)
                 {
-                    if(process.Status == KStatus.Busy || process.Status == KStatus.Done)
+                    KBlock? currentBlock = machine.Blocks.FirstOrDefault(b => b.PipelineIndex == columnIndex);
+
+                    if (currentBlock == null)
                     {
-                        if (process.CurrentBlock != null
-                            && process.CurrentBlock.Duration + process.CurrentBlock.StartTime <= tickCount)
-                        {
-                            busyBlockIndex.Remove(process.CurrentBlock.PipelineIndex);
-                            process.CurrentBlock.Status = KStatus.Done;
-                        }
+                        currentBlock = new KBlock(columnIndex);
+                        machine.Blocks.Add(currentBlock);
                     }
+
+                    process.AddBlockBinding(currentBlock, matrix[rowIndex, columnIndex]);
+                }
+            }
+            return true;
+        }
+
+        public KStateMachine Execute(EProcType procType, bool combined = true)
+        {
+            int tickCount = 0;
+            ResetStates();
+            // одна итерация цикла - один такт машины
+            while (Processes.Any(p => p.Status != ProcessState.Done))
+            {
+                // TODO(wwaffe): выполняем две операции за такт, дабы не дать процессорам простаивать
+                for(int iterations = 0; iterations < 2; iterations++)
+                {
+                    // назначаем свободным процессорам незанятые процессы по порядку
+                    BindProcesses(combined);
+
+                    // либо превому освободившемуся процессору, первый доступный процесс
+                    // пробуем исполнить свободные блоки в ожидающих процессах
+                    ExecuteProcessors(tickCount, procType);
                 }
 
-                if(!combined)
-                    if(Processes
-                        .SelectMany(p => p.Blocks)
-                        .Where(b => b.ThreadIndex == currentThreadIndex)
-                        .All(b => b.Status == KStatus.Done)
-                      )
-                        currentThreadIndex++;
-
-                KBlock previousBlock= null;
-                foreach (KProcess process in Processes)
-                {
-                    if (process.Status == KStatus.Idle)
-                    {
-                        KBlock? nextBlock = process.NextBlock;
-
-                        if (nextBlock != null)
-                        {
-                            if (!combined && nextBlock.ThreadIndex != currentThreadIndex) continue;
-
-                            switch (procType)
-                            {
-                                case KProcType.Async:
-                                    if (!busyBlockIndex.Contains(nextBlock.PipelineIndex))
-                                    {
-                                        process.CurrentBlock = nextBlock;
-                                        nextBlock.StartTime = tickCount;
-                                        busyBlockIndex.Add(nextBlock.PipelineIndex);
-                                    }
-                                    break;
-                                case KProcType.SyncFirst:
-                                    KProcess? prevProcess = Processes.FirstOrDefault(p => p.Index == process.Index - 1);
-
-                                    if (prevProcess != null && prevProcess.CurrentBlock != null && prevProcess.CurrentBlock.StartTime + prevProcess.CurrentBlock.Duration > tickCount)
-                                    {
-                                        // если предыдущий процесс еще выполняет свой блок, не переходим к следующему процессу
-                                        continue;
-                                    }
-
-                                    KProcess? nextProcess = Processes.FirstOrDefault(p => p.Index == process.Index + 1);
-
-                                    if (nextProcess != null && nextProcess.CurrentBlock != null)
-                                    {
-                                        if (nextProcess.CurrentBlock.StartTime + tickCount > nextBlock.Duration + tickCount)
-                                            continue;
-                                    }
-
-                                    if (!busyBlockIndex.Contains(nextBlock.PipelineIndex))
-                                    {
-                                        process.CurrentBlock = nextBlock;
-                                        nextBlock.StartTime = tickCount;
-                                        busyBlockIndex.Add(nextBlock.PipelineIndex);
-                                    }
-                                    break;
-                                case KProcType.SyncSecond:
-                                    
-                                    break;
-                            }
-                        }
-                    }
-                }
                 tickCount++;
             }
             return this;
+        }
+
+        public void ResetStates()
+        {
+            foreach (var block in Blocks)
+                block.Reset();
+            foreach (var process in Processes)
+                process.Reset();
+        }
+
+        private void BindProcesses(bool isCombined)
+        {
+            // в зависимости от необходимости совмещения
+            if(isCombined)
+                foreach (KProcessor processor in Processors.Where(p => p.Status == ProcessorState.Idle).ToList())
+                    processor.BindProcess(Processes.FirstOrDefault(p => p.Status == ProcessState.Ready));
+            else
+                if(Processors.All(p => p.Status == ProcessorState.Idle))
+                    foreach (KProcessor processor in Processors.Where(p => p.Status == ProcessorState.Idle).ToList())
+                        processor.BindProcess(Processes.FirstOrDefault(p => p.Status == ProcessState.Ready));
+        }
+
+        private void ExecuteProcessors(int tickCount, EProcType executionType)
+        {
+            foreach (var processor in Processors)
+                processor.Execute(tickCount, executionType);
         }
     }
 }

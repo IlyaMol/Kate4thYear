@@ -1,8 +1,7 @@
 ﻿using ProblemOne;
 using SolverForms.DrawLib;
-using SolverForms.Extensions;
 using SolverForms.Helpers;
-using SolverForms.Views.ViewModels;
+using SolverForms.ViewModels;
 
 namespace SolverForms.Views
 {
@@ -17,20 +16,26 @@ namespace SolverForms.Views
 
             sourceMatrixView.SuspendLayout();
             resultMatrixView.SuspendLayout();
+            buildCombinedCheckBox.SuspendLayout();
 
             sourceMatrixView.AutoSize = true;
             sourceMatrixView.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             resultMatrixView.AutoSize = true;
             resultMatrixView.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            resultMatrixView.ReadOnly = true;
+            resultMatrixView.ReadOnly= true;
+            buildCombinedCheckBox.Checked = true;
 
             resultMatrixView.ResumeLayout();
             resultMatrixView.PerformLayout();
             sourceMatrixView.ResumeLayout();
             sourceMatrixView.PerformLayout();
-
+            buildCombinedCheckBox.ResumeLayout();
+            buildCombinedCheckBox.PerformLayout();
             viewModel.CurrentSceneHeight = drawPanel.Height;
             viewModel.CurrentSceneWidth = drawPanel.Width;
+
+            comboBox1.DisplayMember = "Name";
+            comboBox1.ValueMember = "Type";
 
             sourceMatrixView.DataSourceChanged += viewModel.DataSourceChangedDelegate;
             drawPanel.Resize += DrawPanel_Resize;
@@ -142,6 +147,20 @@ namespace SolverForms.Views
                 true,
                 DataSourceUpdateMode.OnPropertyChanged
                 );
+            comboBox1.DataBindings.Add
+                (
+                nameof(comboBox1.DataSource),
+                viewModel,
+                nameof(viewModel.ProcTypes)
+                );
+            comboBox1.DataBindings.Add
+                (
+                nameof(comboBox1.SelectedValue),
+                viewModel,
+                nameof(viewModel.SelectedProcType),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged
+                );
         }
         private void SaveDataButton_Click(object sender, EventArgs e)
         {
@@ -173,6 +192,33 @@ namespace SolverForms.Views
                 viewModel.BulidCombined = data.BulidCombined;
                 viewModel.DrawingScale = data.DrawingScale;
                 viewModel.SourceMatrix = data.Data.ToTwoDimArray(data.BlockCount);
+            }
+            /*viewModel.ProcessorCount = 3;
+            viewModel.BulidCombined = true;
+            viewModel.DrawingScale = 8;
+            viewModel.SourceMatrix = new[,]
+            {
+                { 4,2,3 },
+                { 1,4,1 },
+                { 3,3,2 },
+                { 3,1,2 }
+            };*/
+        }
+
+        private void saveDataButton_Click(object sender, EventArgs e)
+        {
+            DialogResult result = saveFileDialog1.ShowDialog(this);
+            if(result == DialogResult.OK)
+            {
+                string jsonString = Json.Serialize(new SourceData()
+                {
+                    BulidCombined = viewModel.BulidCombined,
+                    Data = viewModel.SourceMatrix.ToOneDimArray(),
+                    DrawingScale = viewModel.DrawingScale,
+                    ProcessorCount = viewModel.ProcessorCount,
+                    BlockCount = viewModel.SourceMatrix.GetLength(1)
+                });
+                FileHelper.WriteToFile(jsonString, saveFileDialog1.FileName);
             }
         }
     }
