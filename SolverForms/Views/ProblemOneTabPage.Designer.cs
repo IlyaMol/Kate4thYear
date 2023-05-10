@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LauncherForm));
             this.sourceMatrixView = new SolverForms.KMatrixView();
             this.loadDataButton = new System.Windows.Forms.Button();
             this.resultMatrixView = new SolverForms.KMatrixView();
@@ -372,7 +372,7 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(114, 3);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(85, 23);
+            this.comboBox1.Size = new System.Drawing.Size(100, 23);
             this.comboBox1.TabIndex = 14;
             // 
             // drawingTableLayoutPanel
@@ -494,3 +494,4 @@
         private BindingSource kProcTypeBindingSource;
     }
 }
+#endregion

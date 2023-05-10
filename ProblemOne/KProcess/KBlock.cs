@@ -21,6 +21,8 @@
             }
         }
 
+        public KBlock? PreviousBlock
+
         public KBlock()
         {
             Id = Guid.NewGuid();
@@ -37,9 +39,12 @@
             IsBlocked = false;
         }
 
-        public int GetSummaryDuration()
+        // выполнен ли всеми процессами
+        public bool IsCompleted()
         {
-            return Bindings.Where(bb => bb.Process.Status != KStates.ProcessState.Ready).Sum(bb => bb.BlockDuration);
+            var curentProcesses = Bindings.Where(bb => bb.Process.Status != KStates.ProcessState.Ready
+                               && bb.Process.Status != KStates.ProcessState.Undefined).ToList();
+            return curentProcesses.All(bb => bb.Status == KStates.BlockState.Done);
         }
     }
 }

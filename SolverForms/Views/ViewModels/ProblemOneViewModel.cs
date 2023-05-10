@@ -6,11 +6,7 @@ using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-<<<<<<<< HEAD:SolverForms/Views/ViewModels/ProblemOneViewModel.cs
 namespace SolverForms.Views.ViewModels
-========
-namespace SolverForms.ViewModels
->>>>>>>> asTutor:SolverForms/ViewModels/MainFormViewModel.cs
 {
     public class ProblemOneViewModel : INotifyPropertyChanged
     {
@@ -159,15 +155,9 @@ namespace SolverForms.ViewModels
                 RedrawGraphics();
             }
         }
-
-<<<<<<<< HEAD:SolverForms/Views/ViewModels/ProblemOneViewModel.cs
-        private float _drawingScale = 5;
-========
         public delegate void UpdateFrameDelegate(KGScene scene);
         public event UpdateFrameDelegate? OnFrameUpdate;
 
-        
->>>>>>>> asTutor:SolverForms/ViewModels/MainFormViewModel.cs
         public float DrawingScale
         {
             get { return _drawingScale; }
@@ -179,11 +169,6 @@ namespace SolverForms.ViewModels
                 RedrawGraphics();
             }
         }
-<<<<<<<< HEAD:SolverForms/Views/ViewModels/ProblemOneViewModel.cs
-
-
-========
->>>>>>>> asTutor:SolverForms/ViewModels/MainFormViewModel.cs
         private float currentSceneWidth = 0;
         public float CurrentSceneWidth
         {
@@ -209,17 +194,6 @@ namespace SolverForms.ViewModels
             }
         }
         #endregion
-<<<<<<<< HEAD:SolverForms/Views/ViewModels/ProblemOneViewModel.cs
-
-        #region Delegates
-        public delegate void UpdateFrameDelegate(KGScene scene);
-        #endregion
-
-        #region Events
-        public event UpdateFrameDelegate? OnFrameUpdate;
-        #endregion
-========
->>>>>>>> asTutor:SolverForms/ViewModels/MainFormViewModel.cs
 
         #region Methods
         public void DataSourceChangedDelegate(int[,] newDataSource)
@@ -264,30 +238,11 @@ namespace SolverForms.ViewModels
 
         public void RedrawGraphics()
         {
-<<<<<<<< HEAD:SolverForms/Views/ViewModels/ProblemOneViewModel.cs
-            if (graph == null) { return; }
-            if (criticalPaths.Count > 0 && _selectedCriticalPathIndex > 0)
-            {
-                int count = 0;
-                foreach (KPath<KVertex> kp in criticalPaths)
-                {
-                    count++;
-                    if (count == _selectedCriticalPathIndex)
-                        selectedCriticalPath = kp;
-                }
-            }
-
-            KGLayer? machineResultGraphics = Machine?.Execute(KProcType.SyncFirst, BulidCombined).BuildGraphics();
-            // TODO(wwaffe): here start of test graphics code
-            KGScene scene = KGScene.NewScene()
-========
-
             KGLayer? machineResultGraphics = Machine?.Execute(SelectedProcType, BulidCombined)
                                                      .BuildGraphics();
             
            // TODO(wwaffe): here start of test graphics code
            KGScene scene = KGScene.NewScene()
->>>>>>>> asTutor:SolverForms/ViewModels/MainFormViewModel.cs
                                    .SetDimensions(width: CurrentSceneWidth, height: CurrentSceneHeight, padding: new Padding(20))
                                    .UseCoordPlane(yDelimeters: ProcessorCount, scale: DrawingScale)
                                    .AddLayer(machineResultGraphics)

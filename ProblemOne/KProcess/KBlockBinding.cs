@@ -10,6 +10,14 @@ namespace ProblemOne
         public int BlockDuration { get; set; }
         public int BlockEndTime { get { return BlockStartTime + BlockDuration; } }
 
+        public KBlockBinding? PreviousBlock 
+        { 
+            get
+            {
+                return Process.BlockBindings.FirstOrDefault(bb => bb.Block.PipelineIndex == Block.PipelineIndex - 1);
+            } 
+        }
+
         private BlockState _status = BlockState.Ready;
         public BlockState Status
         {
@@ -37,6 +45,11 @@ namespace ProblemOne
             BlockDuration = blockDuration;
         }
 
+        public int DoFakeJob(int currentTick)
+        {
+            return BlockDuration + currentTick;
+        }
+
         public void DoTick(int currentTick, EProcType syncType)
         {
             var nextBlock = Process.BlockBindings.FirstOrDefault(bb => bb.Block.PipelineIndex == Block.PipelineIndex + 1);
@@ -56,6 +69,10 @@ namespace ProblemOne
                         if (syncType == EProcType.SyncFirst)
                             if (prevBlock != null && prevBlock.BlockEndTime != BlockStartTime)
                                 prevBlock.BlockStartTime = BlockStartTime - prevBlock.BlockDuration;
+                        if (syncType == EProcType.SyncSecond)
+                            if (prevBlock != null && prevBlock.BlockEndTime != BlockStartTime && prevBlock.Block.IsBlocked == false)
+                                if(PreviousBlock != null && PreviousBlock.BlockEndTime != BlockStartTime)
+                                    prevBlock.BlockStartTime = BlockStartTime - prevBlock.BlockDuration;
                     }
                 }
             }
@@ -72,25 +89,36 @@ namespace ProblemOne
                 }
                 if (syncType == EProcType.SyncSecond)
                 {
-                    // откладываем назначение, если текущий блок не выполнен
+                    // откладываем назначение, если предыдущий блок не выполнен
                     // на всех процессорах
-
+                    if (prevBlock != null)
+                    {
+                        if(!prevBlock.Block.IsBlocked)
+                            if ((nextBlock != null && nextBlock.Block.CalculatedCurrentEndTime > currentTick + BlockDuration) || prevBlock.Block.IsCompleted() == false)
+                                return;
+                    }
                 }
 
-                // выполняем блок
+                // выполняем блок 
                 // обеспечивая линейный порядок
                 // предоставления блоков процессорам
                 if (Block.LastExecutorIndex == this.Process.Executor!.ParentMachine.Processors.Count-1)
                     Block.LastExecutorIndex = -1;
-
-                if(Block.LastExecutorIndex == Process.Executor!.Index 
-                    || Block.LastExecutorIndex == Process.Executor!.Index - 1 
-                    || Block.LastExecutorIndex == -1)
+                try
                 {
-                    Block.IsBlocked = true;
-                    BlockStartTime = currentTick;
-                    Block.CurrentProcess = this.Process;
-                    Block.LastExecutorIndex = this.Process.Executor!.Index;
+                    if (Block.LastExecutorIndex == Process.Executor!.Index
+                        || Block.LastExecutorIndex == Process.Executor!.Index - 1
+                        || Block.LastExecutorIndex == -1)
+                    {
+                        Block.IsBlocked = true;
+                        BlockStartTime = currentTick;
+                        Block.CurrentProcess = this.Process;
+                        Block.LastExecutorIndex = this.Process.Executor!.Index;
+                    }
+                }
+                catch(Exception)
+                {
+
                 }
             }
             return;

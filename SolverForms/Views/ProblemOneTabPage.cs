@@ -1,7 +1,7 @@
 ﻿using ProblemOne;
 using SolverForms.DrawLib;
 using SolverForms.Helpers;
-using SolverForms.ViewModels;
+using SolverForms.Views.ViewModels;
 
 namespace SolverForms.Views
 {
@@ -193,16 +193,6 @@ namespace SolverForms.Views
                 viewModel.DrawingScale = data.DrawingScale;
                 viewModel.SourceMatrix = data.Data.ToTwoDimArray(data.BlockCount);
             }
-            /*viewModel.ProcessorCount = 3;
-            viewModel.BulidCombined = true;
-            viewModel.DrawingScale = 8;
-            viewModel.SourceMatrix = new[,]
-            {
-                { 4,2,3 },
-                { 1,4,1 },
-                { 3,3,2 },
-                { 3,1,2 }
-            };*/
         }
 
         private void saveDataButton_Click(object sender, EventArgs e)

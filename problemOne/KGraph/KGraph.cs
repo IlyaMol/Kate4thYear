@@ -109,13 +109,11 @@ namespace ProblemOne.Model
 
             bool forceBreak = false;
 
-            if (path == null)
-                path = new();
+            path ??= new();
 
-            List<KVertex> visitedVertices = new List<KVertex>();
+            List<KVertex> visitedVertices = new();
             if (graph.Vertices.Count <= 0) return;
-            if (nextVertex == null)
-                nextVertex = graph.Vertices.First();
+            nextVertex ??= graph.Vertices.First();
             graph.VerticesStack.Push(nextVertex);
 
             // если целевая вершина конечная
@@ -126,11 +124,11 @@ namespace ProblemOne.Model
                     //path.Reverse();
                     // если в списке путей пути меньшей длины чем найденый
                     // обнуляем найденное
-                    if (graph.CriticalPaths.Count == 0
+                    if (graph.CriticalPaths.IsEmpty
                         || path.Sum(v => v.Weight) > graph.CriticalPaths.First().Length)
                     {
                         graph.CriticalPaths = new() { path };
-                    } else if (graph.CriticalPaths.Count == 0
+                    } else if (graph.CriticalPaths.IsEmpty
                         || path.Sum(v => v.Weight) == graph.CriticalPaths.First().Length)
                         graph.CriticalPaths.Add(path);
                     forceBreak = true;
