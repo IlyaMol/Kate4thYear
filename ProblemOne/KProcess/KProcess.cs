@@ -18,11 +18,11 @@ namespace ProblemOne
         public int Index { get; set; }
         public int ExecutorIndex { get; set; } = -1;
 
+        public bool IsCurrentlyBinded {  get { return Executor != null; } }
+
         public ICollection<KBlockBinding> BlockBindings { get; } = new List<KBlockBinding>();
 
         public KProcessor? Executor { get; set; } = null;
-
-        //public int LastExecutedBlockIndex { get; set; } = -1;
 
         public KBlockBinding? CurrentTask
         {
@@ -38,6 +38,11 @@ namespace ProblemOne
                 else
                     return BlockBindings.Where(bb => bb.Status != BlockState.Done).FirstOrDefault(bb => bb.Block.PipelineIndex == CurrentTask.Block.PipelineIndex + 1);
             }
+        }
+
+        public KBlockBinding FirstBlock
+        {
+            get { return BlockBindings.First(); }
         }
 
         public ProcessState Status

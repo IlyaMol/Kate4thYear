@@ -2,6 +2,7 @@
 
 namespace ProblemOne
 {
+
     public class KBlockBinding
     {
         public KBlock Block { get; private set; }
@@ -16,6 +17,20 @@ namespace ProblemOne
             {
                 return Process.BlockBindings.FirstOrDefault(bb => bb.Block.PipelineIndex == Block.PipelineIndex - 1);
             } 
+        }
+        public KBlockBinding? NextBlock
+        {
+            get
+            {
+                return Process.BlockBindings.FirstOrDefault(bb => bb.Block.PipelineIndex == Block.PipelineIndex + 1);
+            }
+        }
+        public KBlockBinding? PreviousBlockBindingForBlock
+        {
+            get
+            {
+                return Block.Bindings.Where(bb => bb.Process.IsCurrentlyBinded).FirstOrDefault(bb => bb.Process.Index == Process.Index - 1);
+            }
         }
 
         private BlockState _status = BlockState.Ready;
@@ -45,16 +60,8 @@ namespace ProblemOne
             BlockDuration = blockDuration;
         }
 
-        public int DoFakeJob(int currentTick)
-        {
-            return BlockDuration + currentTick;
-        }
-
         public void DoTick(int currentTick, EProcType syncType)
         {
-            var nextBlock = Process.BlockBindings.FirstOrDefault(bb => bb.Block.PipelineIndex == Block.PipelineIndex + 1);
-            var prevBlock = Process.BlockBindings.FirstOrDefault(bb => bb.Block.PipelineIndex == Block.PipelineIndex - 1);
-
             if (Block.IsBlocked)
             {
                 if (Block.CurrentProcess == Process)
@@ -67,12 +74,25 @@ namespace ProblemOne
                         Block.CurrentProcess = null;
 
                         if (syncType == EProcType.SyncFirst)
-                            if (prevBlock != null && prevBlock.BlockEndTime != BlockStartTime)
-                                prevBlock.BlockStartTime = BlockStartTime - prevBlock.BlockDuration;
+                            if (PreviousBlock != null && PreviousBlock.BlockEndTime != BlockStartTime)
+                                PreviousBlock.BlockStartTime = BlockStartTime - PreviousBlock.BlockDuration;
+
                         if (syncType == EProcType.SyncSecond)
-                            if (prevBlock != null && prevBlock.BlockEndTime != BlockStartTime && prevBlock.Block.IsBlocked == false)
-                                if(PreviousBlock != null && PreviousBlock.BlockEndTime != BlockStartTime)
-                                    prevBlock.BlockStartTime = BlockStartTime - prevBlock.BlockDuration;
+                        {
+                            var blockBindings = Block.Bindings.Where(bb => bb.Process.IsCurrentlyBinded);
+
+                            if (blockBindings.Count() > 0)
+                                if (PreviousBlock != null && Block.IsCompleted())
+                                {
+                                    while (true)
+                                    {
+                                        foreach (KBlockBinding bb in blockBindings)
+                                            bb.BlockStartTime--;
+
+                                        if (blockBindings.Any(bb => bb.BlockStartTime - 1 < bb.PreviousBlock!.BlockEndTime)) break;
+                                    }
+                                }
+                        }
                     }
                 }
             }
@@ -82,44 +102,27 @@ namespace ProblemOne
                 {
                     // откладываем выполнение, если время окончания выполнения текущего блока
                     // не совпадает со временем старта выполнения следующего
-                    // (относительно текущего тика машины)
-                    if(nextBlock != null && nextBlock.Block.IsBlocked)
-                        if(nextBlock.Block.CalculatedCurrentEndTime > currentTick + BlockDuration)
+                    if (NextBlock != null && NextBlock.Block.IsBlocked)
+                        if(NextBlock.Block.CalculatedCurrentEndTime > currentTick + BlockDuration)
                             return;
                 }
                 if (syncType == EProcType.SyncSecond)
                 {
                     // откладываем назначение, если предыдущий блок не выполнен
                     // на всех процессорах
-                    if (prevBlock != null)
-                    {
-                        if(!prevBlock.Block.IsBlocked)
-                            if ((nextBlock != null && nextBlock.Block.CalculatedCurrentEndTime > currentTick + BlockDuration) || prevBlock.Block.IsCompleted() == false)
-                                return;
-                    }
+                    if (PreviousBlock != null)
+                        if (!PreviousBlock.Block.IsCompleted()) return;
                 }
 
-                // выполняем блок 
-                // обеспечивая линейный порядок
+                // обеспечивает линейный порядок
                 // предоставления блоков процессорам
-                if (Block.LastExecutorIndex == this.Process.Executor!.ParentMachine.Processors.Count-1)
-                    Block.LastExecutorIndex = -1;
-                try
-                {
-                    if (Block.LastExecutorIndex == Process.Executor!.Index
-                        || Block.LastExecutorIndex == Process.Executor!.Index - 1
-                        || Block.LastExecutorIndex == -1)
-                    {
-                        Block.IsBlocked = true;
-                        BlockStartTime = currentTick;
-                        Block.CurrentProcess = this.Process;
-                        Block.LastExecutorIndex = this.Process.Executor!.Index;
-                    }
-                }
-                catch(Exception)
-                {
+                if (PreviousBlockBindingForBlock != null
+                    && PreviousBlockBindingForBlock.Status == BlockState.Ready) return;
 
-                }
+                Block.IsBlocked = true;
+                BlockStartTime = currentTick;
+                Block.CurrentProcess = this.Process;
+                Block.LastExecutorIndex = this.Process.Executor!.Index;
             }
             return;
         }

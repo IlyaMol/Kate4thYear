@@ -21,8 +21,6 @@
             }
         }
 
-        public KBlock? PreviousBlock
-
         public KBlock()
         {
             Id = Guid.NewGuid();
@@ -43,7 +41,9 @@
         public bool IsCompleted()
         {
             var curentProcesses = Bindings.Where(bb => bb.Process.Status != KStates.ProcessState.Ready
-                               && bb.Process.Status != KStates.ProcessState.Undefined).ToList();
+                               && bb.Process.Status != KStates.ProcessState.Undefined
+                               && bb.Process.Status != KStates.ProcessState.Done).ToList();
+
             return curentProcesses.All(bb => bb.Status == KStates.BlockState.Done);
         }
     }

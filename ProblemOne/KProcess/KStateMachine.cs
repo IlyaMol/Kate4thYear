@@ -57,11 +57,9 @@ namespace ProblemOne
                     // назначаем свободным процессорам незанятые процессы по порядку
                     BindProcesses(combined);
 
-                    // либо превому освободившемуся процессору, первый доступный процесс
                     // пробуем исполнить свободные блоки в ожидающих процессах
                     ExecuteProcessors(tickCount, procType);
                 }
-
                 tickCount++;
             }
             return this;
