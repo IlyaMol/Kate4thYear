@@ -84,8 +84,6 @@ namespace ProblemOne
                             if (blockBindings.Any())
                                 if (PreviousBlock != null && Block.IsCompleted())
                                 {
-                                    if (Block.PipelineIndex == 3) 
-                                        Console.WriteLine();
                                     while (blockBindings.All(bb => bb.BlockStartTime > bb.PreviousBlock!.BlockEndTime))
                                         foreach (KBlockBinding bb in blockBindings)
                                             bb.BlockStartTime--;

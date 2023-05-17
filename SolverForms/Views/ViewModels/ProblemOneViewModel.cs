@@ -222,7 +222,7 @@ namespace SolverForms.Views.ViewModels
             KStateMachine.TryBuild(SourceMatrix, _processorCount, out Machine);
 
             if (graph == null) { return; }
-            if (criticalPaths.Count > 0 && _selectedCriticalPathIndex > 0)
+            if (!criticalPaths.IsEmpty && _selectedCriticalPathIndex > 0)
             {
                 int count = 0;
                 foreach (KPath<KVertex> kp in criticalPaths)
