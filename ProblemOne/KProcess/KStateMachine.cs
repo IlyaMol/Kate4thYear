@@ -93,7 +93,7 @@ namespace ProblemOne
                         processor.BindProcess(Processes.FirstOrDefault(p => p.Status == ProcessState.Ready));
         }
 
-        private int ExecuteProcessors(int tickCount, EProcType executionType, bool isCombined = false)
+        private int ExecuteProcessors(int tickCount, EProcType executionType, bool isCombined)
         {
             foreach (var processor in Processors)
                 tickCount = processor.Execute(tickCount, executionType, isCombined);

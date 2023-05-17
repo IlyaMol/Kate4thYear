@@ -10,9 +10,7 @@ namespace ProblemOne
         public int BlockStartTime { get; set; }
         public int BlockDuration { get; set; }
         public int BlockEndTime { get { return BlockStartTime + BlockDuration; } }
-
         public uint ThreadIndex { get; set; } = 0;
-
         public bool IsCombinedMode
         {
             get 
@@ -21,7 +19,6 @@ namespace ProblemOne
                 return false;
             }
         }
-
         public KBlockBinding? PreviousBlock 
         { 
             get
@@ -39,14 +36,14 @@ namespace ProblemOne
                 return Process.BlockBindings.FirstOrDefault(bb => bb.Block.PipelineIndex == Block.PipelineIndex + 1);
             }
         }
-        public KBlockBinding? PreviousBlockBindingForBlock
+        public KBlockBinding? PreviousBlockBindingForBlock(bool isCombined, EProcType procType)
         {
-            get
-            {
-                if(!IsCombinedMode)
-                    return Block.Bindings.Where(bb => bb.Process.IsCurrentlyBinded).FirstOrDefault(bb => bb.Process.Index == Process.Index - 1);
-                return Block.Bindings.Where(bb => bb.Process.IsCurrentlyBinded && bb.ThreadIndex == ThreadIndex).FirstOrDefault(bb => bb.Process.Index == Process.Index - 1); 
-            }
+            if (procType != EProcType.SyncSecond)
+                return Block.Bindings.Where(bb => bb.Process.IsCurrentlyBinded).FirstOrDefault(bb => bb.Process.Index == Process.Index - 1);
+            else if (isCombined)
+                return Block.Bindings.Where(bb => bb.Process.IsCurrentlyBinded && bb.ThreadIndex == ThreadIndex).FirstOrDefault(bb => bb.Process.Index == Process.Index - 1);
+            else
+                return Block.Bindings.Where(bb => bb.Process.IsCurrentlyBinded).FirstOrDefault(bb => bb.Process.Index == Process.Index - 1);
         }
 
         private BlockState _status = BlockState.Ready;
@@ -76,7 +73,7 @@ namespace ProblemOne
             BlockDuration = blockDuration;
         }
 
-        public int DoTick(int currentTick, EProcType syncType, bool isCombined = false)
+        public int DoTick(int currentTick, EProcType syncType, bool isCombined)
         {
             if (Block.IsBlocked)
             {
@@ -155,13 +152,11 @@ namespace ProblemOne
 
                 // обеспечивает линейный порядок
                 // предоставления блоков процессорам
-                if (PreviousBlockBindingForBlock != null
-                    && PreviousBlockBindingForBlock.Status == BlockState.Ready) return currentTick;
+                if (PreviousBlockBindingForBlock(isCombined, syncType) != null
+                    && PreviousBlockBindingForBlock(isCombined, syncType)!.Status == BlockState.Ready) return currentTick;
 
-                if(PreviousBlockBindingForBlock == null && (PreviousBlock == null || PreviousBlock == Process.TransitiveBlock))
-                {
+                if (PreviousBlockBindingForBlock(isCombined, syncType) == null && (PreviousBlock == null || PreviousBlock == Process.TransitiveBlock))
                     if (Process.Executor!.ParentMachine.Processors.Any(p => p.Status != ProcessorState.Ready)) return currentTick;
-                }
 
                 Block.IsBlocked = true;
                 BlockStartTime = currentTick;
