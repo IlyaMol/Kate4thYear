@@ -4,9 +4,9 @@ namespace ProblemOne
 {
     public static class KProcessExtensions
     {
-        public static KProcess AddBlockBinding(this KProcess process, KBlock block, int blockDuration)
+        public static KProcess AddBlockBinding(this KProcess process, KBlock block, int blockDuration, uint threadIndex = 0)
         {
-            var binding = new KBlockBinding(block, process, blockDuration);
+            var binding = new KBlockBinding(block, process, blockDuration) { ThreadIndex = threadIndex };
             process.BlockBindings.Add(binding);
             block.Bindings.Add(binding);
             return process;
@@ -23,6 +23,11 @@ namespace ProblemOne
         public ICollection<KBlockBinding> BlockBindings { get; } = new List<KBlockBinding>();
 
         public KProcessor? Executor { get; set; } = null;
+
+        // блок перехода между потоками
+        // для первого в процессе блока - либо null, если до этого потоков нет
+        // либо последний исполненный блок для предыдущего потока процесса
+        public KBlockBinding? TransitiveBlock { get; set; }
 
         public KBlockBinding? CurrentTask
         {
@@ -43,6 +48,11 @@ namespace ProblemOne
         public KBlockBinding FirstBlock
         {
             get { return BlockBindings.First(); }
+        }
+
+        public KBlockBinding LastBlock
+        {
+            get { return BlockBindings.Last(); }
         }
 
         public ProcessState Status

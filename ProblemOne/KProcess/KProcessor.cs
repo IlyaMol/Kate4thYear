@@ -6,11 +6,13 @@ namespace ProblemOne
     {
         public static KProcessor BindProcess(this KProcessor processor, in KProcess? bindingProcess)
         {
-            if(bindingProcess== null) return processor;
+            if(bindingProcess == null) return processor;
 
             if(processor.CurrentProcess != null)
-            processor.CurrentProcess.Executor = null;
-
+            {
+                processor.CurrentProcess.Executor = null;
+                bindingProcess.TransitiveBlock = processor.CurrentProcess.LastBlock;
+            }
             processor.CurrentProcess = bindingProcess;
             bindingProcess.Executor = processor;
             bindingProcess.ExecutorIndex = processor.Index;
@@ -52,7 +54,7 @@ namespace ProblemOne
             ParentMachine = parentMachine;
         }
 
-        public int Execute(int startStamp, EProcType syncType)
+        public int Execute(int startStamp, EProcType syncType, bool isCombined = false)
         {
             if (Status == ProcessorState.Idle) return startStamp;
 
@@ -63,11 +65,11 @@ namespace ProblemOne
 
             if (nextBlockBinding != null)
             {
-                startStamp = nextBlockBinding.DoTick(startStamp, syncType);
+                startStamp = nextBlockBinding.DoTick(startStamp, syncType, isCombined);
 
                 // если после предыдущего шага процессор готов - сразу же выполняем следующий блок
                 if (nextBlockBinding.Status == BlockState.Done && Status == ProcessorState.Ready)
-                    startStamp = Execute(startStamp, syncType);
+                    startStamp = Execute(startStamp, syncType, isCombined);
             }
 
             return startStamp;

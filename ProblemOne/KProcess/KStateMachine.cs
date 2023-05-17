@@ -19,24 +19,32 @@ namespace ProblemOne
         public ICollection<KProcess> Processes { get; private set; } = new List<KProcess>();
         public ICollection<KProcessor> Processors { get; set; } = new List<KProcessor>();
 
+        public bool IsCombinedMode { get; set; } = false;
+
         public static bool TryBuild(in int[,] matrix, int processorCount, out KStateMachine machine)
         {
             machine = new KStateMachine().AddProcessors(processorCount);
+
+            uint thread = 0;
 
             for (int rowIndex = 0; rowIndex < matrix.GetLength(0); rowIndex++)
             {
                 KProcess? process = new(rowIndex);
                 machine.Processes.Add(process);
 
+                if (rowIndex % processorCount == 0)
+                    thread++;
+
                 for (int columnIndex = 0; columnIndex < matrix.GetLength(1); columnIndex++)
                 {
+                    
                     KBlock? currentBlock = machine.Blocks.FirstOrDefault(b => b.PipelineIndex == columnIndex);
                     if (currentBlock == null)
                     {
                         currentBlock = new KBlock(columnIndex);
                         machine.Blocks.Add(currentBlock);
                     }
-                    process.AddBlockBinding(currentBlock, matrix[rowIndex, columnIndex]);
+                    process.AddBlockBinding(currentBlock, matrix[rowIndex, columnIndex], thread);
                 }
             }
             return true;
@@ -44,6 +52,7 @@ namespace ProblemOne
 
         public KStateMachine Execute(EProcType procType, bool combined = true)
         {
+            this.IsCombinedMode = combined;
             int tickCount = 0;
             ResetStates();
             // одна итерация цикла - один такт машины
@@ -57,7 +66,7 @@ namespace ProblemOne
 
                     // пробуем исполнить свободные блоки в ожидающих процессах
                     // корректируем тик при использовании совмещения
-                    tickCount = ExecuteProcessors(tickCount, procType);
+                    tickCount = ExecuteProcessors(tickCount, procType, combined);
                 }
                 tickCount++;
             }
@@ -84,10 +93,10 @@ namespace ProblemOne
                         processor.BindProcess(Processes.FirstOrDefault(p => p.Status == ProcessState.Ready));
         }
 
-        private int ExecuteProcessors(int tickCount, EProcType executionType)
+        private int ExecuteProcessors(int tickCount, EProcType executionType, bool isCombined = false)
         {
             foreach (var processor in Processors)
-                tickCount = processor.Execute(tickCount, executionType);
+                tickCount = processor.Execute(tickCount, executionType, isCombined);
             return tickCount;
         }
     }

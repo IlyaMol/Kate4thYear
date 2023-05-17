@@ -50,5 +50,10 @@
         {
             return Bindings.Where(bb => bb.Process.IsCurrentlyBinded).All(bb => bb.Status == KStates.BlockState.Done);
         }
+
+        public bool IsCompletedThread(uint forThread = 0)
+        {
+            return Bindings.Where(bb => bb.ThreadIndex == forThread).All(bb => bb.Status == KStates.BlockState.Done);
+        }
     }
 }
