@@ -12,6 +12,14 @@
 
         public ICollection<KBlockBinding> Bindings { get; } = new List<KBlockBinding>();
 
+        public IEnumerable<KBlockBinding> CurrentBindings
+        {
+            get
+            {
+                return Bindings.Where(bb => bb.Process.IsCurrentlyBinded);
+            }
+        }
+
         public int CalculatedCurrentEndTime
         {
             get
@@ -40,11 +48,7 @@
         // выполнен ли всеми процессами
         public bool IsCompleted()
         {
-            var curentProcesses = Bindings.Where(bb => bb.Process.Status != KStates.ProcessState.Ready
-                               && bb.Process.Status != KStates.ProcessState.Undefined
-                               && bb.Process.Status != KStates.ProcessState.Done).ToList();
-
-            return curentProcesses.All(bb => bb.Status == KStates.BlockState.Done);
+            return Bindings.Where(bb => bb.Process.IsCurrentlyBinded).All(bb => bb.Status == KStates.BlockState.Done);
         }
     }
 }

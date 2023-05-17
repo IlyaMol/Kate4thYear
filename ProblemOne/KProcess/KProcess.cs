@@ -26,7 +26,7 @@ namespace ProblemOne
 
         public KBlockBinding? CurrentTask
         {
-            get { return BlockBindings.Where(bb => bb.Status != BlockState.Done).FirstOrDefault(bb => bb.Status == BlockState.Busy); }
+            get { return BlockBindings.Where(bb => bb.Process.IsCurrentlyBinded && bb.Status != BlockState.Done).FirstOrDefault(bb => bb.Status == BlockState.Busy); }
         }
 
         public KBlockBinding? NextTask
@@ -34,9 +34,9 @@ namespace ProblemOne
             get 
             { 
                 if(CurrentTask == null)
-                    return BlockBindings.Where(bb => bb.Status != BlockState.Done).FirstOrDefault();
+                    return BlockBindings.Where(bb => bb.Process.IsCurrentlyBinded && bb.Status != BlockState.Done).FirstOrDefault();
                 else
-                    return BlockBindings.Where(bb => bb.Status != BlockState.Done).FirstOrDefault(bb => bb.Block.PipelineIndex == CurrentTask.Block.PipelineIndex + 1);
+                    return BlockBindings.Where(bb => bb.Process.IsCurrentlyBinded && bb.Status != BlockState.Done).FirstOrDefault(bb => bb.Block.PipelineIndex == CurrentTask.Block.PipelineIndex + 1);
             }
         }
 

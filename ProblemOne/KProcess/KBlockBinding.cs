@@ -60,7 +60,7 @@ namespace ProblemOne
             BlockDuration = blockDuration;
         }
 
-        public void DoTick(int currentTick, EProcType syncType)
+        public int DoTick(int currentTick, EProcType syncType)
         {
             if (Block.IsBlocked)
             {
@@ -81,16 +81,15 @@ namespace ProblemOne
                         {
                             var blockBindings = Block.Bindings.Where(bb => bb.Process.IsCurrentlyBinded);
 
-                            if (blockBindings.Count() > 0)
+                            if (blockBindings.Any())
                                 if (PreviousBlock != null && Block.IsCompleted())
                                 {
-                                    while (true)
-                                    {
+                                    if (Block.PipelineIndex == 3) 
+                                        Console.WriteLine();
+                                    while (blockBindings.All(bb => bb.BlockStartTime > bb.PreviousBlock!.BlockEndTime))
                                         foreach (KBlockBinding bb in blockBindings)
                                             bb.BlockStartTime--;
-
-                                        if (blockBindings.Any(bb => bb.BlockStartTime - 1 < bb.PreviousBlock!.BlockEndTime)) break;
-                                    }
+                                    currentTick = blockBindings.Max(bb => bb.BlockEndTime);
                                 }
                         }
                     }
@@ -104,27 +103,27 @@ namespace ProblemOne
                     // не совпадает со временем старта выполнения следующего
                     if (NextBlock != null && NextBlock.Block.IsBlocked)
                         if(NextBlock.Block.CalculatedCurrentEndTime > currentTick + BlockDuration)
-                            return;
+                            return currentTick;
                 }
                 if (syncType == EProcType.SyncSecond)
                 {
                     // откладываем назначение, если предыдущий блок не выполнен
                     // на всех процессорах
                     if (PreviousBlock != null)
-                        if (!PreviousBlock.Block.IsCompleted()) return;
+                        if (!PreviousBlock.Block.IsCompleted()) return currentTick;
                 }
 
                 // обеспечивает линейный порядок
                 // предоставления блоков процессорам
                 if (PreviousBlockBindingForBlock != null
-                    && PreviousBlockBindingForBlock.Status == BlockState.Ready) return;
+                    && PreviousBlockBindingForBlock.Status == BlockState.Ready) return currentTick;
 
                 Block.IsBlocked = true;
                 BlockStartTime = currentTick;
                 Block.CurrentProcess = this.Process;
                 Block.LastExecutorIndex = this.Process.Executor!.Index;
             }
-            return;
+            return currentTick;
         }
 
         public void Reset()

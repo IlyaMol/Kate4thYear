@@ -8,6 +8,9 @@ namespace ProblemOne
         {
             if(bindingProcess== null) return processor;
 
+            if(processor.CurrentProcess != null)
+            processor.CurrentProcess.Executor = null;
+
             processor.CurrentProcess = bindingProcess;
             bindingProcess.Executor = processor;
             bindingProcess.ExecutorIndex = processor.Index;
@@ -19,7 +22,16 @@ namespace ProblemOne
     public class KProcessor
     {
         public int Index { get; set; } = 0;
-        public KProcess? CurrentProcess { get; set; }
+
+        private KProcess? _currentProcess;
+        public KProcess? CurrentProcess 
+        { 
+            get { return _currentProcess; }
+            set
+            {
+                _currentProcess = value;
+            }
+        }
 
         public KStateMachine ParentMachine { get; set; }
 
@@ -27,30 +39,22 @@ namespace ProblemOne
         {
             get
             {
-                if(CurrentProcess == null)
-                    return ProcessorState.Idle;
-                else if(CurrentProcess.Status == ProcessState.Done)
-                {
-                    CurrentProcess.Executor = null;
-                    CurrentProcess = null;
-                    return ProcessorState.Idle;
-                }
-                else
-                {
-                    if(CurrentProcess.Status == ProcessState.Busy) return ProcessorState.Busy;
-                    else return ProcessorState.Ready;
-                }
+                if (CurrentProcess == null) return ProcessorState.Idle;
+                if (CurrentProcess != null && (CurrentProcess.Status == ProcessState.Done 
+                    || CurrentProcess.Status == ProcessState.Ready)) return ProcessorState.Idle;
+                else if (CurrentProcess != null && CurrentProcess.Status == ProcessState.Busy) return ProcessorState.Busy;
+                else return ProcessorState.Ready;
             }
         }
 
         public KProcessor(KStateMachine parentMachine)
         {
-            ParentMachine= parentMachine;
+            ParentMachine = parentMachine;
         }
 
-        public void Execute(int startStamp, EProcType syncType)
+        public int Execute(int startStamp, EProcType syncType)
         {
-            if (Status == ProcessorState.Idle) return;
+            if (Status == ProcessorState.Idle) return startStamp;
 
             KBlockBinding? nextBlockBinding = CurrentProcess!.CurrentTask;
 
@@ -59,12 +63,14 @@ namespace ProblemOne
 
             if (nextBlockBinding != null)
             {
-                nextBlockBinding.DoTick(startStamp, syncType);
+                startStamp = nextBlockBinding.DoTick(startStamp, syncType);
 
                 // если после предыдущего шага процессор готов - сразу же выполняем следующий блок
                 if (nextBlockBinding.Status == BlockState.Done && Status == ProcessorState.Ready)
-                    Execute(startStamp, syncType);
+                    startStamp = Execute(startStamp, syncType);
             }
+
+            return startStamp;
         }
     }
 }

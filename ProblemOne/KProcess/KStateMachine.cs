@@ -25,19 +25,17 @@ namespace ProblemOne
 
             for (int rowIndex = 0; rowIndex < matrix.GetLength(0); rowIndex++)
             {
-                KProcess? process = new KProcess(rowIndex);
+                KProcess? process = new(rowIndex);
                 machine.Processes.Add(process);
 
                 for (int columnIndex = 0; columnIndex < matrix.GetLength(1); columnIndex++)
                 {
                     KBlock? currentBlock = machine.Blocks.FirstOrDefault(b => b.PipelineIndex == columnIndex);
-
                     if (currentBlock == null)
                     {
                         currentBlock = new KBlock(columnIndex);
                         machine.Blocks.Add(currentBlock);
                     }
-
                     process.AddBlockBinding(currentBlock, matrix[rowIndex, columnIndex]);
                 }
             }
@@ -58,7 +56,8 @@ namespace ProblemOne
                     BindProcesses(combined);
 
                     // пробуем исполнить свободные блоки в ожидающих процессах
-                    ExecuteProcessors(tickCount, procType);
+                    // корректируем тик при использовании совмещения
+                    tickCount = ExecuteProcessors(tickCount, procType);
                 }
                 tickCount++;
             }
@@ -85,10 +84,11 @@ namespace ProblemOne
                         processor.BindProcess(Processes.FirstOrDefault(p => p.Status == ProcessState.Ready));
         }
 
-        private void ExecuteProcessors(int tickCount, EProcType executionType)
+        private int ExecuteProcessors(int tickCount, EProcType executionType)
         {
             foreach (var processor in Processors)
-                processor.Execute(tickCount, executionType);
+                tickCount = processor.Execute(tickCount, executionType);
+            return tickCount;
         }
     }
 }
