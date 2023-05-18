@@ -6,7 +6,8 @@ namespace ProblemOne
     {
         public static KProcessor BindProcess(this KProcessor processor, in KProcess? bindingProcess)
         {
-            if(bindingProcess == null) return processor;
+            if (bindingProcess == null)
+                return processor;
 
             if(processor.CurrentProcess != null)
             {
@@ -25,15 +26,7 @@ namespace ProblemOne
     {
         public int Index { get; set; } = 0;
 
-        private KProcess? _currentProcess;
-        public KProcess? CurrentProcess 
-        { 
-            get { return _currentProcess; }
-            set
-            {
-                _currentProcess = value;
-            }
-        }
+        public KProcess? CurrentProcess { get; set; }
 
         public KStateMachine ParentMachine { get; set; }
 
@@ -42,6 +35,7 @@ namespace ProblemOne
             get
             {
                 if (CurrentProcess == null) return ProcessorState.Idle;
+
                 if (CurrentProcess != null && (CurrentProcess.Status == ProcessState.Done 
                     || CurrentProcess.Status == ProcessState.Ready)) return ProcessorState.Idle;
                 else if (CurrentProcess != null && CurrentProcess.Status == ProcessState.Busy) return ProcessorState.Busy;
@@ -73,6 +67,11 @@ namespace ProblemOne
             }
 
             return startStamp;
+        }
+
+        public void Reset()
+        {
+            CurrentProcess = null;
         }
     }
 }

@@ -79,6 +79,8 @@ namespace ProblemOne
                 block.Reset();
             foreach (var process in Processes)
                 process.Reset();
+            foreach (var processor in Processors)
+                processor.Reset();
         }
 
         private void BindProcesses(bool isCombined)

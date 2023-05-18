@@ -43,6 +43,7 @@
         public void Reset()
         {
             IsBlocked = false;
+            LastExecutorIndex = -1;
         }
 
         // выполнен ли всеми процессами

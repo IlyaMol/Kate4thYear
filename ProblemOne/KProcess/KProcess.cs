@@ -27,7 +27,7 @@ namespace ProblemOne
         // блок перехода между потоками
         // для первого в процессе блока - либо null, если до этого потоков нет
         // либо последний исполненный блок для предыдущего потока процесса
-        public KBlockBinding? TransitiveBlock { get; set; }
+        public KBlockBinding? TransitiveBlock { get; set; } = null;
 
         public KBlockBinding? CurrentTask
         {
@@ -78,6 +78,7 @@ namespace ProblemOne
         public void Reset()
         {
             ExecutorIndex = -1;
+            TransitiveBlock = null;
             Executor = null;
             foreach(var blockBindings in BlockBindings)
                 blockBindings.Reset();
