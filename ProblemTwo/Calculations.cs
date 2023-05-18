@@ -5,9 +5,6 @@
         /// <summary>
         /// Равномерное структурирование
         /// </summary>
-        /// <param name="sourceStruct"></param>
-        /// <returns></returns>
-        //presentation 4, s3.1 o3.1(4)
         public double[] GetUniformSruct(double[] sourceStruct)
         {
             double[] reultStruct = new double[sourceStruct.Length];
@@ -23,9 +20,6 @@
         /// <summary>
         /// Оценка величины накладных расходов
         /// </summary>
-        /// <param name="sourceStruct"></param>
-        /// <param name="processCount"></param>
-        /// <returns></returns>
         public double OverheadCosts(double[] sourceStruct, int processCount = 0)
         {
             double sumTime = sourceStruct.Sum(x => x);
@@ -43,11 +37,6 @@
         /// <summary>
         /// Оптимальное число блоков
         /// </summary>
-        /// <param name="sourceStruct"></param>
-        /// <param name="processorCount"></param>
-        /// <param name="processCount"></param>
-        /// <param name="tau"></param>
-        /// <returns></returns>
         public double OptimalBlockCount(double[] sourceStruct, int processorCount, int processCount, double? tau = null)
         {
             double sumTime = sourceStruct.Sum(x => x);
