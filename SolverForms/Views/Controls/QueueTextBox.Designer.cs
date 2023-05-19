@@ -1,6 +1,6 @@
-﻿namespace SolverForms.Controls
+﻿namespace SolverForms.Views.Controls
 {
-    partial class UserControl1
+    partial class QueueTextBox
     {
         /// <summary> 
         /// Обязательная переменная конструктора.
@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         }
 
         #endregion

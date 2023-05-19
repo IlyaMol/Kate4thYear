@@ -6,9 +6,9 @@ using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace SolverForms.ViewModels
+namespace SolverForms.Views.ViewModels
 {
-    public class MainFormViewModel : INotifyPropertyChanged
+    public class ProblemOneViewModel : INotifyPropertyChanged
     {
         #region Fields
         private bool _isBusy = false;
@@ -22,20 +22,39 @@ namespace SolverForms.ViewModels
         private ConcurrentBag<KPath<KVertex>> _criticalPaths = new();
         private KPath<KVertex> selectedCriticalPath = new();
 
-        public IList<KProcType> ProcTypes { get; } = new List<KProcType>()
+        public IList<KExecuteModeType> ExecuteModeTypes { get; } = new List<KExecuteModeType>()
         {
-            new KProcType() { Name = "Асинхронный", Type = EProcType.Async},
-            new KProcType() { Name = "Первый синх.", Type = EProcType.SyncFirst},
-            new KProcType() { Name = "Второй синх.", Type = EProcType.SyncSecond}
+            new KExecuteModeType() { Name = "Асинхронный", Type = EExecuteModeType.Async},
+            new KExecuteModeType() { Name = "Первый синх.", Type = EExecuteModeType.SyncFirst},
+            new KExecuteModeType() { Name = "Второй синх.", Type = EExecuteModeType.SyncSecond}
         };
-        private EProcType _selectedProcType = EProcType.Async;
-        public EProcType SelectedProcType 
+        public IList<KDistributeModeType> DistributionModeTypes { get; } = new List<KDistributeModeType>()
+        {
+            new KDistributeModeType() { Name = "Сосред.", Type = EDistributeModeType.Centralized},
+            new KDistributeModeType() { Name = "Распред.", Type = EDistributeModeType.Distributed}
+        };
+
+        private EExecuteModeType _selectedProcType = EExecuteModeType.Async;
+        public EExecuteModeType SelectedExecuteType 
         {
             get { return _selectedProcType; }
             set
             {
                 if (_selectedProcType == value) return;
                 _selectedProcType = value;
+                RecalcResult();
+                OnPropertyChanged();
+            }
+        }
+
+        private EDistributeModeType _selectedDistributeType = EDistributeModeType.Centralized;
+        public EDistributeModeType SelectedDistributeType
+        {
+            get { return _selectedDistributeType; }
+            set
+            {
+                if (_selectedDistributeType == value) return;
+                _selectedDistributeType = value;
                 RecalcResult();
                 OnPropertyChanged();
             }
@@ -56,6 +75,7 @@ namespace SolverForms.ViewModels
                 _isBusy = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsNotBusy));
+
             }
         }
         public bool IsNotBusy
@@ -154,11 +174,9 @@ namespace SolverForms.ViewModels
                 RedrawGraphics();
             }
         }
-
         public delegate void UpdateFrameDelegate(KGScene scene);
         public event UpdateFrameDelegate? OnFrameUpdate;
 
-        
         public float DrawingScale
         {
             get { return _drawingScale; }
@@ -223,7 +241,7 @@ namespace SolverForms.ViewModels
             KStateMachine.TryBuild(SourceMatrix, _processorCount, out Machine);
 
             if (graph == null) { return; }
-            if (criticalPaths.Count > 0 && _selectedCriticalPathIndex > 0)
+            if (!criticalPaths.IsEmpty && _selectedCriticalPathIndex > 0)
             {
                 int count = 0;
                 foreach (KPath<KVertex> kp in criticalPaths)
@@ -239,8 +257,7 @@ namespace SolverForms.ViewModels
 
         public void RedrawGraphics()
         {
-
-            KGLayer? machineResultGraphics = Machine?.Execute(SelectedProcType, BulidCombined)
+            KGLayer? machineResultGraphics = Machine?.Execute(SelectedExecuteType, BulidCombined)
                                                      .BuildGraphics();
             
            // TODO(wwaffe): here start of test graphics code

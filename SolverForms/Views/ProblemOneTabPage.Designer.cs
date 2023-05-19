@@ -1,16 +1,16 @@
-﻿namespace SolverForms
+﻿namespace SolverForms.Views
 {
-    partial class MainForm
+    partial class ProblemOneTabPage
     {
-        /// <summary>
-        /// Required designer variable.
+        /// <summary> 
+        /// Обязательная переменная конструктора.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
+        /// <summary> 
+        /// Освободить все используемые ресурсы.
         /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,16 +20,15 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
+        #region Код, автоматически созданный конструктором компонентов
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
+        /// <summary> 
+        /// Требуемый метод для поддержки конструктора — не изменяйте 
+        /// содержимое этого метода с помощью редактора кода.
         /// </summary>
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.sourceMatrixView = new SolverForms.KMatrixView();
             this.loadDataButton = new System.Windows.Forms.Button();
             this.resultMatrixView = new SolverForms.KMatrixView();
@@ -53,9 +52,10 @@
             this.criticalPathLengthValue = new System.Windows.Forms.Label();
             this.drawingModeFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.buildCombinedCheckBox = new System.Windows.Forms.CheckBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.executeMethodComboBox = new System.Windows.Forms.ComboBox();
+            this.distributeMethodComboBox = new System.Windows.Forms.ComboBox();
             this.drawingTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.drawPanel = new SolverForms.Controls.UserControl1();
+            this.drawPanel = new SolverForms.Views.Controls.UserControl1();
             this.offsetSliderValue = new System.Windows.Forms.TrackBar();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -87,7 +87,7 @@
             this.sourceMatrixView.Name = "sourceMatrixView";
             this.sourceMatrixView.ReadOnly = false;
             this.sourceMatrixView.RowCount = 0;
-            this.sourceMatrixView.SelectedCells = ((System.Collections.Generic.HashSet<ProblemOne.KCoordinates>)(resources.GetObject("sourceMatrixView.SelectedCells")));
+            this.sourceMatrixView.SelectedCells = null;
             this.sourceMatrixView.Size = new System.Drawing.Size(199, 132);
             this.sourceMatrixView.TabIndex = 0;
             // 
@@ -109,7 +109,7 @@
             this.resultMatrixView.Name = "resultMatrixView";
             this.resultMatrixView.ReadOnly = false;
             this.resultMatrixView.RowCount = 0;
-            this.resultMatrixView.SelectedCells = ((System.Collections.Generic.HashSet<ProblemOne.KCoordinates>)(resources.GetObject("resultMatrixView.SelectedCells")));
+            this.resultMatrixView.SelectedCells = null;
             this.resultMatrixView.Size = new System.Drawing.Size(106, 106);
             this.resultMatrixView.TabIndex = 2;
             // 
@@ -152,7 +152,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.flowLayoutPanel2);
-            this.splitContainer1.Size = new System.Drawing.Size(805, 578);
+            this.splitContainer1.Size = new System.Drawing.Size(933, 465);
             this.splitContainer1.SplitterDistance = 214;
             this.splitContainer1.TabIndex = 6;
             // 
@@ -169,7 +169,7 @@
             this.inputDataFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.inputDataFlowLayoutPanel.Location = new System.Drawing.Point(3, 3);
             this.inputDataFlowLayoutPanel.Name = "inputDataFlowLayoutPanel";
-            this.inputDataFlowLayoutPanel.Size = new System.Drawing.Size(208, 572);
+            this.inputDataFlowLayoutPanel.Size = new System.Drawing.Size(208, 459);
             this.inputDataFlowLayoutPanel.TabIndex = 0;
             this.inputDataFlowLayoutPanel.WrapContents = false;
             // 
@@ -283,7 +283,7 @@
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(581, 572);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(709, 459);
             this.flowLayoutPanel2.TabIndex = 0;
             this.flowLayoutPanel2.WrapContents = false;
             // 
@@ -349,31 +349,38 @@
             this.drawingModeFlowLayoutPanel.AutoSize = true;
             this.drawingModeFlowLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.drawingModeFlowLayoutPanel.Controls.Add(this.buildCombinedCheckBox);
-            this.drawingModeFlowLayoutPanel.Controls.Add(this.comboBox1);
+            this.drawingModeFlowLayoutPanel.Controls.Add(this.executeMethodComboBox);
+            this.drawingModeFlowLayoutPanel.Controls.Add(this.distributeMethodComboBox);
             this.drawingModeFlowLayoutPanel.Location = new System.Drawing.Point(3, 151);
             this.drawingModeFlowLayoutPanel.Name = "drawingModeFlowLayoutPanel";
-            this.drawingModeFlowLayoutPanel.Size = new System.Drawing.Size(202, 29);
+            this.drawingModeFlowLayoutPanel.Size = new System.Drawing.Size(322, 29);
             this.drawingModeFlowLayoutPanel.TabIndex = 12;
             // 
             // buildCombinedCheckBox
             // 
-            this.buildCombinedCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
             this.buildCombinedCheckBox.AutoSize = true;
             this.buildCombinedCheckBox.Location = new System.Drawing.Point(3, 3);
             this.buildCombinedCheckBox.Name = "buildCombinedCheckBox";
-            this.buildCombinedCheckBox.Size = new System.Drawing.Size(105, 23);
+            this.buildCombinedCheckBox.Size = new System.Drawing.Size(105, 19);
             this.buildCombinedCheckBox.TabIndex = 9;
             this.buildCombinedCheckBox.Text = "Совмещенная";
             this.buildCombinedCheckBox.UseVisualStyleBackColor = true;
             // 
-            // comboBox1
+            // executeMethodComboBox
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(114, 3);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(85, 23);
-            this.comboBox1.TabIndex = 14;
+            this.executeMethodComboBox.FormattingEnabled = true;
+            this.executeMethodComboBox.Location = new System.Drawing.Point(114, 3);
+            this.executeMethodComboBox.Name = "executeMethodComboBox";
+            this.executeMethodComboBox.Size = new System.Drawing.Size(100, 23);
+            this.executeMethodComboBox.TabIndex = 14;
+            // 
+            // distributeMethodComboBox
+            // 
+            this.distributeMethodComboBox.FormattingEnabled = true;
+            this.distributeMethodComboBox.Location = new System.Drawing.Point(220, 3);
+            this.distributeMethodComboBox.Name = "distributeMethodComboBox";
+            this.distributeMethodComboBox.Size = new System.Drawing.Size(99, 23);
+            this.distributeMethodComboBox.TabIndex = 14;
             // 
             // drawingTableLayoutPanel
             // 
@@ -428,18 +435,12 @@
             this.openFileDialog1.FileName = "openFileDialog1";
             this.openFileDialog1.Filter = "Json files|*.json|All files|*.*";
             // 
-            // kProcTypeBindingSource
+            // ProblemOneTabPage
             // 
-            this.kProcTypeBindingSource.DataSource = typeof(ProblemOne.KProcType);
-            // 
-            // MainForm
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(805, 578);
+            this.ClientSize = new System.Drawing.Size(933, 465);
             this.Controls.Add(this.splitContainer1);
-            this.Name = "MainForm";
-            this.Text = "MainForm";
+            this.Name = "ProblemOneTabPage";
+            this.Text = "Problem one";
             ((System.ComponentModel.ISupportInitialize)(this.processorUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectedPathIndexUpDown)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -466,8 +467,6 @@
 
         }
 
-        #endregion
-
         private KMatrixView sourceMatrixView;
         private Button loadDataButton;
         private KMatrixView resultMatrixView;
@@ -489,14 +488,16 @@
         private Label blockCountLabel;
         private NumericUpDown processUpDown;
         private NumericUpDown blockUpDown;
-        private Controls.UserControl1 drawPanel;
+        private Views.Controls.UserControl1 drawPanel;
         private CheckBox buildCombinedCheckBox;
         private FlowLayoutPanel drawingModeFlowLayoutPanel;
         private TableLayoutPanel drawingTableLayoutPanel;
         private TrackBar offsetSliderValue;
-        private ComboBox comboBox1;
+        private ComboBox executeMethodComboBox;
         private SaveFileDialog saveFileDialog1;
         private OpenFileDialog openFileDialog1;
         private BindingSource kProcTypeBindingSource;
+        private ComboBox distributeMethodComboBox;
     }
 }
+#endregion

@@ -1,6 +1,6 @@
 ﻿using SolverForms.DrawLib;
 
-namespace SolverForms.Controls
+namespace SolverForms.Views.Controls
 {
     public partial class UserControl1 : UserControl
     {
@@ -23,6 +23,10 @@ namespace SolverForms.Controls
                     shape.MainPen.CustomStartCap = ((KGLine)shape).StartLineCap;
                     shape.MainPen.CustomEndCap = ((KGLine)shape).EndLineCap;
                     e.Graphics.DrawLine(shape.MainPen, shape.StartPoint, shape.EndPoint);
+                }
+                if(shape.Type == IKGShapeType.SYMBOL)
+                {
+                    e.Graphics.DrawString(shape.ToString(), SystemFonts.DefaultFont, shape.MainPen.Brush, shape.StartPoint);
                 }
             }
         }

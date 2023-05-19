@@ -1,16 +1,17 @@
 ﻿using ProblemOne;
 using SolverForms.DrawLib;
 using SolverForms.Helpers;
-using SolverForms.ViewModels;
+using SolverForms.Views.ViewModels;
 
-namespace SolverForms
+namespace SolverForms.Views
 {
-    public partial class MainForm : Form
+    public partial class ProblemOneTabPage : Form
     {
-        private MainFormViewModel viewModel;
-        public MainForm()
+        private ProblemOneViewModel viewModel;
+
+        public ProblemOneTabPage()
         {
-            viewModel = new MainFormViewModel();
+            viewModel = new ProblemOneViewModel();
             InitializeComponent();
 
             sourceMatrixView.SuspendLayout();
@@ -33,8 +34,11 @@ namespace SolverForms
             viewModel.CurrentSceneHeight = drawPanel.Height;
             viewModel.CurrentSceneWidth = drawPanel.Width;
 
-            comboBox1.DisplayMember = "Name";
-            comboBox1.ValueMember = "Type";
+            executeMethodComboBox.DisplayMember = "Name";
+            executeMethodComboBox.ValueMember = "Type";
+
+            distributeMethodComboBox.DisplayMember = "Name";
+            distributeMethodComboBox.ValueMember = "Type";
 
             sourceMatrixView.DataSourceChanged += viewModel.DataSourceChangedDelegate;
             drawPanel.Resize += DrawPanel_Resize;
@@ -146,20 +150,50 @@ namespace SolverForms
                 true,
                 DataSourceUpdateMode.OnPropertyChanged
                 );
-            comboBox1.DataBindings.Add
+            executeMethodComboBox.DataBindings.Add
                 (
-                nameof(comboBox1.DataSource),
+                nameof(executeMethodComboBox.DataSource),
                 viewModel,
-                nameof(viewModel.ProcTypes)
+                nameof(viewModel.ExecuteModeTypes)
                 );
-            comboBox1.DataBindings.Add
+            executeMethodComboBox.DataBindings.Add
                 (
-                nameof(comboBox1.SelectedValue),
+                nameof(executeMethodComboBox.SelectedValue),
                 viewModel,
-                nameof(viewModel.SelectedProcType),
+                nameof(viewModel.SelectedExecuteType),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged
                 );
+            distributeMethodComboBox.DataBindings.Add
+                (
+                nameof(distributeMethodComboBox.DataSource),
+                viewModel,
+                nameof(viewModel.DistributionModeTypes)
+                );
+            distributeMethodComboBox.DataBindings.Add
+                (
+                nameof(distributeMethodComboBox.SelectedValue),
+                viewModel,
+                nameof(viewModel.SelectedDistributeType),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged
+                );
+        }
+        private void SaveDataButton_Click(object sender, EventArgs e)
+        {
+            DialogResult result = saveFileDialog1.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                string jsonString = Json.Serialize(new SourceData()
+                {
+                    BulidCombined = viewModel.BulidCombined,
+                    Data = viewModel.SourceMatrix.ToOneDimArray(),
+                    DrawingScale = viewModel.DrawingScale,
+                    ProcessorCount = viewModel.ProcessorCount,
+                    BlockCount = viewModel.SourceMatrix.GetLength(1)
+                });
+                FileHelper.WriteToFile(jsonString, saveFileDialog1.FileName);
+            }
         }
         private void LoadDataButton_Click(object sender, EventArgs e)
         {
@@ -176,16 +210,6 @@ namespace SolverForms
                 viewModel.DrawingScale = data.DrawingScale;
                 viewModel.SourceMatrix = data.Data.ToTwoDimArray(data.BlockCount);
             }
-            /*viewModel.ProcessorCount = 3;
-            viewModel.BulidCombined = true;
-            viewModel.DrawingScale = 8;
-            viewModel.SourceMatrix = new[,]
-            {
-                { 4,2,3 },
-                { 1,4,1 },
-                { 3,3,2 },
-                { 3,1,2 }
-            };*/
         }
 
         private void saveDataButton_Click(object sender, EventArgs e)

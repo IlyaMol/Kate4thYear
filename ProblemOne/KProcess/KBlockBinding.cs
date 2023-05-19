@@ -9,6 +9,47 @@ namespace ProblemOne
         public int BlockStartTime { get; set; }
         public int BlockDuration { get; set; }
         public int BlockEndTime { get { return BlockStartTime + BlockDuration; } }
+        public uint ThreadIndex { get; set; } = 0;
+
+        public bool IsCombinedMode
+        {
+            get 
+            { 
+                if(Process.Executor != null && Process.Executor.ParentMachine.IsCombinedMode) return true;
+                return false;
+            }
+        }
+        
+        public KBlockBinding? NextBlock
+        {
+            get
+            {
+                return Process.BlockBindings.FirstOrDefault(bb => bb.Block.PipelineIndex == Block.PipelineIndex + 1);
+            }
+        }
+
+        // предыдущий блок из текущего процесса
+        public KBlockBinding? PreviousBlock 
+        { 
+            get
+            {
+                KBlockBinding? prev = Process.BlockBindings.FirstOrDefault(bb => bb.Block.PipelineIndex == Block.PipelineIndex - 1);
+                if (IsCombinedMode && prev == null)
+                    return Process.TransitiveBlock;
+                return prev;
+            } 
+        }
+
+        // предыдущая привязка блока относительно процесса
+        public KBlockBinding? PreviousBlockBindingForBlock(bool isCombined, EExecuteModeType procType)
+        {
+            if (procType != EExecuteModeType.SyncSecond)
+                return Block.Bindings.Where(bb => bb.Process.IsCurrentlyBinded).FirstOrDefault(bb => bb.Process.Index == Process.Index - 1);
+            else if (isCombined)
+                return Block.Bindings.Where(bb => bb.Process.IsCurrentlyBinded && bb.ThreadIndex == ThreadIndex).FirstOrDefault(bb => bb.Process.Index == Process.Index - 1);
+            else
+                return Block.Bindings.Where(bb => bb.Process.IsCurrentlyBinded).FirstOrDefault(bb => bb.Process.Index == Process.Index - 1);
+        }
 
         private BlockState _status = BlockState.Ready;
         public BlockState Status
@@ -37,63 +78,93 @@ namespace ProblemOne
             BlockDuration = blockDuration;
         }
 
-        public void DoTick(int currentTick, EProcType syncType)
+        public int DoTick(int currentTick, EExecuteModeType syncType, bool isCombined)
         {
-            var nextBlock = Process.BlockBindings.FirstOrDefault(bb => bb.Block.PipelineIndex == Block.PipelineIndex + 1);
-            var prevBlock = Process.BlockBindings.FirstOrDefault(bb => bb.Block.PipelineIndex == Block.PipelineIndex - 1);
-
             if (Block.IsBlocked)
             {
                 if (Block.CurrentProcess == Process)
                 {
-                    // выполнение блока закончилось
+
                     if (BlockEndTime <= currentTick)
                     {
+                        // выполнение блока закончилось
                         Block.IsBlocked = false;
                         _status = BlockState.Done;
                         Block.CurrentProcess = null;
 
-                        if (syncType == EProcType.SyncFirst)
-                            if (prevBlock != null && prevBlock.BlockEndTime != BlockStartTime)
-                                prevBlock.BlockStartTime = BlockStartTime - prevBlock.BlockDuration;
+                        // выполняем совмещение в пределах процессоров
+                        if (syncType == EExecuteModeType.SyncFirst)
+                            if (PreviousBlock != null && PreviousBlock.BlockEndTime != BlockStartTime)
+                                PreviousBlock.BlockStartTime = BlockStartTime - PreviousBlock.BlockDuration;
+
+                        //выполняем совмещение в пределах процессов
+                        if (syncType == EExecuteModeType.SyncSecond)
+                        {
+                            IEnumerable<KBlockBinding> blockBindings = Block.Bindings.Where(bb => bb.Process.IsCurrentlyBinded);
+                            bool isBlockCompleted = false;
+
+                            if (isCombined)
+                                isBlockCompleted = Block.IsCompletedThread(ThreadIndex);
+                            else
+                                isBlockCompleted = Block.IsCompleted();
+
+                            if (blockBindings.Any())
+                                if (PreviousBlock != null && isBlockCompleted)
+                                {
+                                    if (isCombined)
+                                        blockBindings = Block.Bindings.Where(bb => bb.ThreadIndex == ThreadIndex);
+                                    while (blockBindings.All(bb => bb.BlockStartTime > bb.PreviousBlock!.BlockEndTime))
+                                        foreach (KBlockBinding bb in blockBindings)
+                                            bb.BlockStartTime--;
+                                    currentTick = blockBindings.Max(bb => bb.BlockEndTime);
+                                }
+                        }
+
                     }
                 }
             }
             else
             {
-                if(syncType == EProcType.SyncFirst)
+                if(syncType == EExecuteModeType.SyncFirst)
                 {
                     // откладываем выполнение, если время окончания выполнения текущего блока
                     // не совпадает со временем старта выполнения следующего
-                    // (относительно текущего тика машины)
-                    if(nextBlock != null && nextBlock.Block.IsBlocked)
-                        if(nextBlock.Block.CalculatedCurrentEndTime > currentTick + BlockDuration)
-                            return;
+                    if (NextBlock != null && NextBlock.Block.IsBlocked)
+                        if(NextBlock.Block.CalculatedCurrentEndTime > currentTick + BlockDuration)
+                            return currentTick;
                 }
-                if (syncType == EProcType.SyncSecond)
+                if (syncType == EExecuteModeType.SyncSecond)
                 {
-                    // откладываем назначение, если текущий блок не выполнен
+                    // откладываем назначение, если предыдущий блок не выполнен
                     // на всех процессорах
-
+                    if (PreviousBlock != null && PreviousBlock.ThreadIndex == ThreadIndex)
+                    {
+                        if (isCombined)
+                            if (!PreviousBlock.Block.IsCompletedThread(ThreadIndex))
+                                return currentTick;
+                        if (!isCombined)
+                            if (!PreviousBlock.Block.IsCompleted()) 
+                                return currentTick;
+                    }
                 }
 
-                // выполняем блок
-                // обеспечивая линейный порядок
+                // обеспечивает линейный порядок
                 // предоставления блоков процессорам
-                if (Block.LastExecutorIndex == this.Process.Executor!.ParentMachine.Processors.Count-1)
-                    Block.LastExecutorIndex = -1;
+                if (PreviousBlockBindingForBlock(isCombined, syncType) != null
+                    && PreviousBlockBindingForBlock(isCombined, syncType)!.Status == BlockState.Ready) return currentTick;
 
-                if(Block.LastExecutorIndex == Process.Executor!.Index 
-                    || Block.LastExecutorIndex == Process.Executor!.Index - 1 
-                    || Block.LastExecutorIndex == -1)
-                {
-                    Block.IsBlocked = true;
-                    BlockStartTime = currentTick;
-                    Block.CurrentProcess = this.Process;
-                    Block.LastExecutorIndex = this.Process.Executor!.Index;
-                }
+                if (PreviousBlockBindingForBlock(isCombined, syncType) == null && (PreviousBlock == null || PreviousBlock == Process.TransitiveBlock))
+                    if (!Process.Executor!.ParentMachine.Processors.All(p => p.Status == ProcessorState.Ready)) return currentTick;
+
+                //if (PreviousBlockBindingForBlock(isCombined, syncType) == null && (PreviousBlock == null || PreviousBlock == Process.TransitiveBlock))
+                //    if (!Process.Executor!.ParentMachine.IsIdle) return currentTick;
+
+                Block.IsBlocked = true;
+                BlockStartTime = currentTick;
+                Block.CurrentProcess = Process;
+                Block.LastExecutorIndex = Process.Executor!.Index;
             }
-            return;
+            return currentTick;
         }
 
         public void Reset()
