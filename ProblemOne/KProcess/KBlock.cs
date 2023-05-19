@@ -12,14 +12,6 @@
 
         public ICollection<KBlockBinding> Bindings { get; } = new List<KBlockBinding>();
 
-        public IEnumerable<KBlockBinding> CurrentBindings
-        {
-            get
-            {
-                return Bindings.Where(bb => bb.Process.IsCurrentlyBinded);
-            }
-        }
-
         public int CalculatedCurrentEndTime
         {
             get
@@ -46,15 +38,9 @@
             LastExecutorIndex = -1;
         }
 
-        // выполнен ли всеми процессами
-        public bool IsCompleted()
+        public bool IsCompleted(uint forThread = 0)
         {
-            return Bindings.Where(bb => bb.Process.IsCurrentlyBinded).All(bb => bb.Status == KStates.BlockState.Done);
-        }
-
-        public bool IsCompletedThread(uint forThread = 0)
-        {
-            return Bindings.Where(bb => bb.ThreadIndex == forThread).All(bb => bb.Status == KStates.BlockState.Done);
+            return Bindings.Where(bb => bb.ThreadIndex == forThread).All(bb => bb.Status == KStates.EBlockState.Done);
         }
     }
 }

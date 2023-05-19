@@ -1,6 +1,6 @@
 ﻿namespace ProblemOne.KStates
 {
-    public enum BlockState
+    public enum EBlockState
     {
         Ready,      // блок готов к исполнению
         Busy,       // блок исполняется
@@ -8,7 +8,7 @@
         Done        // блок выполнен
     }
 
-    public enum ProcessState
+    public enum EProcessState
     {
         Undefined,
         Busy,       // процесс выполняет блок
@@ -19,11 +19,9 @@
         Done        // процесс закончил выполнение
     }
 
-    public enum ProcessorState
+    public enum EProcessorState
     {
-        Idle,       // процессор ожидает назначение процесса
         Ready,      // процессор выполнил блок и ждет возможности выполнить следующий
-        Waiting,    // процессор ожидает выполнение назначенного блока
         Busy,       // процессор выполняет блок
     }
 }

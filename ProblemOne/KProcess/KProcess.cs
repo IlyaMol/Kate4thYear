@@ -18,31 +18,16 @@ namespace ProblemOne
         public int Index { get; set; }
         public int ExecutorIndex { get; set; } = -1;
 
-        public bool IsCurrentlyBinded {  get { return Executor != null; } }
-
         public ICollection<KBlockBinding> BlockBindings { get; } = new List<KBlockBinding>();
-
-        public KProcessor? Executor { get; set; } = null;
 
         // блок перехода между потоками
         // для первого в процессе блока - либо null, если до этого потоков нет
         // либо последний исполненный блок для предыдущего потока процесса
-        public KBlockBinding? TransitiveBlock { get; set; } = null;
+        // public KBlockBinding? TransitiveBlock { get; set; } = null;
 
-        public KBlockBinding? CurrentTask
+        public IEnumerable<KBlockBinding> CurrentTasks
         {
-            get { return BlockBindings.Where(bb => bb.Process.IsCurrentlyBinded && bb.Status != BlockState.Done).FirstOrDefault(bb => bb.Status == BlockState.Busy); }
-        }
-
-        public KBlockBinding? NextTask
-        {
-            get 
-            { 
-                if(CurrentTask == null)
-                    return BlockBindings.Where(bb => bb.Process.IsCurrentlyBinded && bb.Status != BlockState.Done).FirstOrDefault();
-                else
-                    return BlockBindings.Where(bb => bb.Process.IsCurrentlyBinded && bb.Status != BlockState.Done).FirstOrDefault(bb => bb.Block.PipelineIndex == CurrentTask.Block.PipelineIndex + 1);
-            }
+            get { return BlockBindings.Where(bb => bb.Status == EBlockState.Busy); }
         }
 
         public KBlockBinding FirstBlock
@@ -55,18 +40,16 @@ namespace ProblemOne
             get { return BlockBindings.Last(); }
         }
 
-        public ProcessState Status
+        public EProcessState Status
         {
             get
             {
-                if (BlockBindings.All(bb => bb.Status == BlockState.Done)) return ProcessState.Done;
-                if (Executor == null) return ProcessState.Ready;
-                if (CurrentTask != null && CurrentTask.Status == BlockState.Busy) return ProcessState.Busy;
-                if (NextTask != null && NextTask.Status == BlockState.Waiting) return ProcessState.Waiting;
-                if (CurrentTask ==  null) return ProcessState.Idle;
-                if (Executor != null) return ProcessState.Binded;
+                if (!BlockBindings.Any()) return EProcessState.Ready;
+                if (BlockBindings.All(bb => bb.Status == EBlockState.Done)) return EProcessState.Done;
+                if (BlockBindings.Any(bb => bb.Status == EBlockState.Busy)) return EProcessState.Busy;
+                if (BlockBindings.All(bb => bb.Status == EBlockState.Ready)) return EProcessState.Idle;
                 
-                return ProcessState.Undefined;
+                return EProcessState.Undefined;
             }
         }
 
@@ -78,8 +61,7 @@ namespace ProblemOne
         public void Reset()
         {
             ExecutorIndex = -1;
-            TransitiveBlock = null;
-            Executor = null;
+            //TransitiveBlock = null;
             foreach(var blockBindings in BlockBindings)
                 blockBindings.Reset();
         }
