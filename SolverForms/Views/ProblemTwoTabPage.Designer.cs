@@ -45,6 +45,8 @@
             this.resultTauLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.resultTauValueLabel = new System.Windows.Forms.Label();
+            this.optimalProcessorCountLabel = new System.Windows.Forms.Label();
+            this.optimalProcessorCountValueLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -195,13 +197,16 @@
             this.resultTableLayoutPanel.Controls.Add(this.resultTauLabel, 0, 2);
             this.resultTableLayoutPanel.Controls.Add(this.label2, 0, 1);
             this.resultTableLayoutPanel.Controls.Add(this.resultTauValueLabel, 1, 1);
+            this.resultTableLayoutPanel.Controls.Add(this.optimalProcessorCountLabel, 0, 3);
+            this.resultTableLayoutPanel.Controls.Add(this.optimalProcessorCountValueLabel, 1, 3);
             this.resultTableLayoutPanel.Location = new System.Drawing.Point(3, 3);
             this.resultTableLayoutPanel.Name = "resultTableLayoutPanel";
-            this.resultTableLayoutPanel.RowCount = 3;
+            this.resultTableLayoutPanel.RowCount = 4;
             this.resultTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.resultTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.resultTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.resultTableLayoutPanel.Size = new System.Drawing.Size(524, 61);
+            this.resultTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.resultTableLayoutPanel.Size = new System.Drawing.Size(524, 76);
             this.resultTableLayoutPanel.TabIndex = 6;
             // 
             // label1
@@ -262,6 +267,24 @@
             this.resultTauValueLabel.TabIndex = 3;
             this.resultTauValueLabel.Text = "label3";
             // 
+            // optimalProcessorCountLabel
+            // 
+            this.optimalProcessorCountLabel.AutoSize = true;
+            this.optimalProcessorCountLabel.Location = new System.Drawing.Point(3, 59);
+            this.optimalProcessorCountLabel.Name = "optimalProcessorCountLabel";
+            this.optimalProcessorCountLabel.Size = new System.Drawing.Size(199, 15);
+            this.optimalProcessorCountLabel.TabIndex = 6;
+            this.optimalProcessorCountLabel.Text = "Оптимальное число процессоров:";
+            // 
+            // optimalProcessorCountValueLabel
+            // 
+            this.optimalProcessorCountValueLabel.AutoSize = true;
+            this.optimalProcessorCountValueLabel.Location = new System.Drawing.Point(236, 59);
+            this.optimalProcessorCountValueLabel.Name = "optimalProcessorCountValueLabel";
+            this.optimalProcessorCountValueLabel.Size = new System.Drawing.Size(38, 15);
+            this.optimalProcessorCountValueLabel.TabIndex = 7;
+            this.optimalProcessorCountValueLabel.Text = "label3";
+            // 
             // ProblemTwoTabPage
             // 
             this.ClientSize = new System.Drawing.Size(800, 450);
@@ -303,5 +326,7 @@
         private Label tauLabel;
         private NumericUpDown tauUpDown;
         private TableLayoutPanel resultTableLayoutPanel;
+        private Label optimalProcessorCountLabel;
+        private Label optimalProcessorCountValueLabel;
     }
 }

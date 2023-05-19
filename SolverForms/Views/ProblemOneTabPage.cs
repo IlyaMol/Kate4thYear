@@ -5,7 +5,7 @@ using SolverForms.Views.ViewModels;
 
 namespace SolverForms.Views
 {
-    public partial class ProblemOneTabPage : TabPage
+    public partial class ProblemOneTabPage : Form
     {
         private ProblemOneViewModel viewModel;
 
@@ -34,8 +34,11 @@ namespace SolverForms.Views
             viewModel.CurrentSceneHeight = drawPanel.Height;
             viewModel.CurrentSceneWidth = drawPanel.Width;
 
-            comboBox1.DisplayMember = "Name";
-            comboBox1.ValueMember = "Type";
+            executeMethodComboBox.DisplayMember = "Name";
+            executeMethodComboBox.ValueMember = "Type";
+
+            distributeMethodComboBox.DisplayMember = "Name";
+            distributeMethodComboBox.ValueMember = "Type";
 
             sourceMatrixView.DataSourceChanged += viewModel.DataSourceChangedDelegate;
             drawPanel.Resize += DrawPanel_Resize;
@@ -147,17 +150,31 @@ namespace SolverForms.Views
                 true,
                 DataSourceUpdateMode.OnPropertyChanged
                 );
-            comboBox1.DataBindings.Add
+            executeMethodComboBox.DataBindings.Add
                 (
-                nameof(comboBox1.DataSource),
+                nameof(executeMethodComboBox.DataSource),
                 viewModel,
-                nameof(viewModel.ProcTypes)
+                nameof(viewModel.ExecuteModeTypes)
                 );
-            comboBox1.DataBindings.Add
+            executeMethodComboBox.DataBindings.Add
                 (
-                nameof(comboBox1.SelectedValue),
+                nameof(executeMethodComboBox.SelectedValue),
                 viewModel,
-                nameof(viewModel.SelectedProcType),
+                nameof(viewModel.SelectedExecuteType),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged
+                );
+            distributeMethodComboBox.DataBindings.Add
+                (
+                nameof(distributeMethodComboBox.DataSource),
+                viewModel,
+                nameof(viewModel.DistributionModeTypes)
+                );
+            distributeMethodComboBox.DataBindings.Add
+                (
+                nameof(distributeMethodComboBox.SelectedValue),
+                viewModel,
+                nameof(viewModel.SelectedDistributeType),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged
                 );

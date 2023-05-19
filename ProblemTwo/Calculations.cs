@@ -7,14 +7,14 @@
         /// </summary>
         public double[] GetUniformSruct(double[] sourceStruct)
         {
-            double[] reultStruct = new double[sourceStruct.Length];
+            double[] resultStruct = new double[sourceStruct.Length];
             double sumTime = sourceStruct.Sum(x => x);
-            for(int elementIndex = 0; elementIndex < reultStruct.Length; elementIndex++)
+            for(int elementIndex = 0; elementIndex < resultStruct.Length; elementIndex++)
             {
-                reultStruct[elementIndex] = sumTime / sourceStruct.Length;
+                resultStruct[elementIndex] = sumTime / sourceStruct.Length;
             }
             
-            return reultStruct;
+            return resultStruct;
         }
 
         /// <summary>
@@ -65,6 +65,14 @@
             }
 
             return s1;
+        }
+
+        /// <summary>
+        /// Оптимальное число процессоров
+        /// </summary>
+        public uint OptimalProcessorCount(double[] sourceStruct, int processCount)
+        {
+            return (uint)Math.Min(processCount, Math.Ceiling(sourceStruct.Sum() / sourceStruct.Max()));
         }
     }
 }

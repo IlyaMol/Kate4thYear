@@ -50,7 +50,7 @@ namespace ProblemOne
             return true;
         }
 
-        public KStateMachine Execute(EProcType procType, bool combined = true)
+        public KStateMachine Execute(EExecuteModeType procType, bool combined = true)
         {
             this.IsCombinedMode = combined;
             int tickCount = 0;
@@ -95,7 +95,7 @@ namespace ProblemOne
                         processor.BindProcess(Processes.FirstOrDefault(p => p.Status == ProcessState.Ready));
         }
 
-        private int ExecuteProcessors(int tickCount, EProcType executionType, bool isCombined)
+        private int ExecuteProcessors(int tickCount, EExecuteModeType executionType, bool isCombined)
         {
             foreach (var processor in Processors)
                 tickCount = processor.Execute(tickCount, executionType, isCombined);

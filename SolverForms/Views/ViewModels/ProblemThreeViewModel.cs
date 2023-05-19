@@ -3,20 +3,16 @@ using System.Runtime.CompilerServices;
 
 namespace SolverForms.Views.ViewModels
 {
-    public class ProblemTwoViewModel : INotifyPropertyChanged
+    public class ProblemThreeViewModel : INotifyPropertyChanged
     {
         #region Fields
         private int _processorCount = 0;
         private int _processCount = 0;
         private int _tauValue = 1;
-        private double _resultTauValue = 0;
-        private double _optimalBlockCountValue = 0;
-        private uint _optimalProcessorCount = 0;
-
+        private int _copyValue = 1;
         private double[] _sourceQueue = Array.Empty<double>();
-        private double[] _uniformQueue = Array.Empty<double>();
 
-        private ProblemTwo.Calculations _calculator = new ProblemTwo.Calculations();
+        private ProblemThree.Calculations _calculator = new ProblemThree.Calculations();
         #endregion
 
         #region Properties
@@ -50,42 +46,18 @@ namespace SolverForms.Views.ViewModels
                 if (_tauValue == value) return;
                 _tauValue = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(TauLabelText));
                 Recalc();
             }
         }
-        public string TauLabelText
+        public int CopyValue
         {
-            get { return $"Оптимальное число блоков при τ = {TauValue}:"; }
-        }
-        public double ResultTauValue
-        {
-            get { return _resultTauValue; }
+            get { return _copyValue; }
             set
             {
-                if (_resultTauValue == value) return;
-                _resultTauValue = value;
+                if(_copyValue == value) return;
+                _copyValue = value;
                 OnPropertyChanged();
-            }
-        }
-        public double OptimalBlockCountValue
-        {
-            get { return _optimalBlockCountValue; }
-            set
-            {
-                if (_optimalBlockCountValue == value) return;
-                _optimalBlockCountValue = value;
-                OnPropertyChanged();
-            }
-        }
-        public uint OptimalProcessorCount
-        {
-            get { return _optimalProcessorCount; }
-            set
-            {
-                if (_optimalProcessorCount == value) return;
-                _optimalProcessorCount = value;
-                OnPropertyChanged();
+                Recalc();
             }
         }
         public double[] SourceQueue
@@ -100,39 +72,21 @@ namespace SolverForms.Views.ViewModels
                 Recalc();
             }
         }
-        public double[] UniformQueue
-        {
-            get { return _uniformQueue; }
-            set
-            {
-                if (_uniformQueue == value) return;
-                _uniformQueue = value;
-                OnPropertyChanged();
-            }
-        }
         public int SourceDataLength
         {
             get { return SourceQueue.Length; }
         }
         #endregion
 
-        #region Delegates
-        #endregion
-
-        #region Events
-        #endregion
-
         #region Methods
         public void Recalc()
         {
             if (_sourceQueue == null) return;
-            if(_processCount== 0) return;
+            if (_processCount == 0) return;
             if (_processorCount == 0) return;
+            if (_copyValue== 0) return;
 
-            UniformQueue = _calculator.GetUniformSruct(_sourceQueue);
-            ResultTauValue = _calculator.OverheadCosts(_sourceQueue, _processorCount);
-            OptimalBlockCountValue = _calculator.OptimalBlockCount(_sourceQueue, _processorCount, _processCount, _tauValue);
-            OptimalProcessorCount = _calculator.OptimalProcessorCount(_sourceQueue, _processCount);
+
         }
         #endregion
 

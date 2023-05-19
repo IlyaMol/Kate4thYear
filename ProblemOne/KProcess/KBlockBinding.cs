@@ -41,9 +41,9 @@ namespace ProblemOne
         }
 
         // предыдущая привязка блока относительно процесса
-        public KBlockBinding? PreviousBlockBindingForBlock(bool isCombined, EProcType procType)
+        public KBlockBinding? PreviousBlockBindingForBlock(bool isCombined, EExecuteModeType procType)
         {
-            if (procType != EProcType.SyncSecond)
+            if (procType != EExecuteModeType.SyncSecond)
                 return Block.Bindings.Where(bb => bb.Process.IsCurrentlyBinded).FirstOrDefault(bb => bb.Process.Index == Process.Index - 1);
             else if (isCombined)
                 return Block.Bindings.Where(bb => bb.Process.IsCurrentlyBinded && bb.ThreadIndex == ThreadIndex).FirstOrDefault(bb => bb.Process.Index == Process.Index - 1);
@@ -78,7 +78,7 @@ namespace ProblemOne
             BlockDuration = blockDuration;
         }
 
-        public int DoTick(int currentTick, EProcType syncType, bool isCombined)
+        public int DoTick(int currentTick, EExecuteModeType syncType, bool isCombined)
         {
             if (Block.IsBlocked)
             {
@@ -93,12 +93,12 @@ namespace ProblemOne
                         Block.CurrentProcess = null;
 
                         // выполняем совмещение в пределах процессоров
-                        if (syncType == EProcType.SyncFirst)
+                        if (syncType == EExecuteModeType.SyncFirst)
                             if (PreviousBlock != null && PreviousBlock.BlockEndTime != BlockStartTime)
                                 PreviousBlock.BlockStartTime = BlockStartTime - PreviousBlock.BlockDuration;
 
                         //выполняем совмещение в пределах процессов
-                        if (syncType == EProcType.SyncSecond)
+                        if (syncType == EExecuteModeType.SyncSecond)
                         {
                             IEnumerable<KBlockBinding> blockBindings = Block.Bindings.Where(bb => bb.Process.IsCurrentlyBinded);
                             bool isBlockCompleted = false;
@@ -125,7 +125,7 @@ namespace ProblemOne
             }
             else
             {
-                if(syncType == EProcType.SyncFirst)
+                if(syncType == EExecuteModeType.SyncFirst)
                 {
                     // откладываем выполнение, если время окончания выполнения текущего блока
                     // не совпадает со временем старта выполнения следующего
@@ -133,7 +133,7 @@ namespace ProblemOne
                         if(NextBlock.Block.CalculatedCurrentEndTime > currentTick + BlockDuration)
                             return currentTick;
                 }
-                if (syncType == EProcType.SyncSecond)
+                if (syncType == EExecuteModeType.SyncSecond)
                 {
                     // откладываем назначение, если предыдущий блок не выполнен
                     // на всех процессорах

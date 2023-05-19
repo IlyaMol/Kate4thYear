@@ -2,7 +2,7 @@
 
 namespace SolverForms.Views
 {
-    public partial class ProblemTwoTabPage : Form
+    public partial class ProblemTwoTabPage : TabPage
     {
         private ProblemTwoViewModel viewModel;
         
@@ -84,6 +84,14 @@ namespace SolverForms.Views
                 viewModel,
                 nameof(viewModel.UniformQueue),
                 false,
+                DataSourceUpdateMode.OnPropertyChanged
+                );
+            optimalProcessorCountValueLabel.DataBindings.Add
+                (
+                nameof(optimalProcessorCountValueLabel.Text),
+                viewModel,
+                nameof(viewModel.OptimalProcessorCount),
+                true,
                 DataSourceUpdateMode.OnPropertyChanged
                 );
         }

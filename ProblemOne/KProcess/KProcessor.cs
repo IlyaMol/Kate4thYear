@@ -48,7 +48,7 @@ namespace ProblemOne
             ParentMachine = parentMachine;
         }
 
-        public int Execute(int startStamp, EProcType syncType, bool isCombined)
+        public int Execute(int startStamp, EExecuteModeType syncType, bool isCombined)
         {
             if (Status == ProcessorState.Idle) return startStamp;
 
