@@ -15,9 +15,11 @@ namespace ProblemOne
 
     public class KProcess
     {
+        public int LastExecutedBlock { get; set; } = -1;
+
         public int Index { get; set; }
         public int ExecutorIndex { get; set; } = -1;
-
+        
         public ICollection<KBlockBinding> BlockBindings { get; } = new List<KBlockBinding>();
 
         // блок перехода между потоками
@@ -40,16 +42,25 @@ namespace ProblemOne
             get { return BlockBindings.Last(); }
         }
 
+        public KBlockBinding? NextBlock
+        {
+            // выдаем блоки по порядку
+            get 
+            {
+                return BlockBindings.Where(bb => bb.ExecutorIndex == -1).FirstOrDefault();
+            }
+        }
+
         public EProcessState Status
         {
             get
             {
-                if (!BlockBindings.Any()) return EProcessState.Ready;
                 if (BlockBindings.All(bb => bb.Status == EBlockState.Done)) return EProcessState.Done;
                 if (BlockBindings.Any(bb => bb.Status == EBlockState.Busy)) return EProcessState.Busy;
                 if (BlockBindings.All(bb => bb.Status == EBlockState.Ready)) return EProcessState.Idle;
-                
-                return EProcessState.Undefined;
+                if (BlockBindings.Any(bb => bb.Status == EBlockState.Binded)) return EProcessState.Waiting;
+                if (BlockBindings.Any(bb => bb.Status == EBlockState.Ready)) return EProcessState.Ready;
+                return EProcessState.Ready;
             }
         }
 
@@ -61,6 +72,7 @@ namespace ProblemOne
         public void Reset()
         {
             ExecutorIndex = -1;
+            LastExecutedBlock = -1;
             //TransitiveBlock = null;
             foreach(var blockBindings in BlockBindings)
                 blockBindings.Reset();

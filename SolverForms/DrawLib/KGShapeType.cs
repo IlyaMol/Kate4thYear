@@ -3,6 +3,7 @@
     public enum IKGShapeType
     {
         LINE,
-        SYMBOL
+        SYMBOL,
+        LABEL
     }
 }

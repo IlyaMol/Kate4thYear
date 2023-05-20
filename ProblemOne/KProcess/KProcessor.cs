@@ -7,7 +7,9 @@ namespace ProblemOne
         public static KProcessor BindBlock(this KProcessor processor, KBlockBinding block)
         {
             processor.CurrentBlock = block;
-            block.CurrentExecutor = processor;
+            block.Block.LastExecutorIndex = processor.Index;
+            block.ExecutorIndex= processor.Index;
+            //block.CurrentExecutor = processor;
             return processor;
         }
     }
@@ -19,7 +21,12 @@ namespace ProblemOne
 
         public EProcessorState Status 
         { 
-            get { return (CurrentBlock == null ? EProcessorState.Ready : EProcessorState.Busy); } 
+            get 
+            {
+                if (CurrentBlock == null) return EProcessorState.Ready;
+                if (CurrentBlock != null && CurrentBlock.Status == EBlockState.Done) return EProcessorState.Ready;
+                return EProcessorState.Busy;
+            } 
         }
 
         public KProcessor(int index) { Index = index; }
@@ -27,6 +34,8 @@ namespace ProblemOne
         public void DoTick(int currentTick)
         {
             if (CurrentBlock == null) return;
+            if (CurrentBlock.Status == EBlockState.Binded)
+                CurrentBlock.CurrentExecutor = this;
             CurrentBlock.DoTick(currentTick);
         }
 

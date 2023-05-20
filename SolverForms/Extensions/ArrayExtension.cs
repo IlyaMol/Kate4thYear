@@ -27,5 +27,22 @@
 
             return twoDimArray;
         }
+
+        public static bool Compare(this int[,] array1, int[,] array2)
+        {
+            if (array1.GetLength(0) != array2.GetLength(0) || array1.GetLength(1) != array2.GetLength(1))
+                return false;
+
+            for (int i = 0; i < array1.GetLength(0); i++)
+            {
+                for (int j = 0; j < array1.GetLength(1); j++)
+                {
+                    if (array1[i, j] != array2[i, j])
+                        return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

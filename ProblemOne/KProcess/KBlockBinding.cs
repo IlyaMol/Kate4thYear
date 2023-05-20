@@ -5,12 +5,25 @@ namespace ProblemOne
     public class KBlockBinding
     {
         private EBlockState _status = EBlockState.Ready;
+        private KProcessor? _currentExecutor;
 
         public KBlock Block { get; private set; }
         public KProcess Process { get; private set; }
         public uint ThreadIndex { get; set; } = 0;
 
-        public KProcessor? CurrentExecutor { get; set; }
+
+        public KProcessor? CurrentExecutor 
+        {
+            get { return _currentExecutor; }
+            set
+            {
+                _currentExecutor = value;
+                Process.LastExecutedBlock = Block.PipelineIndex;
+            }
+        }
+        public int ExecutorIndex { get; set; } = -1;
+
+        public string Name { get { return $"t{Process.Index + 1}{Block.PipelineIndex + 1}"; } }
 
         public EBlockState Status
         {
@@ -28,9 +41,15 @@ namespace ProblemOne
                         return EBlockState.Busy;
                 }
                 else
+                {
+                    if (ExecutorIndex != -1)
+                        return EBlockState.Binded;
+
                     return EBlockState.Ready;
+                }
             }
         }
+
         public int BlockStartTime { get; set; }
         public int BlockDuration { get; set; }
         public int BlockEndTime { get { return BlockStartTime + BlockDuration; } }
@@ -72,7 +91,7 @@ namespace ProblemOne
                     CurrentExecutor = null;
                 }
             }
-            if (Status == EBlockState.Ready)
+            if (Status == EBlockState.Binded)
             {
                 Block.IsBlocked = true;
                 BlockStartTime = currentTick;
@@ -83,6 +102,7 @@ namespace ProblemOne
         public void Reset()
         {
             BlockStartTime = 0;
+            ExecutorIndex = -1;
             _status = EBlockState.Ready;
         }
     }
