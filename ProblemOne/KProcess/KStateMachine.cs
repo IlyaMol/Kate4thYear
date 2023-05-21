@@ -87,20 +87,6 @@ namespace ProblemOne
             return this;
         }
 
-        private void DoTick(EDistributeModeType distributionMode, int currentTick)
-        {
-            foreach (var processor in Processors.Where(p => p.Status == EProcessorState.Busy))
-            {
-                // блокировка исполнения блока, если процесс не готов
-                // строго для распределенного режима
-                if (distributionMode == EDistributeModeType.Distributed)
-                    if (processor.CurrentBlock!.Process.Status == EProcessState.Waiting) 
-                        if(!processor.CurrentBlock!.Process.CurrentTasks.Contains(processor.CurrentBlock!)) continue;
-
-                processor.DoTick(currentTick);
-            }
-        }
-
         public void ResetStates()
         {
             ProcessorBindings.Clear();
@@ -211,5 +197,21 @@ namespace ProblemOne
             else
                 return null;
         }
+
+
+        private void DoTick(EDistributeModeType distributionMode, int currentTick)
+        {
+            foreach (var processor in Processors.Where(p => p.Status == EProcessorState.Busy))
+            {
+                // блокировка исполнения блока, если процесс не готов
+                // строго для распределенного режима
+                if (distributionMode == EDistributeModeType.Distributed)
+                    if (processor.CurrentBlock!.Process.Status == EProcessState.Waiting)
+                        if (!processor.CurrentBlock!.Process.CurrentTasks.Contains(processor.CurrentBlock!)) continue;
+
+                processor.DoTick(currentTick);
+            }
+        }
+
     }
 }
