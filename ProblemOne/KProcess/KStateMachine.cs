@@ -19,7 +19,7 @@ namespace ProblemOne
         public ICollection<KProcess> Processes { get; private set; } = new List<KProcess>();
         public ICollection<KProcessor> Processors { get; set; } = new List<KProcessor>();
 
-        //processor/processes
+        //processor/process(block)
         private Dictionary<int, int> ProcessorBindings { get; } = new Dictionary<int, int>();
 
         public static bool TryBuild(in int[,] matrix, int processorCount, out KStateMachine machine)
@@ -30,11 +30,11 @@ namespace ProblemOne
 
             for (int rowIndex = 0; rowIndex < matrix.GetLength(0); rowIndex++)
             {
-                KProcess? process = new(rowIndex);
-                machine.Processes.Add(process);
-
                 if (rowIndex % processorCount == 0)
                     thread++;
+
+                KProcess? process = new(rowIndex) { ThreadIndex = thread };
+                machine.Processes.Add(process);
 
                 for (int columnIndex = 0; columnIndex < matrix.GetLength(1); columnIndex++)
                 {
@@ -51,22 +51,18 @@ namespace ProblemOne
             return true;
         }
 
-        HashSet<KProcessor> processors = new();
+        
         public KStateMachine Execute(EExecuteModeType executionMode, EDistributeModeType distributionMode, bool isCombined = true)
         {
             int tickCount = 0;
+            HashSet<KProcessor> processors = new();
             ResetStates();
+
             // одна итерация цикла - один такт машины
             while (Processes.Any(p => p.Status != EProcessState.Done))
             {
-                if (tickCount == 8)
-                {
-
-                }
-                //для начала выполняем блоки на всех процессорах
-                processors = Processors.Where(p => p.Status == EProcessorState.Busy).ToHashSet();
-                foreach(var processor in processors)
-                    processor.DoTick(tickCount);
+                // для начала выполняем блоки на всех процессорах
+                DoTick(distributionMode, tickCount);
 
                 //назначаем блоки на незанятые процессоры
                 processors = Processors.Where(p => p.Status == EProcessorState.Ready).ToHashSet();
@@ -77,20 +73,32 @@ namespace ProblemOne
                         switch (executionMode)
                         {
                             case EExecuteModeType.Async:
-                                BindNextBlockAsync(processor, distributionMode);
+                                BindNextBlockAsync(processor, distributionMode, isCombined);
                                 break;
                         }
                     }
                 }
 
-                //для начала выполняем блоки на всех процессорах
-                processors = Processors.Where(p => p.Status == EProcessorState.Busy).ToHashSet();
-                foreach (var processor in processors)
-                    processor.DoTick(tickCount);
+                // два такта за один тик - для исключения простоев процессоров
+                DoTick(distributionMode, tickCount);
 
                 tickCount++;
             }
             return this;
+        }
+
+        private void DoTick(EDistributeModeType distributionMode, int currentTick)
+        {
+            foreach (var processor in Processors.Where(p => p.Status == EProcessorState.Busy))
+            {
+                // блокировка исполнения блока, если процесс не готов
+                // строго для распределенного режима
+                if (distributionMode == EDistributeModeType.Distributed)
+                    if (processor.CurrentBlock!.Process.Status == EProcessState.Waiting) 
+                        if(!processor.CurrentBlock!.Process.CurrentTasks.Contains(processor.CurrentBlock!)) continue;
+
+                processor.DoTick(currentTick);
+            }
         }
 
         public void ResetStates()
@@ -105,21 +113,35 @@ namespace ProblemOne
                 processor.Reset();
         }
 
-        private void BindNextBlockAsync(KProcessor processor, EDistributeModeType distributionMode)
+        private void BindNextBlockAsync(KProcessor processor, EDistributeModeType distributionMode, bool isCombined)
         {
-            KProcess? targetProcess = GetProcess(processor.Index, distributionMode);
+            KProcess? targetProcess = GetProcess(processor.Index, distributionMode, isCombined);
 
             if (targetProcess == null) return;
 
-            KBlockBinding? nextBlock = targetProcess.NextBlock;
+            KBlockBinding? nextBlock = targetProcess.NextFreeBlock;
 
             if (nextBlock == null) return;
 
-
+            // поскольку этот метод рассчитан на работу с блоками,
+            // работу по проверке валидности блоков для распределенного режима
+            // выполняю тут
             if (distributionMode == EDistributeModeType.Distributed)
             {
-                if (nextBlock.Status == EBlockState.Waiting) return;
+                // TODO (wwaffe): чет сомнения в данной блокировке, рефактор
+                // по факту реализация последовательного выполнения блока во всех процессах на одном процессоре
+                if (processor.CurrentBlock != null && processor.CurrentBlock.Process.Index >= targetProcess.Index)
+                {
+                    uint currentThreadIndex = nextBlock.ThreadIndex;
+                    int firstProcessIndexFotThread = Processes.Where(p => p.ThreadIndex == currentThreadIndex).Min(p => p.Index);
 
+                    if (isCombined && targetProcess.Index != 0) return;
+
+                    if (!isCombined && targetProcess.Index != firstProcessIndexFotThread)
+                        return;
+                }
+
+                // запоминаем индекс текущего блока, дабы потом выбирать те же
                 if (ProcessorBindings.ContainsKey(processor.Index))
                 {
                     ProcessorBindings.Remove(processor.Index);
@@ -129,17 +151,28 @@ namespace ProblemOne
                     ProcessorBindings.Add(processor.Index, nextBlock.Block.PipelineIndex);
             }
 
-
             processor.BindBlock(nextBlock);
         }
 
-        private KProcess? GetProcess(int processorIndex, EDistributeModeType distributionMode)
+        private KProcess? GetProcess(int processorIndex, EDistributeModeType distributionMode, bool isCombined)
         {
             KProcess? currentProcess = null;
-            IEnumerable<KProcess> processes = Processes.Where(p => p.Status != EProcessState.Done);
+            IEnumerable<KProcess> processes = new HashSet<KProcess>();
 
-            // для сосредоточенного режима выбираем процесс для процессора
+            if (isCombined)
+                processes = Processes.Where(p => p.Status != EProcessState.Done);
+            else
+            {
+                var currentTasks = Blocks.SelectMany(b => b.Bindings).Where(bb => bb.Status != EBlockState.Done);
+                if (currentTasks.Any())
+                {
+                    uint currentThread = currentTasks.Min(bb => bb.ThreadIndex);
+                    processes = Processes.Where(p => p.Status != EProcessState.Done && p.BlockBindings.Any(bb => bb.ThreadIndex == currentThread));
+                }
+            }
+
             if (distributionMode == EDistributeModeType.Centralized)
+            {
                 if (ProcessorBindings.ContainsKey(processorIndex))
                 {
                     var currentProcessIndex = ProcessorBindings[processorIndex];
@@ -152,21 +185,23 @@ namespace ProblemOne
                         return currentProcess;
                 }
 
-            processes = processes.Where(p => (p.Status == EProcessState.Ready
+                processes = processes.Where(p => (p.Status == EProcessState.Ready
                                                || p.Status == EProcessState.Idle));
 
-            if (distributionMode == EDistributeModeType.Centralized)
-            {
                 currentProcess = processes.FirstOrDefault(p => !ProcessorBindings.Values.Contains(p.Index));
                 if (currentProcess != null)
-                ProcessorBindings.Add(processorIndex, currentProcess.Index);
+                    ProcessorBindings.Add(processorIndex, currentProcess.Index);
             }
 
             if (distributionMode == EDistributeModeType.Distributed)
             {
-                var suggestedProcesses = processes.Where(p => p.Status != EProcessState.Waiting && p.Status != EProcessState.Busy && p.NextBlock != null);
+                var suggestedProcesses = processes.Where(p => p.Status != EProcessState.Busy && p.NextFreeBlock != null);
+
+                // отдавать предпочтение процессу, порядковый номер следующего блока у которого равен
+                // порядковому номеру последнего исполненного блока этим процессором
                 if(suggestedProcesses.Count() > 1 && ProcessorBindings.ContainsKey(processorIndex))
                     currentProcess = suggestedProcesses.FirstOrDefault(p => p.NextBlock!.Block.PipelineIndex == ProcessorBindings[processorIndex]);
+
                 if(currentProcess == null)
                     currentProcess = suggestedProcesses.FirstOrDefault();
             }

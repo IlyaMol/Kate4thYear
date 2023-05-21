@@ -292,12 +292,13 @@
             this.offsetSliderValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.offsetSliderValue.Location = new System.Drawing.Point(899, 3);
-            this.offsetSliderValue.Minimum = 1;
+            this.offsetSliderValue.Maximum = 50;
+            this.offsetSliderValue.Minimum = 5;
             this.offsetSliderValue.Name = "offsetSliderValue";
             this.offsetSliderValue.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.offsetSliderValue.Size = new System.Drawing.Size(45, 273);
             this.offsetSliderValue.TabIndex = 9;
-            this.offsetSliderValue.Value = 1;
+            this.offsetSliderValue.Value = 5;
             // 
             // drawingModeFlowLayoutPanel
             // 

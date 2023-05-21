@@ -19,7 +19,7 @@ namespace ProblemOne
 
         public int Index { get; set; }
         public int ExecutorIndex { get; set; } = -1;
-        
+        public uint ThreadIndex { get; set; } = 1;
         public ICollection<KBlockBinding> BlockBindings { get; } = new List<KBlockBinding>();
 
         // блок перехода между потоками
@@ -50,15 +50,22 @@ namespace ProblemOne
                 return BlockBindings.Where(bb => bb.Block.PipelineIndex == LastExecutedBlock + 1).FirstOrDefault();
             }
         }
-
+        public KBlockBinding? NextFreeBlock
+        {
+            // выдаем блоки по порядку
+            get
+            {
+                return BlockBindings.Where(bb => bb.Status != EBlockState.Binded).Where(bb => bb.Block.PipelineIndex > LastExecutedBlock).FirstOrDefault();
+            }
+        }
         public EProcessState Status
         {
             get
             {
                 if (BlockBindings.All(bb => bb.Status == EBlockState.Done)) return EProcessState.Done;
-                if (BlockBindings.Any(bb => bb.Status == EBlockState.Busy)) return EProcessState.Busy;
+                if (BlockBindings.Any(bb => bb.Status == EBlockState.Busy)) return EProcessState.Waiting;
                 if (BlockBindings.All(bb => bb.Status == EBlockState.Ready)) return EProcessState.Idle;
-                if (BlockBindings.Any(bb => bb.Status == EBlockState.Binded)) return EProcessState.Waiting;
+                //if (BlockBindings.Any(bb => bb.Status == EBlockState.Binded)) return EProcessState.Waiting;
                 if (BlockBindings.Any(bb => bb.Status == EBlockState.Ready)) return EProcessState.Ready;
                 return EProcessState.Ready;
             }

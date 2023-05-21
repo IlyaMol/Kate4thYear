@@ -30,8 +30,8 @@ namespace ProblemOne
         {
             get
             {
-                // устанавливается процессором по окончании выполнения
-                // сбрасывается только методом Reset()
+                // устанавливается по окончании выполнения
+                // сбрасывается методом Reset()
                 if (_status == EBlockState.Done) return EBlockState.Done;
 
                 if (Block.IsBlocked)
@@ -44,9 +44,6 @@ namespace ProblemOne
                 else
                 {
                     if (IsBinded)
-                        return EBlockState.Binded;
-                    else
-                    if (Block.Bindings.Any(bb => bb.IsBinded))
                         return EBlockState.Binded;
                     return EBlockState.Ready;
                 }
@@ -90,8 +87,8 @@ namespace ProblemOne
                     Block.IsBlocked = false;
                     Block.CurrentProcess = null;
                     IsBinded = false;
-                    _status = EBlockState.Done;
                     CurrentExecutor = null;
+                    _status = EBlockState.Done;
                 }
             }
             if (Status == EBlockState.Binded)

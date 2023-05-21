@@ -19,6 +19,8 @@ namespace ProblemOne
         public int Index { get; set; } = 0;
         public KBlockBinding? CurrentBlock { get; set; }
 
+        public int ExecutedBlockCount { get; set; }
+
         public EProcessorState Status 
         { 
             get 
@@ -35,12 +37,16 @@ namespace ProblemOne
         {
             if (CurrentBlock == null) return;
             if (CurrentBlock.Status == EBlockState.Binded)
+            {
+                ExecutedBlockCount++;
                 CurrentBlock.CurrentExecutor = this;
+            }
             CurrentBlock.DoTick(currentTick);
         }
 
         public void Reset()
         {
+            ExecutedBlockCount = 0;
             CurrentBlock = null;
         }
     }
