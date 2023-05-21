@@ -47,7 +47,7 @@ namespace ProblemOne
             // выдаем блоки по порядку
             get 
             {
-                return BlockBindings.Where(bb => bb.ExecutorIndex == -1).FirstOrDefault();
+                return BlockBindings.Where(bb => bb.Block.PipelineIndex == LastExecutedBlock + 1).FirstOrDefault();
             }
         }
 

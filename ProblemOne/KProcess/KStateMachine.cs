@@ -115,14 +115,20 @@ namespace ProblemOne
 
             if (nextBlock == null) return;
 
-            if (distributionMode == EDistributeModeType.Distributed)
-                if (!ProcessorBindings.ContainsKey(processor.Index))
-                    ProcessorBindings.Add(processor.Index, nextBlock.Block.PipelineIndex);
-                   
-            if(targetProcess?.Index == 3 && nextBlock.Block.PipelineIndex == 0)
-            {
 
+            if (distributionMode == EDistributeModeType.Distributed)
+            {
+                if (nextBlock.Status == EBlockState.Waiting) return;
+
+                if (ProcessorBindings.ContainsKey(processor.Index))
+                {
+                    ProcessorBindings.Remove(processor.Index);
+                    ProcessorBindings.Add(processor.Index, nextBlock.Block.PipelineIndex);
+                }
+                else
+                    ProcessorBindings.Add(processor.Index, nextBlock.Block.PipelineIndex);
             }
+
 
             processor.BindBlock(nextBlock);
         }
@@ -146,19 +152,6 @@ namespace ProblemOne
                         return currentProcess;
                 }
 
-            if (distributionMode == EDistributeModeType.Distributed)
-            {
-                if (ProcessorBindings.ContainsKey(processorIndex))
-                {
-                    var currentBlockIndex = ProcessorBindings[processorIndex];
-
-                    currentProcess = processes.Where(p => p.Status != EProcessState.Waiting && p.Status != EProcessState.Busy && p.NextBlock != null)
-                        .FirstOrDefault(p => p.NextBlock!.Block.PipelineIndex == currentBlockIndex);
-
-                    return currentProcess;
-                }
-            }
-
             processes = processes.Where(p => (p.Status == EProcessState.Ready
                                                || p.Status == EProcessState.Idle));
 
@@ -171,8 +164,11 @@ namespace ProblemOne
 
             if (distributionMode == EDistributeModeType.Distributed)
             {
-                currentProcess = processes.Where(p => p.Status != EProcessState.Waiting && p.Status != EProcessState.Busy && p.NextBlock != null)
-                    .FirstOrDefault(p => !ProcessorBindings.Values.Contains(p.NextBlock!.Block.PipelineIndex));
+                var suggestedProcesses = processes.Where(p => p.Status != EProcessState.Waiting && p.Status != EProcessState.Busy && p.NextBlock != null);
+                if(suggestedProcesses.Count() > 1 && ProcessorBindings.ContainsKey(processorIndex))
+                    currentProcess = suggestedProcesses.FirstOrDefault(p => p.NextBlock!.Block.PipelineIndex == ProcessorBindings[processorIndex]);
+                if(currentProcess == null)
+                    currentProcess = suggestedProcesses.FirstOrDefault();
             }
 
             if (currentProcess != null)

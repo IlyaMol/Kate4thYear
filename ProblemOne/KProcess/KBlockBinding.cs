@@ -10,7 +10,7 @@ namespace ProblemOne
         public KBlock Block { get; private set; }
         public KProcess Process { get; private set; }
         public uint ThreadIndex { get; set; } = 0;
-
+        public bool IsBinded { get; set;} = false;
 
         public KProcessor? CurrentExecutor 
         {
@@ -21,6 +21,7 @@ namespace ProblemOne
                 Process.LastExecutedBlock = Block.PipelineIndex;
             }
         }
+        
         public int ExecutorIndex { get; set; } = -1;
 
         public string Name { get { return $"t{Process.Index + 1}{Block.PipelineIndex + 1}"; } }
@@ -42,9 +43,11 @@ namespace ProblemOne
                 }
                 else
                 {
-                    if (ExecutorIndex != -1)
+                    if (IsBinded)
                         return EBlockState.Binded;
-
+                    else
+                    if (Block.Bindings.Any(bb => bb.IsBinded))
+                        return EBlockState.Binded;
                     return EBlockState.Ready;
                 }
             }
@@ -86,7 +89,7 @@ namespace ProblemOne
                     // выполнение блока закончилось
                     Block.IsBlocked = false;
                     Block.CurrentProcess = null;
-
+                    IsBinded = false;
                     _status = EBlockState.Done;
                     CurrentExecutor = null;
                 }

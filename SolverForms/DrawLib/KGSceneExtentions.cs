@@ -12,7 +12,7 @@
 
         public static KGScene UseCoordPlane(this KGScene scene, int xDelimeters = 0, int yDelimeters = 0, float scale = 5)
         {
-            KGLayer layer = new KGLayer(isCoordinatePlane: true);
+            KGLayer lineLayer = new KGLayer(isCoordinatePlane: true);
 
             KGLine xCoordLine = new KGLine()
             {
@@ -31,33 +31,37 @@
             };
 
 
-            layer.AddShape(xCoordLine);
-            layer.AddShape(yCoordLine);
+            lineLayer.AddShape(xCoordLine);
+            lineLayer.AddShape(yCoordLine);
+
+            scene.YUnitSize = yCoordLine.UsefullLength / yDelimeters;
 
             for (int i = 1; i <= yDelimeters; i++)
             {
-                scene.YUnitSize = yCoordLine.UsefullLength / yDelimeters;
-                layer.AddShape(new KGLine()
+                lineLayer.AddShape(new KGLine()
                 {
                     StartPoint = new PointF(scene.CoordPadding.Left - 2.5f, (scene.Height - scene.CoordPadding.Bottom) - scene.YUnitSize * i),
                     Lenth = 5,
                     Angle = 0f
-                });
+                }.AddLabel(i.ToString(), EGLabelPosition.Left, EGTextAlignment.Center));
             }
 
-            if(xDelimeters == 0)
+            if (xDelimeters == 0)
                 xDelimeters = (int)((xCoordLine.Lenth - scale * 2) / (scale * 3));
+
+            scene.XUnitSize = xCoordLine.UsefullLength / xDelimeters;
+
             for (int i = 1; i <= xDelimeters; i++)
             {
-                scene.XUnitSize = xCoordLine.UsefullLength / xDelimeters;
-                layer.AddShape(new KGLine()
+
+                lineLayer.AddShape(new KGLine()
                 {
                     StartPoint = new PointF((scene.CoordPadding.Left + scene.XUnitSize * i), scene.Height - (scene.CoordPadding.Bottom) - 2.5f),
                     Lenth = 5,
                     Angle = 90f
-                });
+                }.AddLabel(i.ToString(), EGLabelPosition.Bottom, EGTextAlignment.Center, new Padding(5,5,5,5)));
             }
-            scene.AddLayer(layer);
+            scene.AddLayer(lineLayer);
             return scene;
         }
     }

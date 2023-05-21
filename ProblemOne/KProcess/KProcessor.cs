@@ -8,8 +8,8 @@ namespace ProblemOne
         {
             processor.CurrentBlock = block;
             block.Block.LastExecutorIndex = processor.Index;
-            block.ExecutorIndex= processor.Index;
-            //block.CurrentExecutor = processor;
+            block.ExecutorIndex = processor.Index;
+            block.IsBinded = true;
             return processor;
         }
     }
