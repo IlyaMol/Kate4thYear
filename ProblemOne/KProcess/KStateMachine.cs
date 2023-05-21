@@ -62,25 +62,15 @@ namespace ProblemOne
             while (Processes.Any(p => p.Status != EProcessState.Done))
             {
                 // для начала выполняем блоки на всех процессорах
-                DoTick(distributionMode, tickCount);
+                DoTick(executionMode, distributionMode, tickCount);
 
                 //назначаем блоки на незанятые процессоры
                 processors = Processors.Where(p => p.Status == EProcessorState.Ready).ToHashSet();
-                if(executionMode == EExecuteModeType.Async)
-                {
-                    foreach(var processor in processors)
-                    {
-                        switch (executionMode)
-                        {
-                            case EExecuteModeType.Async:
-                                BindNextBlockAsync(processor, distributionMode, isCombined);
-                                break;
-                        }
-                    }
-                }
+                foreach(var processor in processors)
+                    BindNextBlockAsync(processor, distributionMode, isCombined);
 
                 // два такта за один тик - для исключения простоев процессоров
-                DoTick(distributionMode, tickCount);
+                DoTick(executionMode, distributionMode, tickCount);
 
                 tickCount++;
             }
@@ -110,7 +100,7 @@ namespace ProblemOne
             if (nextBlock == null) return;
 
             // поскольку этот метод рассчитан на работу с блоками,
-            // работу по проверке валидности блоков для распределенного режима
+            // работу по валидации блоков для распределенного режима
             // выполняю тут
             if (distributionMode == EDistributeModeType.Distributed)
             {
@@ -199,10 +189,21 @@ namespace ProblemOne
         }
 
 
-        private void DoTick(EDistributeModeType distributionMode, int currentTick)
+        private void DoTick(EExecuteModeType executionMode, EDistributeModeType distributionMode, int currentTick)
         {
             foreach (var processor in Processors.Where(p => p.Status == EProcessorState.Busy))
             {
+                // блокировки первого синхронного
+                if(executionMode == EExecuteModeType.SyncFirst)
+                {
+                    if (!processor.CurrentBlock.CanStart(currentTick)) return;
+                }
+                // блокировки второго синхронного
+                if(executionMode == EExecuteModeType.SyncSecond)
+                {
+
+                }
+
                 // блокировка исполнения блока, если процесс не готов
                 // строго для распределенного режима
                 if (distributionMode == EDistributeModeType.Distributed)

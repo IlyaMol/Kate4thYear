@@ -68,7 +68,15 @@ namespace ProblemOne
                 return Process.BlockBindings.FirstOrDefault(bb => bb.Block.PipelineIndex == Block.PipelineIndex - 1);
             } 
         }
-
+        public KBlockBinding? FromNextProcess
+        {
+            get { return Block.Bindings.FirstOrDefault(bb => bb.Process.Index == Process.Index + 1); }
+        }
+        public KBlockBinding? FromPreviousProcess
+        {
+            get { return Block.Bindings.FirstOrDefault(bb => bb.Process.Index == Process.Index - 1); }
+        }
+        
         public KBlockBinding(KBlock block, KProcess process, int blockDuration)
         {
             Block = block;
@@ -97,6 +105,31 @@ namespace ProblemOne
                 BlockStartTime = currentTick;
                 Block.CurrentProcess = Process;
             }
+        }
+
+        public int CalculatedEndTime 
+        {
+            get 
+            {
+                KBlockBinding blockBindingWithMaxEndTimeInProcess = Process.BlockBindings.MaxBy(bb => bb.BlockEndTime)!;
+
+                return Process.BlockBindings.Where(bb => bb.Block.PipelineIndex <= blockBindingWithMaxEndTimeInProcess.Block.PipelineIndex).Sum(bb => bb.BlockEndTime); 
+            } 
+        }
+
+        public bool CanStart(int testTick)
+        {
+            if (FromPreviousProcess == null) return true;
+
+            if (FromPreviousProcess.Status == EBlockState.Busy) return false;
+
+            if (NextBlock == null) return true;
+
+            if (FromPreviousProcess.CalculatedEndTime > testTick) return false;
+
+            if (NextBlock.CanStart(testTick + BlockDuration)) return true;
+
+            return false;
         }
 
         public void Reset()
