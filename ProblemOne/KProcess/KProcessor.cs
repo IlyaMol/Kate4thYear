@@ -4,8 +4,15 @@ namespace ProblemOne
 {
     public static class KProcessorExtensions
     {
-        public static KProcessor BindBlock(this KProcessor processor, KBlockBinding block)
+        public static KProcessor BindBlock(this KProcessor processor, KBlockBinding block , bool isCombined)
         {
+            // при смене потока блоков - назначаем текущий блок переходным
+            // нужно для корректного совмещения (у следующего процесса - предыдущий блок
+            // это последний блок предыдущего процесса. 
+            if (processor.CurrentBlock != null && isCombined)
+                if (processor.CurrentBlock.ThreadIndex < block.ThreadIndex)
+                    block.Process.TransitiveBlock = processor.CurrentBlock;
+
             processor.CurrentBlock = block;
             block.Block.LastExecutorIndex = processor.Index;
             block.ExecutorIndex = processor.Index;

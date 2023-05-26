@@ -4,7 +4,7 @@ namespace ProblemOne
 {
     public static class KProcessExtensions
     {
-        public static KProcess AddBlockBinding(this KProcess process, KBlock block, int blockDuration, uint threadIndex = 0)
+        public static KProcess AddBlockBinding(this KProcess process, KBlock block, KStateMachine parentMachine, int blockDuration, uint threadIndex = 0)
         {
             var binding = new KBlockBinding(block, process, blockDuration) { ThreadIndex = threadIndex };
             process.BlockBindings.Add(binding);
@@ -20,12 +20,21 @@ namespace ProblemOne
         public int Index { get; set; }
         public int ExecutorIndex { get; set; } = -1;
         public uint ThreadIndex { get; set; } = 1;
+
+        public int ProcessStartTime 
+        { 
+            get
+            {
+                return FirstBlock.BlockStartTime;
+            }
+        }
+
         public ICollection<KBlockBinding> BlockBindings { get; } = new List<KBlockBinding>();
 
         // блок перехода между потоками
         // для первого в процессе блока - либо null, если до этого потоков нет
         // либо последний исполненный блок для предыдущего потока процесса
-        // public KBlockBinding? TransitiveBlock { get; set; } = null;
+        public KBlockBinding? TransitiveBlock { get; set; } = null;
 
         public IEnumerable<KBlockBinding> CurrentTasks
         {
@@ -65,7 +74,6 @@ namespace ProblemOne
                 if (BlockBindings.All(bb => bb.Status == EBlockState.Done)) return EProcessState.Done;
                 if (BlockBindings.Any(bb => bb.Status == EBlockState.Busy)) return EProcessState.Waiting;
                 if (BlockBindings.All(bb => bb.Status == EBlockState.Ready)) return EProcessState.Idle;
-                //if (BlockBindings.Any(bb => bb.Status == EBlockState.Binded)) return EProcessState.Waiting;
                 if (BlockBindings.Any(bb => bb.Status == EBlockState.Ready)) return EProcessState.Ready;
                 return EProcessState.Ready;
             }

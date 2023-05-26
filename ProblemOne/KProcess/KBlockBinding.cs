@@ -65,8 +65,13 @@ namespace ProblemOne
         { 
             get
             {
-                return Process.BlockBindings.FirstOrDefault(bb => bb.Block.PipelineIndex == Block.PipelineIndex - 1);
-            } 
+                var previousBlock = Process.BlockBindings.FirstOrDefault(bb => bb.Block.PipelineIndex == Block.PipelineIndex - 1);
+
+                if (previousBlock == null)
+                    previousBlock = Process.TransitiveBlock;
+
+                return previousBlock;
+            }
         }
         public KBlockBinding? FromNextProcess
         {
@@ -76,7 +81,21 @@ namespace ProblemOne
         {
             get { return Block.Bindings.FirstOrDefault(bb => bb.Process.Index == Process.Index - 1); }
         }
-        
+        public KBlockBinding? NextBinding
+        {
+            get
+            {
+                return Block.Bindings.Where(bb => bb.ThreadIndex == ThreadIndex).FirstOrDefault(bb => bb.Process.Index == Process.Index + 1);
+            }
+        }
+        public KBlockBinding? PreviousBinding
+        {
+            get
+            {
+                return Block.Bindings.FirstOrDefault(bb => bb.Block.PipelineIndex == Block.PipelineIndex - 1);
+            }
+        }
+
         public KBlockBinding(KBlock block, KProcess process, int blockDuration)
         {
             Block = block;
@@ -107,27 +126,52 @@ namespace ProblemOne
             }
         }
 
+        public int LastCalculatedEndTime { get; private set; } = int.MaxValue;
         public int CalculatedEndTime 
         {
-            get 
+            get
             {
-                KBlockBinding blockBindingWithMaxEndTimeInProcess = Process.BlockBindings.MaxBy(bb => bb.BlockEndTime)!;
+                if (Status == EBlockState.Busy || Status == EBlockState.Done)
+                    LastCalculatedEndTime = BlockEndTime;
+                else
+                if (PreviousBlock != null && (PreviousBlock.Status == EBlockState.Ready || PreviousBlock.Status == EBlockState.Waiting))
+                {
+                    if (PreviousBlock.LastCalculatedEndTime != int.MaxValue)
+                        LastCalculatedEndTime =
+                            PreviousBlock.LastCalculatedEndTime + BlockDuration;
+                    else
+                        LastCalculatedEndTime = int.MaxValue;
+                }
+                else
+                    LastCalculatedEndTime = Process.BlockBindings
+                        .Where(bb => bb.Block.PipelineIndex <= Block.PipelineIndex)
+                        .Sum(bb => bb.BlockDuration) + Process.ProcessStartTime;
 
-                return Process.BlockBindings.Where(bb => bb.Block.PipelineIndex <= blockBindingWithMaxEndTimeInProcess.Block.PipelineIndex).Sum(bb => bb.BlockEndTime); 
-            } 
+                return LastCalculatedEndTime;
+            }
         }
 
         public bool CanStart(int testTick)
         {
             if (FromPreviousProcess == null) return true;
-
-            if (FromPreviousProcess.Status == EBlockState.Busy) return false;
-
-            if (NextBlock == null) return true;
-
             if (FromPreviousProcess.CalculatedEndTime > testTick) return false;
 
+            if (NextBlock == null) return true;
             if (NextBlock.CanStart(testTick + BlockDuration)) return true;
+
+            return false;
+        }
+
+        public bool CanStartSS(int testTick)
+        {
+            if (PreviousBlock == null) return true;
+
+            if (PreviousBlock.CalculatedEndTime > testTick) return false;
+
+            //if (PreviousBlock.ExecutorIndex == -1) return false;
+
+            if (NextBinding == null) return true;
+            if (NextBinding.CanStartSS(testTick + BlockDuration)) return true;
 
             return false;
         }

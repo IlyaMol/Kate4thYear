@@ -15,6 +15,7 @@ namespace ProblemOne
 
     public class KStateMachine
     {
+        public int Tick { get; set; }
         public ICollection<KBlock> Blocks { get; set; } = new List<KBlock>();
         public ICollection<KProcess> Processes { get; private set; } = new List<KProcess>();
         public ICollection<KProcessor> Processors { get; set; } = new List<KProcessor>();
@@ -45,7 +46,7 @@ namespace ProblemOne
                         currentBlock = new KBlock(columnIndex);
                         machine.Blocks.Add(currentBlock);
                     }
-                    process.AddBlockBinding(currentBlock, matrix[rowIndex, columnIndex], thread);
+                    process.AddBlockBinding(currentBlock, machine, matrix[rowIndex, columnIndex], thread);
                 }
             }
             return true;
@@ -80,6 +81,7 @@ namespace ProblemOne
         public void ResetStates()
         {
             ProcessorBindings.Clear();
+            Tick = 0;
 
             foreach (var block in Blocks)
                 block.Reset();
@@ -127,7 +129,7 @@ namespace ProblemOne
                     ProcessorBindings.Add(processor.Index, nextBlock.Block.PipelineIndex);
             }
 
-            processor.BindBlock(nextBlock);
+            processor.BindBlock(nextBlock, isCombined);
         }
 
         private KProcess? GetProcess(int processorIndex, EDistributeModeType distributionMode, bool isCombined)
@@ -165,6 +167,7 @@ namespace ProblemOne
                                                || p.Status == EProcessState.Idle));
 
                 currentProcess = processes.FirstOrDefault(p => !ProcessorBindings.Values.Contains(p.Index));
+
                 if (currentProcess != null)
                     ProcessorBindings.Add(processorIndex, currentProcess.Index);
             }
@@ -175,10 +178,10 @@ namespace ProblemOne
 
                 // отдавать предпочтение процессу, порядковый номер следующего блока у которого равен
                 // порядковому номеру последнего исполненного блока этим процессором
-                if(suggestedProcesses.Count() > 1 && ProcessorBindings.ContainsKey(processorIndex))
+                if (suggestedProcesses.Count() > 1 && ProcessorBindings.ContainsKey(processorIndex))
                     currentProcess = suggestedProcesses.FirstOrDefault(p => p.NextBlock!.Block.PipelineIndex == ProcessorBindings[processorIndex]);
 
-                if(currentProcess == null)
+                if (currentProcess == null)
                     currentProcess = suggestedProcesses.FirstOrDefault();
             }
 
@@ -194,21 +197,38 @@ namespace ProblemOne
             foreach (var processor in Processors.Where(p => p.Status == EProcessorState.Busy))
             {
                 // блокировки первого синхронного
-                if(executionMode == EExecuteModeType.SyncFirst)
+                if (executionMode == EExecuteModeType.SyncFirst)
                 {
-                    if (!processor.CurrentBlock.CanStart(currentTick)) return;
+                    if (processor.CurrentBlock!.Process.Index == 0 && processor.CurrentBlock!.Block.PipelineIndex == 2 && currentTick == 3)
+                    {
+
+                    }
+                    // проверка на возможность запуска блока (рекурсивно по процессу)
+                    if (processor.CurrentBlock != null && !processor.CurrentBlock.CanStart(currentTick)) continue;
                 }
+
                 // блокировки второго синхронного
                 if(executionMode == EExecuteModeType.SyncSecond)
                 {
+                    if (processor.CurrentBlock!.Process.Index == 3 && processor.CurrentBlock!.Block.PipelineIndex == 1 && currentTick == 12)
+                    {
 
+                    }
+                    // проверка на возможность запуска блока (рекурсивно по привязкам)
+                    if (processor.CurrentBlock != null && !processor.CurrentBlock.CanStartSS(currentTick)) continue;
                 }
 
                 // блокировка исполнения блока, если процесс не готов
-                // строго для распределенного режима
                 if (distributionMode == EDistributeModeType.Distributed)
                     if (processor.CurrentBlock!.Process.Status == EProcessState.Waiting)
-                        if (!processor.CurrentBlock!.Process.CurrentTasks.Contains(processor.CurrentBlock!)) continue;
+                        if (!processor.CurrentBlock!.Process.CurrentTasks.Contains(processor.CurrentBlock!)) 
+                            continue;
+
+                // блокировка исполнения блока, если предыдущий блок не готов
+                if (distributionMode == EDistributeModeType.Centralized)
+                    if (processor.CurrentBlock != null && processor.CurrentBlock!.FromPreviousProcess != null)
+                        if (processor.CurrentBlock!.FromPreviousProcess.IsBinded)
+                            continue;
 
                 processor.DoTick(currentTick);
             }
