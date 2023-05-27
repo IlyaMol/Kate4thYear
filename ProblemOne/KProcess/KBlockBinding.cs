@@ -67,8 +67,7 @@ namespace ProblemOne
             {
                 var previousBlock = Process.BlockBindings.FirstOrDefault(bb => bb.Block.PipelineIndex == Block.PipelineIndex - 1);
 
-                if (previousBlock == null)
-                    previousBlock = Process.TransitiveBlock;
+                previousBlock ??= Process.TransitiveBlock;
 
                 return previousBlock;
             }
@@ -126,35 +125,55 @@ namespace ProblemOne
             }
         }
 
-        public int LastCalculatedEndTime { get; private set; } = int.MaxValue;
-        public int CalculatedEndTime 
+        public int CalculateEndTime
         {
             get
             {
                 if (Status == EBlockState.Busy || Status == EBlockState.Done)
-                    LastCalculatedEndTime = BlockEndTime;
-                else
-                if (PreviousBlock != null && (PreviousBlock.Status == EBlockState.Ready || PreviousBlock.Status == EBlockState.Waiting))
-                {
-                    if (PreviousBlock.LastCalculatedEndTime != int.MaxValue)
-                        LastCalculatedEndTime =
-                            PreviousBlock.LastCalculatedEndTime + BlockDuration;
-                    else
-                        LastCalculatedEndTime = int.MaxValue;
-                }
-                else
-                    LastCalculatedEndTime = Process.BlockBindings
-                        .Where(bb => bb.Block.PipelineIndex <= Block.PipelineIndex)
-                        .Sum(bb => bb.BlockDuration) + Process.ProcessStartTime;
+                    return BlockEndTime;
 
-                return LastCalculatedEndTime;
+                if (Status == EBlockState.Waiting)
+                {
+                    KBlockBinding? firstBusyBlock = Block.Bindings.FirstOrDefault(bb => bb.Status == EBlockState.Busy);
+                    int i = 0;
+                    int j = 0;
+                    if (firstBusyBlock != null)
+                        i = Block.Bindings
+                            .Where(bb => bb.Process.Index > firstBusyBlock.Process.Index
+                                      && bb.Process.Index <= this.Process.Index)
+                            .Sum(bb => bb.BlockDuration) + firstBusyBlock.BlockEndTime;
+
+                    firstBusyBlock = Process.CurrentTasks.FirstOrDefault();
+                    firstBusyBlock = Process.BlockBindings.LastOrDefault(bb => bb.Status == EBlockState.Binded || bb.Status == EBlockState.Done);
+
+                    if (firstBusyBlock == null)
+                        return i;
+
+                    j = firstBusyBlock.CalculateEndTime + BlockDuration;
+                    return i > j ? i : j;
+                }
+
+                int inProcess = Process.BlockBindings
+                            .Where(bb => bb.Block.PipelineIndex <= this.Block.PipelineIndex)
+                            .Sum(bb => bb.BlockDuration) + Process.ProcessStartTime;
+
+                int inBindings = 0;
+
+                KBlockBinding? bbb = Block.Bindings.LastOrDefault(bb => bb.Status == EBlockState.Done || bb.Status == EBlockState.Waiting);
+
+                if(bbb == null)
+                    inBindings = Block.Bindings.Where(bb => bb.Process.Index <= this.Process.Index).Sum(bb => bb.BlockDuration);
+                else
+                    inBindings = Block.Bindings.Where(bb => bb.Process.Index > bbb.Process.Index && bb.Process.Index <= this.Process.Index).Sum(bb => bb.BlockDuration) + bbb.BlockEndTime;
+
+                return inProcess > inBindings ? inProcess : inBindings;
             }
         }
 
         public bool CanStart(int testTick)
         {
             if (FromPreviousProcess == null) return true;
-            if (FromPreviousProcess.CalculatedEndTime > testTick) return false;
+            if (FromPreviousProcess.CalculateEndTime > testTick) return false;
 
             if (NextBlock == null) return true;
             if (NextBlock.CanStart(testTick + BlockDuration)) return true;
@@ -165,10 +184,7 @@ namespace ProblemOne
         public bool CanStartSS(int testTick)
         {
             if (PreviousBlock == null) return true;
-
-            if (PreviousBlock.CalculatedEndTime > testTick) return false;
-
-            //if (PreviousBlock.ExecutorIndex == -1) return false;
+            if (PreviousBlock.CalculateEndTime > testTick) return false;
 
             if (NextBinding == null) return true;
             if (NextBinding.CanStartSS(testTick + BlockDuration)) return true;

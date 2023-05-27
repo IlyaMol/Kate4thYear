@@ -15,11 +15,10 @@ namespace ProblemOne
 
     public class KProcess
     {
-        public int LastExecutedBlock { get; set; } = -1;
-
         public int Index { get; set; }
         public int ExecutorIndex { get; set; } = -1;
         public uint ThreadIndex { get; set; } = 1;
+        public KStateMachine ParentStateMachine { get; private set; }
 
         public int ProcessStartTime 
         { 
@@ -28,6 +27,8 @@ namespace ProblemOne
                 return FirstBlock.BlockStartTime;
             }
         }
+
+        public int LastExecutedBlock { get; set; } = -1;
 
         public ICollection<KBlockBinding> BlockBindings { get; } = new List<KBlockBinding>();
 
@@ -54,14 +55,6 @@ namespace ProblemOne
         public KBlockBinding? NextBlock
         {
             // выдаем блоки по порядку
-            get 
-            {
-                return BlockBindings.Where(bb => bb.Block.PipelineIndex == LastExecutedBlock + 1).FirstOrDefault();
-            }
-        }
-        public KBlockBinding? NextFreeBlock
-        {
-            // выдаем блоки по порядку
             get
             {
                 return BlockBindings.Where(bb => bb.Status != EBlockState.Binded).Where(bb => bb.Block.PipelineIndex > LastExecutedBlock).FirstOrDefault();
@@ -79,9 +72,10 @@ namespace ProblemOne
             }
         }
 
-        public KProcess(int index)
+        public KProcess(int index, KStateMachine parentStateMachine)
         {
             Index = index;
+            ParentStateMachine = parentStateMachine;
         }
 
         public void Reset()
