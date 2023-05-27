@@ -8,10 +8,10 @@ namespace SolverForms
         {
             InitializeComponent();
 
-            ProblemOneTabPage tab1 = new ProblemOneTabPage();
-            ProblemTwoTabPage tab2 = new ProblemTwoTabPage();
-            tabControl1.TabPages.Add(tab1);
-            tabControl1.TabPages.Add(tab2);
+            tabControl1.TabPages.Add(new ProblemOneTabPage());
+            tabControl1.TabPages.Add(new ProblemTwoTabPage());
+            tabControl1.TabPages.Add(new ProblemThreeTabPage());
+            tabControl1.TabPages.Add(new ProblemFiveTabPage());
         }
     }
 }

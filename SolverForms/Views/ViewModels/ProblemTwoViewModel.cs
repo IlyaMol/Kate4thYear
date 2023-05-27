@@ -6,8 +6,8 @@ namespace SolverForms.Views.ViewModels
     public class ProblemTwoViewModel : INotifyPropertyChanged
     {
         #region Fields
-        private int _processorCount = 0;
-        private int _processCount = 0;
+        private int _processorCount = 10;
+        private int _processCount = 10;
         private int _tauValue = 1;
         private double _resultTauValue = 0;
         private double _optimalBlockCountValue = 0;
@@ -18,6 +18,11 @@ namespace SolverForms.Views.ViewModels
 
         private ProblemTwo.Calculations _calculator = new ProblemTwo.Calculations();
         #endregion
+
+        public ProblemTwoViewModel()
+        {
+            SourceQueue = new double[] { 3, 5, 2, 5, 7, 6, 4, 8, 6, 5 };
+        }
 
         #region Properties
         public int ProcessorCount

@@ -8,6 +8,8 @@ namespace SolverForms.Views
         
         public ProblemTwoTabPage()
         {
+            Text = "инд. 2";
+
             viewModel = new ProblemTwoViewModel();
             InitializeComponent();
             UpdateDataBindings();

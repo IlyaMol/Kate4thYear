@@ -57,4 +57,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="processReqLabel.Text" xml:space="preserve">
+    <value>Число процессов, необходимых для того, чтобы одинаково распределенная стационарная система конкурирующих процессов в случае ограниченного параллелизма в асинхронном и втором синхронном режимах была эффективной и оптимальной:</value>
+  </data>
 </root>

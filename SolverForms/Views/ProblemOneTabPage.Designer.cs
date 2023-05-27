@@ -441,7 +441,7 @@
             this.ClientSize = new System.Drawing.Size(1171, 465);
             this.Controls.Add(this.splitContainer1);
             this.Name = "ProblemOneTabPage";
-            this.Text = "Problem one";
+            this.Text = "инд. 1 & 4";
             ((System.ComponentModel.ISupportInitialize)(this.processorUpDown)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);

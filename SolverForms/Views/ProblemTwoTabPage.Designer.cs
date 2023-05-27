@@ -47,6 +47,9 @@
             this.resultTauValueLabel = new System.Windows.Forms.Label();
             this.optimalProcessorCountLabel = new System.Windows.Forms.Label();
             this.optimalProcessorCountValueLabel = new System.Windows.Forms.Label();
+            this.saveLoadTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.saveDataButton = new System.Windows.Forms.Button();
+            this.loadDataButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -57,6 +60,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.processUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tauUpDown)).BeginInit();
             this.resultTableLayoutPanel.SuspendLayout();
+            this.saveLoadTableLayoutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -74,7 +78,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.resultTableLayoutPanel);
             this.splitContainer1.Size = new System.Drawing.Size(800, 450);
-            this.splitContainer1.SplitterDistance = 266;
+            this.splitContainer1.SplitterDistance = 226;
             this.splitContainer1.TabIndex = 0;
             // 
             // sourceDataFlowLayoutPanel
@@ -87,15 +91,20 @@
             this.sourceDataFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.sourceDataFlowLayoutPanel.Location = new System.Drawing.Point(3, 3);
             this.sourceDataFlowLayoutPanel.Name = "sourceDataFlowLayoutPanel";
-            this.sourceDataFlowLayoutPanel.Size = new System.Drawing.Size(260, 444);
+            this.sourceDataFlowLayoutPanel.Size = new System.Drawing.Size(220, 444);
             this.sourceDataFlowLayoutPanel.TabIndex = 0;
             // 
             // tableLayoutPanel1
             // 
+            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.AutoSize = true;
+            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 76.2646F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 23.73541F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 23.7354F));
             this.tableLayoutPanel1.Controls.Add(this.processorLabel, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.saveLoadTableLayoutPanel, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.processorUpDown, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.processLabel, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.processUpDown, 1, 1);
@@ -104,12 +113,13 @@
             this.tableLayoutPanel1.Controls.Add(this.tauUpDown, 1, 2);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 4;
+            this.tableLayoutPanel1.RowCount = 5;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(257, 117);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(214, 154);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // processorLabel
@@ -120,16 +130,16 @@
             this.processorLabel.AutoSize = true;
             this.processorLabel.Location = new System.Drawing.Point(3, 0);
             this.processorLabel.Name = "processorLabel";
-            this.processorLabel.Size = new System.Drawing.Size(189, 29);
+            this.processorLabel.Size = new System.Drawing.Size(157, 29);
             this.processorLabel.TabIndex = 0;
             this.processorLabel.Text = "Процессоры (p):";
             this.processorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // processorUpDown
             // 
-            this.processorUpDown.Location = new System.Drawing.Point(198, 3);
+            this.processorUpDown.Location = new System.Drawing.Point(166, 3);
             this.processorUpDown.Name = "processorUpDown";
-            this.processorUpDown.Size = new System.Drawing.Size(54, 23);
+            this.processorUpDown.Size = new System.Drawing.Size(45, 23);
             this.processorUpDown.TabIndex = 1;
             // 
             // processLabel
@@ -140,16 +150,16 @@
             this.processLabel.AutoSize = true;
             this.processLabel.Location = new System.Drawing.Point(3, 29);
             this.processLabel.Name = "processLabel";
-            this.processLabel.Size = new System.Drawing.Size(189, 29);
+            this.processLabel.Size = new System.Drawing.Size(157, 29);
             this.processLabel.TabIndex = 2;
             this.processLabel.Text = "Процессы (n):";
             this.processLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // processUpDown
             // 
-            this.processUpDown.Location = new System.Drawing.Point(198, 32);
+            this.processUpDown.Location = new System.Drawing.Point(166, 32);
             this.processUpDown.Name = "processUpDown";
-            this.processUpDown.Size = new System.Drawing.Size(54, 23);
+            this.processUpDown.Size = new System.Drawing.Size(45, 23);
             this.processUpDown.TabIndex = 3;
             // 
             // sourceQueueTextBox
@@ -161,7 +171,7 @@
             this.sourceQueueTextBox.DataSource = new double[0];
             this.sourceQueueTextBox.Location = new System.Drawing.Point(3, 90);
             this.sourceQueueTextBox.Name = "sourceQueueTextBox";
-            this.sourceQueueTextBox.Size = new System.Drawing.Size(251, 23);
+            this.sourceQueueTextBox.Size = new System.Drawing.Size(208, 23);
             this.sourceQueueTextBox.TabIndex = 4;
             // 
             // tauLabel
@@ -172,16 +182,16 @@
             this.tauLabel.AutoSize = true;
             this.tauLabel.Location = new System.Drawing.Point(3, 58);
             this.tauLabel.Name = "tauLabel";
-            this.tauLabel.Size = new System.Drawing.Size(189, 29);
+            this.tauLabel.Size = new System.Drawing.Size(157, 29);
             this.tauLabel.TabIndex = 5;
             this.tauLabel.Text = "Накладные расходы (τ):";
             this.tauLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tauUpDown
             // 
-            this.tauUpDown.Location = new System.Drawing.Point(198, 61);
+            this.tauUpDown.Location = new System.Drawing.Point(166, 61);
             this.tauUpDown.Name = "tauUpDown";
-            this.tauUpDown.Size = new System.Drawing.Size(54, 23);
+            this.tauUpDown.Size = new System.Drawing.Size(45, 23);
             this.tauUpDown.TabIndex = 6;
             // 
             // resultTableLayoutPanel
@@ -206,7 +216,7 @@
             this.resultTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.resultTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.resultTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.resultTableLayoutPanel.Size = new System.Drawing.Size(524, 76);
+            this.resultTableLayoutPanel.Size = new System.Drawing.Size(564, 76);
             this.resultTableLayoutPanel.TabIndex = 6;
             // 
             // label1
@@ -237,7 +247,7 @@
             this.uniformedQueueTextBox.DataSource = new double[0];
             this.uniformedQueueTextBox.Location = new System.Drawing.Point(236, 3);
             this.uniformedQueueTextBox.Name = "uniformedQueueTextBox";
-            this.uniformedQueueTextBox.Size = new System.Drawing.Size(285, 23);
+            this.uniformedQueueTextBox.Size = new System.Drawing.Size(325, 23);
             this.uniformedQueueTextBox.TabIndex = 1;
             // 
             // resultTauLabel
@@ -285,17 +295,53 @@
             this.optimalProcessorCountValueLabel.TabIndex = 7;
             this.optimalProcessorCountValueLabel.Text = "label3";
             // 
+            // saveLoadTableLayoutPanel
+            // 
+            this.saveLoadTableLayoutPanel.ColumnCount = 2;
+            this.tableLayoutPanel1.SetColumnSpan(this.saveLoadTableLayoutPanel, 2);
+            this.saveLoadTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.saveLoadTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.saveLoadTableLayoutPanel.Controls.Add(this.saveDataButton, 1, 0);
+            this.saveLoadTableLayoutPanel.Controls.Add(this.loadDataButton, 0, 0);
+            this.saveLoadTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.saveLoadTableLayoutPanel.Location = new System.Drawing.Point(3, 119);
+            this.saveLoadTableLayoutPanel.Name = "saveLoadTableLayoutPanel";
+            this.saveLoadTableLayoutPanel.RowCount = 1;
+            this.saveLoadTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.saveLoadTableLayoutPanel.Size = new System.Drawing.Size(208, 32);
+            this.saveLoadTableLayoutPanel.TabIndex = 8;
+            // 
+            // saveDataButton
+            // 
+            this.saveDataButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.saveDataButton.Location = new System.Drawing.Point(130, 3);
+            this.saveDataButton.Name = "saveDataButton";
+            this.saveDataButton.Size = new System.Drawing.Size(75, 23);
+            this.saveDataButton.TabIndex = 2;
+            this.saveDataButton.Text = "SAVE";
+            this.saveDataButton.UseVisualStyleBackColor = true;
+            // 
+            // loadDataButton
+            // 
+            this.loadDataButton.Location = new System.Drawing.Point(3, 3);
+            this.loadDataButton.Name = "loadDataButton";
+            this.loadDataButton.Size = new System.Drawing.Size(75, 23);
+            this.loadDataButton.TabIndex = 1;
+            this.loadDataButton.Text = "LOAD";
+            this.loadDataButton.UseVisualStyleBackColor = true;
+            // 
             // ProblemTwoTabPage
             // 
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.splitContainer1);
             this.Name = "ProblemTwoTabPage";
-            this.Text = "ProblemTwoTabPage";
+            this.Text = "инд. 2";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.sourceDataFlowLayoutPanel.ResumeLayout(false);
+            this.sourceDataFlowLayoutPanel.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.processorUpDown)).EndInit();
@@ -303,6 +349,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tauUpDown)).EndInit();
             this.resultTableLayoutPanel.ResumeLayout(false);
             this.resultTableLayoutPanel.PerformLayout();
+            this.saveLoadTableLayoutPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -328,5 +375,8 @@
         private TableLayoutPanel resultTableLayoutPanel;
         private Label optimalProcessorCountLabel;
         private Label optimalProcessorCountValueLabel;
+        private TableLayoutPanel saveLoadTableLayoutPanel;
+        private Button saveDataButton;
+        private Button loadDataButton;
     }
 }

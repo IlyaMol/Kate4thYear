@@ -11,6 +11,7 @@ namespace SolverForms.Views
 
         public ProblemOneTabPage()
         {
+            Name = "инд. 1";
             viewModel = new ProblemOneViewModel();
             InitializeComponent();
 
