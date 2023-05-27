@@ -1,4 +1,4 @@
-﻿using SolverForms.Views;
+﻿ using SolverForms.Views;
 
 namespace SolverForms
 {
@@ -8,9 +8,9 @@ namespace SolverForms
         {
             InitializeComponent();
 
-            //ProblemOneTabPage tab1 = new ProblemOneTabPage();
+            ProblemOneTabPage tab1 = new ProblemOneTabPage();
             ProblemTwoTabPage tab2 = new ProblemTwoTabPage();
-            //tabControl1.TabPages.Add(tab1);
+            tabControl1.TabPages.Add(tab1);
             tabControl1.TabPages.Add(tab2);
         }
     }

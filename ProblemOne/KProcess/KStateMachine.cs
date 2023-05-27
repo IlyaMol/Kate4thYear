@@ -166,9 +166,6 @@ namespace ProblemOne
                         return currentProcess;
                 }
 
-                //processes = processes.Where(p => (p.Status == EProcessState.Ready
-                //                               || p.Status == EProcessState.Idle));
-
                 currentProcess = processes.FirstOrDefault(p => !ProcessorLeases.ContainsValue(p.Index));
 
                 if (currentProcess != null)
@@ -198,7 +195,7 @@ namespace ProblemOne
                 // блокировки первого синхронного
                 if (executionMode == EExecuteModeType.SyncFirst)
                 {
-                    if (processor.CurrentBlock!.Process.Index == 3 && processor.CurrentBlock!.Block.PipelineIndex == 0 && currentTick == 10)
+                    if (processor.CurrentBlock!.Process.Index == 3 && processor.CurrentBlock!.Block.PipelineIndex == 0 && currentTick == 13)
                     {
 
                     }

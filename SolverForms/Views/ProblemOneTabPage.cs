@@ -5,7 +5,7 @@ using SolverForms.Views.ViewModels;
 
 namespace SolverForms.Views
 {
-    public partial class ProblemOneTabPage : Form
+    public partial class ProblemOneTabPage : TabPage
     {
         private ProblemOneViewModel viewModel;
 

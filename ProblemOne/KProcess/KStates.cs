@@ -2,6 +2,7 @@
 {
     public enum EBlockState
     {
+        NotReady,
         Ready,      // блок готов к исполнению
         Busy,       // блок исполняется
         Binded,     // блок назначен на выполнение

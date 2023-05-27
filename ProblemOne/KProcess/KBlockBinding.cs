@@ -45,6 +45,8 @@ namespace ProblemOne
                 {
                     if (IsBinded)
                         return EBlockState.Binded;
+                    if (PreviousBlock != null && PreviousBlock.Status != EBlockState.Done)
+                        return EBlockState.NotReady;
                     return EBlockState.Ready;
                 }
             }
@@ -134,6 +136,8 @@ namespace ProblemOne
 
                 if (Status == EBlockState.Waiting)
                 {
+                    if (PreviousBlock != null && PreviousBlock.Status == EBlockState.NotReady)
+                        return PreviousBlock.CalculateEndTime + BlockDuration;
                     KBlockBinding? firstBusyBlock = Block.Bindings.FirstOrDefault(bb => bb.Status == EBlockState.Busy);
                     int i = 0;
                     int j = 0;
