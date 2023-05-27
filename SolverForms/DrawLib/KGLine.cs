@@ -2,6 +2,22 @@
 
 namespace SolverForms.DrawLib
 {
+    public static class KGLineExtensions
+    {
+        public static KGLine AddLabel(this KGLine line, string label, EGLabelPosition position = EGLabelPosition.Left, EGTextAlignment alignment = EGTextAlignment.Center, Padding? padding = null)
+        {
+            line.Label = new KGLabel()
+            {
+                AssociatedShape = line,
+                Position = position,
+                Alignment = alignment,
+                Text = label,
+                Padding = padding?? new Padding()
+            };
+            return line;
+        }
+    }
+
     public class KGLineCap
     {
         public static CustomLineCap Default()
@@ -34,6 +50,8 @@ namespace SolverForms.DrawLib
     public class KGLine : IKGShape
     {
         public IKGShapeType Type { get; } = IKGShapeType.LINE;
+
+        public KGLabel? Label { get; set; }
 
         public Color ForeColor { get; set; } = Color.Black;
 

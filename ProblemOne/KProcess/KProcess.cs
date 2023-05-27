@@ -4,7 +4,7 @@ namespace ProblemOne
 {
     public static class KProcessExtensions
     {
-        public static KProcess AddBlockBinding(this KProcess process, KBlock block, int blockDuration, uint threadIndex = 0)
+        public static KProcess AddBlockBinding(this KProcess process, KBlock block, KStateMachine parentMachine, int blockDuration, uint threadIndex = 0)
         {
             var binding = new KBlockBinding(block, process, blockDuration) { ThreadIndex = threadIndex };
             process.BlockBindings.Add(binding);
@@ -17,32 +17,29 @@ namespace ProblemOne
     {
         public int Index { get; set; }
         public int ExecutorIndex { get; set; } = -1;
+        public uint ThreadIndex { get; set; } = 1;
+        public KStateMachine ParentStateMachine { get; private set; }
 
-        public bool IsCurrentlyBinded {  get { return Executor != null; } }
+        public int ProcessStartTime 
+        { 
+            get
+            {
+                return FirstBlock.BlockStartTime;
+            }
+        }
+
+        public int LastExecutedBlock { get; set; } = -1;
 
         public ICollection<KBlockBinding> BlockBindings { get; } = new List<KBlockBinding>();
-
-        public KProcessor? Executor { get; set; } = null;
 
         // блок перехода между потоками
         // для первого в процессе блока - либо null, если до этого потоков нет
         // либо последний исполненный блок для предыдущего потока процесса
         public KBlockBinding? TransitiveBlock { get; set; } = null;
 
-        public KBlockBinding? CurrentTask
+        public IEnumerable<KBlockBinding> CurrentTasks
         {
-            get { return BlockBindings.Where(bb => bb.Process.IsCurrentlyBinded && bb.Status != BlockState.Done).FirstOrDefault(bb => bb.Status == BlockState.Busy); }
-        }
-
-        public KBlockBinding? NextTask
-        {
-            get 
-            { 
-                if(CurrentTask == null)
-                    return BlockBindings.Where(bb => bb.Process.IsCurrentlyBinded && bb.Status != BlockState.Done).FirstOrDefault();
-                else
-                    return BlockBindings.Where(bb => bb.Process.IsCurrentlyBinded && bb.Status != BlockState.Done).FirstOrDefault(bb => bb.Block.PipelineIndex == CurrentTask.Block.PipelineIndex + 1);
-            }
+            get { return BlockBindings.Where(bb => bb.Status == EBlockState.Busy); }
         }
 
         public KBlockBinding FirstBlock
@@ -55,31 +52,37 @@ namespace ProblemOne
             get { return BlockBindings.Last(); }
         }
 
-        public ProcessState Status
+        public KBlockBinding? NextBlock
+        {
+            // выдаем блоки по порядку
+            get
+            {
+                return BlockBindings.Where(bb => bb.Status != EBlockState.Binded).Where(bb => bb.Block.PipelineIndex > LastExecutedBlock).FirstOrDefault();
+            }
+        }
+        public EProcessState Status
         {
             get
             {
-                if (BlockBindings.All(bb => bb.Status == BlockState.Done)) return ProcessState.Done;
-                if (Executor == null) return ProcessState.Ready;
-                if (CurrentTask != null && CurrentTask.Status == BlockState.Busy) return ProcessState.Busy;
-                if (NextTask != null && NextTask.Status == BlockState.Waiting) return ProcessState.Waiting;
-                if (CurrentTask ==  null) return ProcessState.Idle;
-                if (Executor != null) return ProcessState.Binded;
-                
-                return ProcessState.Undefined;
+                if (BlockBindings.All(bb => bb.Status == EBlockState.Done)) return EProcessState.Done;
+                if (BlockBindings.Any(bb => bb.Status == EBlockState.Busy)) return EProcessState.Waiting;
+                if (BlockBindings.All(bb => bb.Status == EBlockState.Ready)) return EProcessState.Idle;
+                if (BlockBindings.Any(bb => bb.Status == EBlockState.Ready)) return EProcessState.Ready;
+                return EProcessState.Ready;
             }
         }
 
-        public KProcess(int index)
+        public KProcess(int index, KStateMachine parentStateMachine)
         {
             Index = index;
+            ParentStateMachine = parentStateMachine;
         }
 
         public void Reset()
         {
             ExecutorIndex = -1;
-            TransitiveBlock = null;
-            Executor = null;
+            LastExecutedBlock = -1;
+            //TransitiveBlock = null;
             foreach(var blockBindings in BlockBindings)
                 blockBindings.Reset();
         }

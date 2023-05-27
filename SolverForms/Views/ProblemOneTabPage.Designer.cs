@@ -31,9 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.sourceMatrixView = new SolverForms.KMatrixView();
             this.loadDataButton = new System.Windows.Forms.Button();
-            this.resultMatrixView = new SolverForms.KMatrixView();
             this.processorUpDown = new System.Windows.Forms.NumericUpDown();
-            this.selectedPathIndexUpDown = new System.Windows.Forms.NumericUpDown();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.inputDataFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.inputInfoTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
@@ -44,24 +42,25 @@
             this.blockUpDown = new System.Windows.Forms.NumericUpDown();
             this.saveLoadTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.saveDataButton = new System.Windows.Forms.Button();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.drawingTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.drawPanel = new SolverForms.Views.Controls.UserControl1();
+            this.offsetSliderValue = new System.Windows.Forms.TrackBar();
+            this.drawingModeFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.buildCombinedCheckBox = new System.Windows.Forms.CheckBox();
+            this.executeMethodComboBox = new System.Windows.Forms.ComboBox();
+            this.distributeMethodComboBox = new System.Windows.Forms.ComboBox();
+            this.resultMatrixView = new SolverForms.KMatrixView();
             this.matrixInfoTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.criticalPathCountLabel = new System.Windows.Forms.Label();
             this.criticalPathLenthLabel = new System.Windows.Forms.Label();
             this.criticalPathCountValue = new System.Windows.Forms.Label();
             this.criticalPathLengthValue = new System.Windows.Forms.Label();
-            this.drawingModeFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.buildCombinedCheckBox = new System.Windows.Forms.CheckBox();
-            this.executeMethodComboBox = new System.Windows.Forms.ComboBox();
-            this.distributeMethodComboBox = new System.Windows.Forms.ComboBox();
-            this.drawingTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.drawPanel = new SolverForms.Views.Controls.UserControl1();
-            this.offsetSliderValue = new System.Windows.Forms.TrackBar();
+            this.selectedPathIndexUpDown = new System.Windows.Forms.NumericUpDown();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.kProcTypeBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.processorUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.selectedPathIndexUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -71,11 +70,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.processUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.blockUpDown)).BeginInit();
             this.saveLoadTableLayoutPanel.SuspendLayout();
-            this.flowLayoutPanel2.SuspendLayout();
-            this.matrixInfoTableLayoutPanel.SuspendLayout();
-            this.drawingModeFlowLayoutPanel.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.drawingTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.offsetSliderValue)).BeginInit();
+            this.drawingModeFlowLayoutPanel.SuspendLayout();
+            this.matrixInfoTableLayoutPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.selectedPathIndexUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kProcTypeBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -101,42 +101,12 @@
             this.loadDataButton.UseVisualStyleBackColor = true;
             this.loadDataButton.Click += new System.EventHandler(this.LoadDataButton_Click);
             // 
-            // resultMatrixView
-            // 
-            this.resultMatrixView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.resultMatrixView.ColumnCount = 0;
-            this.resultMatrixView.Location = new System.Drawing.Point(3, 39);
-            this.resultMatrixView.Name = "resultMatrixView";
-            this.resultMatrixView.ReadOnly = false;
-            this.resultMatrixView.RowCount = 0;
-            this.resultMatrixView.SelectedCells = null;
-            this.resultMatrixView.Size = new System.Drawing.Size(106, 106);
-            this.resultMatrixView.TabIndex = 2;
-            // 
             // processorUpDown
             // 
             this.processorUpDown.Location = new System.Drawing.Point(156, 3);
             this.processorUpDown.Name = "processorUpDown";
             this.processorUpDown.Size = new System.Drawing.Size(40, 23);
             this.processorUpDown.TabIndex = 3;
-            // 
-            // selectedPathIndexUpDown
-            // 
-            this.selectedPathIndexUpDown.Location = new System.Drawing.Point(205, 3);
-            this.selectedPathIndexUpDown.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.selectedPathIndexUpDown.Name = "selectedPathIndexUpDown";
-            this.matrixInfoTableLayoutPanel.SetRowSpan(this.selectedPathIndexUpDown, 2);
-            this.selectedPathIndexUpDown.Size = new System.Drawing.Size(38, 23);
-            this.selectedPathIndexUpDown.TabIndex = 4;
-            this.selectedPathIndexUpDown.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             // 
             // splitContainer1
             // 
@@ -151,8 +121,8 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.flowLayoutPanel2);
-            this.splitContainer1.Size = new System.Drawing.Size(933, 465);
+            this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel1);
+            this.splitContainer1.Size = new System.Drawing.Size(1171, 465);
             this.splitContainer1.SplitterDistance = 214;
             this.splitContainer1.TabIndex = 6;
             // 
@@ -269,23 +239,116 @@
             this.saveDataButton.UseVisualStyleBackColor = true;
             this.saveDataButton.Click += new System.EventHandler(this.saveDataButton_Click);
             // 
-            // flowLayoutPanel2
+            // tableLayoutPanel1
             // 
-            this.flowLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.drawingTableLayoutPanel, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.drawingModeFlowLayoutPanel, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.resultMatrixView, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.matrixInfoTableLayoutPanel, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 4;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 248F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(953, 465);
+            this.tableLayoutPanel1.TabIndex = 15;
+            // 
+            // drawingTableLayoutPanel
+            // 
+            this.drawingTableLayoutPanel.ColumnCount = 2;
+            this.drawingTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.drawingTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.drawingTableLayoutPanel.Controls.Add(this.drawPanel, 0, 0);
+            this.drawingTableLayoutPanel.Controls.Add(this.offsetSliderValue, 1, 0);
+            this.drawingTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.drawingTableLayoutPanel.Location = new System.Drawing.Point(3, 183);
+            this.drawingTableLayoutPanel.Name = "drawingTableLayoutPanel";
+            this.drawingTableLayoutPanel.RowCount = 1;
+            this.drawingTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.drawingTableLayoutPanel.Size = new System.Drawing.Size(947, 279);
+            this.drawingTableLayoutPanel.TabIndex = 13;
+            // 
+            // drawPanel
+            // 
+            this.drawPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.flowLayoutPanel2.AutoScroll = true;
-            this.flowLayoutPanel2.BackColor = System.Drawing.SystemColors.Control;
-            this.flowLayoutPanel2.Controls.Add(this.matrixInfoTableLayoutPanel);
-            this.flowLayoutPanel2.Controls.Add(this.resultMatrixView);
-            this.flowLayoutPanel2.Controls.Add(this.drawingModeFlowLayoutPanel);
-            this.flowLayoutPanel2.Controls.Add(this.drawingTableLayoutPanel);
-            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(709, 459);
-            this.flowLayoutPanel2.TabIndex = 0;
-            this.flowLayoutPanel2.WrapContents = false;
+            this.drawPanel.AutoScroll = true;
+            this.drawPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.drawPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.drawPanel.Location = new System.Drawing.Point(3, 3);
+            this.drawPanel.Name = "drawPanel";
+            this.drawPanel.Scene = null;
+            this.drawPanel.Size = new System.Drawing.Size(890, 273);
+            this.drawPanel.TabIndex = 8;
+            // 
+            // offsetSliderValue
+            // 
+            this.offsetSliderValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.offsetSliderValue.Location = new System.Drawing.Point(899, 3);
+            this.offsetSliderValue.Maximum = 50;
+            this.offsetSliderValue.Minimum = 5;
+            this.offsetSliderValue.Name = "offsetSliderValue";
+            this.offsetSliderValue.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.offsetSliderValue.Size = new System.Drawing.Size(45, 273);
+            this.offsetSliderValue.TabIndex = 9;
+            this.offsetSliderValue.Value = 5;
+            // 
+            // drawingModeFlowLayoutPanel
+            // 
+            this.drawingModeFlowLayoutPanel.AutoSize = true;
+            this.drawingModeFlowLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.drawingModeFlowLayoutPanel.Controls.Add(this.buildCombinedCheckBox);
+            this.drawingModeFlowLayoutPanel.Controls.Add(this.executeMethodComboBox);
+            this.drawingModeFlowLayoutPanel.Controls.Add(this.distributeMethodComboBox);
+            this.drawingModeFlowLayoutPanel.Location = new System.Drawing.Point(3, 148);
+            this.drawingModeFlowLayoutPanel.Name = "drawingModeFlowLayoutPanel";
+            this.drawingModeFlowLayoutPanel.Size = new System.Drawing.Size(322, 29);
+            this.drawingModeFlowLayoutPanel.TabIndex = 12;
+            // 
+            // buildCombinedCheckBox
+            // 
+            this.buildCombinedCheckBox.AutoSize = true;
+            this.buildCombinedCheckBox.Location = new System.Drawing.Point(3, 3);
+            this.buildCombinedCheckBox.Name = "buildCombinedCheckBox";
+            this.buildCombinedCheckBox.Size = new System.Drawing.Size(105, 19);
+            this.buildCombinedCheckBox.TabIndex = 9;
+            this.buildCombinedCheckBox.Text = "Совмещенная";
+            this.buildCombinedCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // executeMethodComboBox
+            // 
+            this.executeMethodComboBox.FormattingEnabled = true;
+            this.executeMethodComboBox.Location = new System.Drawing.Point(114, 3);
+            this.executeMethodComboBox.Name = "executeMethodComboBox";
+            this.executeMethodComboBox.Size = new System.Drawing.Size(100, 23);
+            this.executeMethodComboBox.TabIndex = 14;
+            // 
+            // distributeMethodComboBox
+            // 
+            this.distributeMethodComboBox.FormattingEnabled = true;
+            this.distributeMethodComboBox.Location = new System.Drawing.Point(220, 3);
+            this.distributeMethodComboBox.Name = "distributeMethodComboBox";
+            this.distributeMethodComboBox.Size = new System.Drawing.Size(99, 23);
+            this.distributeMethodComboBox.TabIndex = 14;
+            // 
+            // resultMatrixView
+            // 
+            this.resultMatrixView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.resultMatrixView.ColumnCount = 0;
+            this.resultMatrixView.Location = new System.Drawing.Point(3, 36);
+            this.resultMatrixView.Name = "resultMatrixView";
+            this.resultMatrixView.ReadOnly = false;
+            this.resultMatrixView.RowCount = 0;
+            this.resultMatrixView.SelectedCells = null;
+            this.resultMatrixView.Size = new System.Drawing.Size(106, 106);
+            this.resultMatrixView.TabIndex = 2;
             // 
             // matrixInfoTableLayoutPanel
             // 
@@ -305,7 +368,7 @@
             this.matrixInfoTableLayoutPanel.RowCount = 2;
             this.matrixInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.matrixInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.matrixInfoTableLayoutPanel.Size = new System.Drawing.Size(567, 30);
+            this.matrixInfoTableLayoutPanel.Size = new System.Drawing.Size(890, 27);
             this.matrixInfoTableLayoutPanel.TabIndex = 7;
             // 
             // criticalPathCountLabel
@@ -344,85 +407,23 @@
             this.criticalPathLengthValue.TabIndex = 3;
             this.criticalPathLengthValue.Text = "label4";
             // 
-            // drawingModeFlowLayoutPanel
+            // selectedPathIndexUpDown
             // 
-            this.drawingModeFlowLayoutPanel.AutoSize = true;
-            this.drawingModeFlowLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.drawingModeFlowLayoutPanel.Controls.Add(this.buildCombinedCheckBox);
-            this.drawingModeFlowLayoutPanel.Controls.Add(this.executeMethodComboBox);
-            this.drawingModeFlowLayoutPanel.Controls.Add(this.distributeMethodComboBox);
-            this.drawingModeFlowLayoutPanel.Location = new System.Drawing.Point(3, 151);
-            this.drawingModeFlowLayoutPanel.Name = "drawingModeFlowLayoutPanel";
-            this.drawingModeFlowLayoutPanel.Size = new System.Drawing.Size(322, 29);
-            this.drawingModeFlowLayoutPanel.TabIndex = 12;
-            // 
-            // buildCombinedCheckBox
-            // 
-            this.buildCombinedCheckBox.AutoSize = true;
-            this.buildCombinedCheckBox.Location = new System.Drawing.Point(3, 3);
-            this.buildCombinedCheckBox.Name = "buildCombinedCheckBox";
-            this.buildCombinedCheckBox.Size = new System.Drawing.Size(105, 19);
-            this.buildCombinedCheckBox.TabIndex = 9;
-            this.buildCombinedCheckBox.Text = "Совмещенная";
-            this.buildCombinedCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // executeMethodComboBox
-            // 
-            this.executeMethodComboBox.FormattingEnabled = true;
-            this.executeMethodComboBox.Location = new System.Drawing.Point(114, 3);
-            this.executeMethodComboBox.Name = "executeMethodComboBox";
-            this.executeMethodComboBox.Size = new System.Drawing.Size(100, 23);
-            this.executeMethodComboBox.TabIndex = 14;
-            // 
-            // distributeMethodComboBox
-            // 
-            this.distributeMethodComboBox.FormattingEnabled = true;
-            this.distributeMethodComboBox.Location = new System.Drawing.Point(220, 3);
-            this.distributeMethodComboBox.Name = "distributeMethodComboBox";
-            this.distributeMethodComboBox.Size = new System.Drawing.Size(99, 23);
-            this.distributeMethodComboBox.TabIndex = 14;
-            // 
-            // drawingTableLayoutPanel
-            // 
-            this.drawingTableLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.drawingTableLayoutPanel.ColumnCount = 2;
-            this.drawingTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.drawingTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.drawingTableLayoutPanel.Controls.Add(this.drawPanel, 0, 0);
-            this.drawingTableLayoutPanel.Controls.Add(this.offsetSliderValue, 1, 0);
-            this.drawingTableLayoutPanel.Location = new System.Drawing.Point(3, 186);
-            this.drawingTableLayoutPanel.Name = "drawingTableLayoutPanel";
-            this.drawingTableLayoutPanel.RowCount = 1;
-            this.drawingTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.drawingTableLayoutPanel.Size = new System.Drawing.Size(567, 203);
-            this.drawingTableLayoutPanel.TabIndex = 13;
-            // 
-            // drawPanel
-            // 
-            this.drawPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.drawPanel.AutoScroll = true;
-            this.drawPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.drawPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.drawPanel.Location = new System.Drawing.Point(3, 3);
-            this.drawPanel.Name = "drawPanel";
-            this.drawPanel.Scene = null;
-            this.drawPanel.Size = new System.Drawing.Size(510, 197);
-            this.drawPanel.TabIndex = 8;
-            // 
-            // offsetSliderValue
-            // 
-            this.offsetSliderValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.offsetSliderValue.Location = new System.Drawing.Point(519, 3);
-            this.offsetSliderValue.Minimum = 1;
-            this.offsetSliderValue.Name = "offsetSliderValue";
-            this.offsetSliderValue.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.offsetSliderValue.Size = new System.Drawing.Size(45, 197);
-            this.offsetSliderValue.TabIndex = 9;
-            this.offsetSliderValue.Value = 1;
+            this.selectedPathIndexUpDown.Location = new System.Drawing.Point(205, 3);
+            this.selectedPathIndexUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.selectedPathIndexUpDown.Name = "selectedPathIndexUpDown";
+            this.matrixInfoTableLayoutPanel.SetRowSpan(this.selectedPathIndexUpDown, 2);
+            this.selectedPathIndexUpDown.Size = new System.Drawing.Size(38, 23);
+            this.selectedPathIndexUpDown.TabIndex = 4;
+            this.selectedPathIndexUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // saveFileDialog1
             // 
@@ -437,12 +438,11 @@
             // 
             // ProblemOneTabPage
             // 
-            this.ClientSize = new System.Drawing.Size(933, 465);
+            this.ClientSize = new System.Drawing.Size(1171, 465);
             this.Controls.Add(this.splitContainer1);
             this.Name = "ProblemOneTabPage";
             this.Text = "Problem one";
             ((System.ComponentModel.ISupportInitialize)(this.processorUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.selectedPathIndexUpDown)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -453,15 +453,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.processUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.blockUpDown)).EndInit();
             this.saveLoadTableLayoutPanel.ResumeLayout(false);
-            this.flowLayoutPanel2.ResumeLayout(false);
-            this.flowLayoutPanel2.PerformLayout();
-            this.matrixInfoTableLayoutPanel.ResumeLayout(false);
-            this.matrixInfoTableLayoutPanel.PerformLayout();
-            this.drawingModeFlowLayoutPanel.ResumeLayout(false);
-            this.drawingModeFlowLayoutPanel.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.drawingTableLayoutPanel.ResumeLayout(false);
             this.drawingTableLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.offsetSliderValue)).EndInit();
+            this.drawingModeFlowLayoutPanel.ResumeLayout(false);
+            this.drawingModeFlowLayoutPanel.PerformLayout();
+            this.matrixInfoTableLayoutPanel.ResumeLayout(false);
+            this.matrixInfoTableLayoutPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.selectedPathIndexUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.kProcTypeBindingSource)).EndInit();
             this.ResumeLayout(false);
 
@@ -469,17 +470,9 @@
 
         private KMatrixView sourceMatrixView;
         private Button loadDataButton;
-        private KMatrixView resultMatrixView;
         private NumericUpDown processorUpDown;
-        private NumericUpDown selectedPathIndexUpDown;
         private SplitContainer splitContainer1;
         private FlowLayoutPanel inputDataFlowLayoutPanel;
-        private FlowLayoutPanel flowLayoutPanel2;
-        private TableLayoutPanel matrixInfoTableLayoutPanel;
-        private Label criticalPathCountLabel;
-        private Label criticalPathLenthLabel;
-        private Label criticalPathCountValue;
-        private Label criticalPathLengthValue;
         private TableLayoutPanel saveLoadTableLayoutPanel;
         private Button saveDataButton;
         private TableLayoutPanel inputInfoTableLayoutPanel;
@@ -488,16 +481,24 @@
         private Label blockCountLabel;
         private NumericUpDown processUpDown;
         private NumericUpDown blockUpDown;
-        private Views.Controls.UserControl1 drawPanel;
-        private CheckBox buildCombinedCheckBox;
-        private FlowLayoutPanel drawingModeFlowLayoutPanel;
-        private TableLayoutPanel drawingTableLayoutPanel;
-        private TrackBar offsetSliderValue;
-        private ComboBox executeMethodComboBox;
         private SaveFileDialog saveFileDialog1;
         private OpenFileDialog openFileDialog1;
         private BindingSource kProcTypeBindingSource;
+        private TableLayoutPanel tableLayoutPanel1;
+        private TableLayoutPanel drawingTableLayoutPanel;
+        private Controls.UserControl1 drawPanel;
+        private TrackBar offsetSliderValue;
+        private FlowLayoutPanel drawingModeFlowLayoutPanel;
+        private CheckBox buildCombinedCheckBox;
+        private ComboBox executeMethodComboBox;
         private ComboBox distributeMethodComboBox;
+        private KMatrixView resultMatrixView;
+        private TableLayoutPanel matrixInfoTableLayoutPanel;
+        private Label criticalPathCountLabel;
+        private Label criticalPathLenthLabel;
+        private Label criticalPathCountValue;
+        private Label criticalPathLengthValue;
+        private NumericUpDown selectedPathIndexUpDown;
     }
 }
 #endregion

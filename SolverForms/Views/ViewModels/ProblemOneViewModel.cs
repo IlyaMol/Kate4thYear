@@ -2,6 +2,7 @@
 using ProblemOne.KGraph;
 using ProblemOne.Model;
 using SolverForms.DrawLib;
+using SolverForms.Extensions;
 using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -91,8 +92,8 @@ namespace SolverForms.Views.ViewModels
             {
                 if (_processorCount == value) return;
                 _processorCount = value;
-                RecalcResult();
                 OnPropertyChanged();
+                RecalcResult();
             }
         }
         public int[,] SourceMatrix
@@ -101,9 +102,10 @@ namespace SolverForms.Views.ViewModels
             set
             {
                 if (_sourceMatrix == null) return;
-                if (_sourceMatrix == value) return;
+                if (_sourceMatrix.Compare(value)) return;
                 _sourceMatrix = value;
                 OnPropertyChanged();
+                RecalcResult();
             }
         }
         public int[,] ResultMatrix
@@ -257,15 +259,17 @@ namespace SolverForms.Views.ViewModels
 
         public void RedrawGraphics()
         {
-            KGLayer? machineResultGraphics = Machine?.Execute(SelectedExecuteType, BulidCombined)
+            if(Machine == null) return;
+
+            ICollection<KGLayer> machineResultGraphics = Machine.Execute(SelectedExecuteType, SelectedDistributeType, BulidCombined)
                                                      .BuildGraphics();
             
            // TODO(wwaffe): here start of test graphics code
            KGScene scene = KGScene.NewScene()
-                                   .SetDimensions(width: CurrentSceneWidth, height: CurrentSceneHeight, padding: new Padding(20))
-                                   .UseCoordPlane(yDelimeters: ProcessorCount, scale: DrawingScale)
-                                   .AddLayer(machineResultGraphics)
-                                   .Build();
+                                  .SetDimensions(width: CurrentSceneWidth, height: CurrentSceneHeight, padding: new Padding(20))
+                                  .UseCoordPlane(yDelimeters: ProcessorCount, scale: DrawingScale)
+                                  .AddLayers(machineResultGraphics)
+                                  .Build();
             OnFrameUpdate?.Invoke(scene);
             //end draw algo
         }

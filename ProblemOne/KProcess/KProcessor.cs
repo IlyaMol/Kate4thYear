@@ -4,20 +4,19 @@ namespace ProblemOne
 {
     public static class KProcessorExtensions
     {
-        public static KProcessor BindProcess(this KProcessor processor, in KProcess? bindingProcess)
+        public static KProcessor BindBlock(this KProcessor processor, KBlockBinding block , bool isCombined)
         {
-            if (bindingProcess == null)
-                return processor;
+            // при смене потока блоков - назначаем текущий блок переходным
+            // нужно для корректного совмещения (у следующего процесса - предыдущий блок
+            // это последний блок предыдущего процесса. 
+            if (processor.CurrentBlock != null && isCombined)
+                if (processor.CurrentBlock.ThreadIndex < block.ThreadIndex)
+                    block.Process.TransitiveBlock = processor.CurrentBlock;
 
-            if(processor.CurrentProcess != null)
-            {
-                processor.CurrentProcess.Executor = null;
-                bindingProcess.TransitiveBlock = processor.CurrentProcess.LastBlock;
-            }
-            processor.CurrentProcess = bindingProcess;
-            bindingProcess.Executor = processor;
-            bindingProcess.ExecutorIndex = processor.Index;
-
+            processor.CurrentBlock = block;
+            block.Block.LastExecutorIndex = processor.Index;
+            block.ExecutorIndex = processor.Index;
+            block.IsBinded = true;
             return processor;
         }
     }
@@ -25,53 +24,37 @@ namespace ProblemOne
     public class KProcessor
     {
         public int Index { get; set; } = 0;
+        public KBlockBinding? CurrentBlock { get; set; }
 
-        public KProcess? CurrentProcess { get; set; }
+        public int ExecutedBlockCount { get; set; }
 
-        public KStateMachine ParentMachine { get; set; }
-
-        public ProcessorState Status
-        {
-            get
+        public EProcessorState Status 
+        { 
+            get 
             {
-                if (CurrentProcess == null) return ProcessorState.Idle;
-
-                if (CurrentProcess != null && (CurrentProcess.Status == ProcessState.Done 
-                    || CurrentProcess.Status == ProcessState.Ready)) return ProcessorState.Idle;
-                else if (CurrentProcess != null && CurrentProcess.Status == ProcessState.Busy) return ProcessorState.Busy;
-                else return ProcessorState.Ready;
-            }
+                if (CurrentBlock == null) return EProcessorState.Ready;
+                if (CurrentBlock != null && CurrentBlock.Status == EBlockState.Done) return EProcessorState.Ready;
+                return EProcessorState.Busy;
+            } 
         }
 
-        public KProcessor(KStateMachine parentMachine)
+        public KProcessor(int index) { Index = index; }
+
+        public void DoTick(int currentTick)
         {
-            ParentMachine = parentMachine;
-        }
-
-        public int Execute(int startStamp, EExecuteModeType syncType, bool isCombined)
-        {
-            if (Status == ProcessorState.Idle) return startStamp;
-
-            KBlockBinding? nextBlockBinding = CurrentProcess!.CurrentTask;
-
-            if (nextBlockBinding == null)
-                nextBlockBinding = CurrentProcess!.NextTask;
-
-            if (nextBlockBinding != null)
+            if (CurrentBlock == null) return;
+            if (CurrentBlock.Status == EBlockState.Binded)
             {
-                startStamp = nextBlockBinding.DoTick(startStamp, syncType, isCombined);
-
-                // если после предыдущего шага процессор готов - сразу же выполняем следующий блок
-                if (nextBlockBinding.Status == BlockState.Done && Status == ProcessorState.Ready)
-                    startStamp = Execute(startStamp, syncType, isCombined);
+                ExecutedBlockCount++;
+                CurrentBlock.CurrentExecutor = this;
             }
-
-            return startStamp;
+            CurrentBlock.DoTick(currentTick);
         }
 
         public void Reset()
         {
-            CurrentProcess = null;
+            ExecutedBlockCount = 0;
+            CurrentBlock = null;
         }
     }
 }
