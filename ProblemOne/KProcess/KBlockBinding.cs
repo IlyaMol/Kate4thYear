@@ -112,8 +112,7 @@ namespace ProblemOne
                 if (BlockEndTime <= currentTick)
                 {
                     // выполнение блока закончилось
-                    Block.IsBlocked = false;
-                    Block.CurrentProcess = null;
+                    Block.CurrentProcesses.Remove(Process);
                     IsBinded = false;
                     CurrentExecutor = null;
                     _status = EBlockState.Done;
@@ -121,9 +120,8 @@ namespace ProblemOne
             }
             if (Status == EBlockState.Binded)
             {
-                Block.IsBlocked = true;
                 BlockStartTime = currentTick;
-                Block.CurrentProcess = Process;
+                Block.CurrentProcesses.Add(Process);
             }
         }
 

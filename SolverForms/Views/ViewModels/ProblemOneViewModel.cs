@@ -15,6 +15,7 @@ namespace SolverForms.Views.ViewModels
         private bool _isBusy = false;
         private bool _buildCombined = false;
         private int _processorCount = 0;
+        private int _copyCount = 1;
 
         private int[,] _sourceMatrix = new int[0, 0];
         private int[,] _resultMatrix = new int[0, 0];
@@ -67,21 +68,18 @@ namespace SolverForms.Views.ViewModels
         #endregion
 
         #region Properties
-        public bool IsBusy
+
+
+        public int CopyCount
         {
-            get { return _isBusy; }
+            get { return _copyCount; }
             set
             {
-                if (_isBusy == value) return;
-                _isBusy = value;
+                if (_copyCount == value) return;
+                _copyCount = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(IsNotBusy));
-
+                RecalcResult();
             }
-        }
-        public bool IsNotBusy
-        {
-            get { return !_isBusy; }
         }
 
         public ICollection<int[,]>? SubProcess { get; private set; }
@@ -240,7 +238,7 @@ namespace SolverForms.Views.ViewModels
                 KGraph.GetCriticalPath(graph, s.Token);
             criticalPaths = graph.CriticalPaths;
             ResultMatrix = preparedMatrix;
-            KStateMachine.TryBuild(SourceMatrix, _processorCount, out Machine);
+            KStateMachine.TryBuild(SourceMatrix, _processorCount, _copyCount, out Machine);
 
             if (graph == null) { return; }
             if (!criticalPaths.IsEmpty && _selectedCriticalPathIndex > 0)

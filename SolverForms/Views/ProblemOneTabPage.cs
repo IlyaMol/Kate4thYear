@@ -33,6 +33,7 @@ namespace SolverForms.Views
             buildCombinedCheckBox.PerformLayout();
             viewModel.CurrentSceneHeight = drawPanel.Height;
             viewModel.CurrentSceneWidth = drawPanel.Width;
+            resourceCopyUpDown.Minimum = 1;
 
             executeMethodComboBox.DisplayMember = "Name";
             executeMethodComboBox.ValueMember = "Type";
@@ -178,6 +179,15 @@ namespace SolverForms.Views
                 true,
                 DataSourceUpdateMode.OnPropertyChanged
                 );
+            resourceCopyUpDown.DataBindings.Add
+                (
+                nameof(resourceCopyUpDown.Value),
+                viewModel,
+                nameof(viewModel.CopyCount),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged
+                );
+
         }
         private void SaveDataButton_Click(object sender, EventArgs e)
         {

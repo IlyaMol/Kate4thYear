@@ -24,7 +24,7 @@ namespace ProblemOne
         private Dictionary<int, int> ProcessorLeases { get; } = new Dictionary<int, int>();
 
         // Тут менять ничего не нужно.
-        public static bool TryBuild(in int[,] matrix, int processorCount, out KStateMachine machine)
+        public static bool TryBuild(in int[,] matrix, int processorCount, int resourceCopyCount, out KStateMachine machine)
         {
             machine = new KStateMachine().AddProcessors(processorCount);
 
@@ -44,7 +44,7 @@ namespace ProblemOne
                     KBlock? currentBlock = machine.Blocks.FirstOrDefault(b => b.PipelineIndex == columnIndex);
                     if (currentBlock == null)
                     {
-                        currentBlock = new KBlock(columnIndex);
+                        currentBlock = new KBlock(columnIndex, resourceCopyCount);
                         machine.Blocks.Add(currentBlock);
                     }
                     process.AddBlockBinding(currentBlock, machine, matrix[rowIndex, columnIndex], thread);
@@ -217,7 +217,7 @@ namespace ProblemOne
                 // блокировка исполнения блока, если процесс не готов
                 if (distributionMode == EDistributeModeType.Distributed)
                     if (processor.CurrentBlock!.Process.Status == EProcessState.Waiting)
-                        if (!processor.CurrentBlock!.Process.CurrentTasks.Contains(processor.CurrentBlock!)) 
+                        if (!processor.CurrentBlock!.Process.CurrentTasks.Contains(processor.CurrentBlock!))
                             continue;
 
                 // блокировка исполнения блока, если предыдущий блок не готов
