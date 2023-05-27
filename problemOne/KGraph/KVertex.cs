@@ -1,4 +1,4 @@
-﻿namespace problemOne.Model
+﻿namespace ProblemOne.Model
 {
     public class KVertex
     {
