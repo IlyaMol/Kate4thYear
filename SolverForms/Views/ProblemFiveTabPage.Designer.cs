@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProblemFiveTabPage));
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.inputDataFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.inputInfoTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.eValUpDown = new System.Windows.Forms.NumericUpDown();
@@ -43,35 +42,15 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.processReqLabel = new System.Windows.Forms.Label();
             this.processReqCountValue = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.inputDataFlowLayoutPanel.SuspendLayout();
             this.inputInfoTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eValUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.processorUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.blockUpDown)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.inputDataFlowLayoutPanel);
-            this.splitContainer1.Panel1MinSize = 215;
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel1);
-            this.splitContainer1.Size = new System.Drawing.Size(800, 450);
-            this.splitContainer1.SplitterDistance = 215;
-            this.splitContainer1.TabIndex = 1;
             // 
             // inputDataFlowLayoutPanel
             // 
@@ -80,9 +59,9 @@
             this.inputDataFlowLayoutPanel.Controls.Add(this.inputInfoTableLayoutPanel);
             this.inputDataFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.inputDataFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.inputDataFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.inputDataFlowLayoutPanel.Location = new System.Drawing.Point(3, 3);
             this.inputDataFlowLayoutPanel.Name = "inputDataFlowLayoutPanel";
-            this.inputDataFlowLayoutPanel.Size = new System.Drawing.Size(215, 450);
+            this.inputDataFlowLayoutPanel.Size = new System.Drawing.Size(209, 209);
             this.inputDataFlowLayoutPanel.TabIndex = 1;
             this.inputDataFlowLayoutPanel.WrapContents = false;
             // 
@@ -213,17 +192,17 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 225F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.processReqLabel, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.processReqCountValue, 1, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(218, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(440, 450);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(403, 209);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // processReqLabel
@@ -231,7 +210,7 @@
             this.processReqLabel.AutoSize = true;
             this.processReqLabel.Location = new System.Drawing.Point(3, 0);
             this.processReqLabel.Name = "processReqLabel";
-            this.processReqLabel.Size = new System.Drawing.Size(213, 120);
+            this.processReqLabel.Size = new System.Drawing.Size(219, 120);
             this.processReqLabel.TabIndex = 0;
             this.processReqLabel.Text = resources.GetString("processReqLabel.Text");
             // 
@@ -240,23 +219,34 @@
             this.processReqCountValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.processReqCountValue.AutoSize = true;
-            this.processReqCountValue.Location = new System.Drawing.Point(223, 0);
+            this.processReqCountValue.Location = new System.Drawing.Point(228, 0);
             this.processReqCountValue.Name = "processReqCountValue";
             this.processReqCountValue.Size = new System.Drawing.Size(38, 120);
             this.processReqCountValue.TabIndex = 3;
             this.processReqCountValue.Text = "label4";
             this.processReqCountValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 215F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel1, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.inputDataFlowLayoutPanel, 0, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(624, 215);
+            this.tableLayoutPanel2.TabIndex = 2;
+            // 
             // ProblemFiveTabPage
             // 
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.splitContainer1);
+            this.ClientSize = new System.Drawing.Size(624, 215);
+            this.Controls.Add(this.tableLayoutPanel2);
             this.Name = "ProblemFiveTabPage";
             this.Text = "инд. 5";
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
             this.inputDataFlowLayoutPanel.ResumeLayout(false);
             this.inputInfoTableLayoutPanel.ResumeLayout(false);
             this.inputInfoTableLayoutPanel.PerformLayout();
@@ -265,13 +255,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.blockUpDown)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private SplitContainer splitContainer1;
         private FlowLayoutPanel inputDataFlowLayoutPanel;
         private TableLayoutPanel inputInfoTableLayoutPanel;
         private Label minimumExecTime;
@@ -285,5 +274,6 @@
         private TextBox minimalExecTimeValue;
         private Label label1;
         private NumericUpDown eValUpDown;
+        private TableLayoutPanel tableLayoutPanel2;
     }
 }
