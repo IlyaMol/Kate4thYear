@@ -66,12 +66,13 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.inputDataFlowLayoutPanel);
+            this.splitContainer1.Panel1MinSize = 215;
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel1);
             this.splitContainer1.Size = new System.Drawing.Size(800, 450);
-            this.splitContainer1.SplitterDistance = 206;
+            this.splitContainer1.SplitterDistance = 215;
             this.splitContainer1.TabIndex = 0;
             // 
             // inputDataFlowLayoutPanel
@@ -84,7 +85,7 @@
             this.inputDataFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.inputDataFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.inputDataFlowLayoutPanel.Name = "inputDataFlowLayoutPanel";
-            this.inputDataFlowLayoutPanel.Size = new System.Drawing.Size(206, 450);
+            this.inputDataFlowLayoutPanel.Size = new System.Drawing.Size(215, 450);
             this.inputDataFlowLayoutPanel.TabIndex = 1;
             this.inputDataFlowLayoutPanel.WrapContents = false;
             // 
@@ -217,37 +218,44 @@
             this.tableLayoutPanel1.Controls.Add(this.minimumExecTimeValue, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.requiredProcessorCountValue, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.minimumProcessorCountValue, 1, 2);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(440, 47);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(581, 450);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // minimumExecTimeLabel
             // 
+            this.minimumExecTimeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.minimumExecTimeLabel.AutoSize = true;
             this.minimumExecTimeLabel.Location = new System.Drawing.Point(3, 0);
             this.minimumExecTimeLabel.Name = "minimumExecTimeLabel";
-            this.minimumExecTimeLabel.Size = new System.Drawing.Size(199, 15);
+            this.minimumExecTimeLabel.Size = new System.Drawing.Size(199, 28);
             this.minimumExecTimeLabel.TabIndex = 0;
             this.minimumExecTimeLabel.Text = "Минимальное время выполнения:";
+            this.minimumExecTimeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // requiredProcessorCountLabel
             // 
+            this.requiredProcessorCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.requiredProcessorCountLabel.AutoSize = true;
-            this.requiredProcessorCountLabel.Location = new System.Drawing.Point(3, 15);
+            this.requiredProcessorCountLabel.Location = new System.Drawing.Point(3, 28);
             this.requiredProcessorCountLabel.Name = "requiredProcessorCountLabel";
-            this.requiredProcessorCountLabel.Size = new System.Drawing.Size(194, 15);
+            this.requiredProcessorCountLabel.Size = new System.Drawing.Size(194, 28);
             this.requiredProcessorCountLabel.TabIndex = 1;
             this.requiredProcessorCountLabel.Text = "Достаточное число процессоров:";
+            this.requiredProcessorCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // minimumProcessorCountLabel
             // 
             this.minimumProcessorCountLabel.AutoSize = true;
-            this.minimumProcessorCountLabel.Location = new System.Drawing.Point(3, 30);
+            this.minimumProcessorCountLabel.Location = new System.Drawing.Point(3, 56);
             this.minimumProcessorCountLabel.Name = "minimumProcessorCountLabel";
             this.minimumProcessorCountLabel.Size = new System.Drawing.Size(203, 15);
             this.minimumProcessorCountLabel.TabIndex = 2;
@@ -255,26 +263,32 @@
             // 
             // minimumExecTimeValue
             // 
+            this.minimumExecTimeValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.minimumExecTimeValue.AutoSize = true;
-            this.minimumExecTimeValue.Location = new System.Drawing.Point(223, 0);
+            this.minimumExecTimeValue.Location = new System.Drawing.Point(293, 0);
             this.minimumExecTimeValue.Name = "minimumExecTimeValue";
-            this.minimumExecTimeValue.Size = new System.Drawing.Size(38, 15);
+            this.minimumExecTimeValue.Size = new System.Drawing.Size(38, 28);
             this.minimumExecTimeValue.TabIndex = 3;
             this.minimumExecTimeValue.Text = "label4";
+            this.minimumExecTimeValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // requiredProcessorCountValue
             // 
+            this.requiredProcessorCountValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.requiredProcessorCountValue.AutoSize = true;
-            this.requiredProcessorCountValue.Location = new System.Drawing.Point(223, 15);
+            this.requiredProcessorCountValue.Location = new System.Drawing.Point(293, 28);
             this.requiredProcessorCountValue.Name = "requiredProcessorCountValue";
-            this.requiredProcessorCountValue.Size = new System.Drawing.Size(38, 15);
+            this.requiredProcessorCountValue.Size = new System.Drawing.Size(38, 28);
             this.requiredProcessorCountValue.TabIndex = 4;
             this.requiredProcessorCountValue.Text = "label5";
+            this.requiredProcessorCountValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // minimumProcessorCountValue
             // 
             this.minimumProcessorCountValue.AutoSize = true;
-            this.minimumProcessorCountValue.Location = new System.Drawing.Point(223, 30);
+            this.minimumProcessorCountValue.Location = new System.Drawing.Point(293, 56);
             this.minimumProcessorCountValue.Name = "minimumProcessorCountValue";
             this.minimumProcessorCountValue.Size = new System.Drawing.Size(38, 15);
             this.minimumProcessorCountValue.TabIndex = 5;

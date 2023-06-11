@@ -37,14 +37,14 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(945, 578);
+            this.tabControl1.Size = new System.Drawing.Size(781, 464);
             this.tabControl1.TabIndex = 0;
             // 
             // LauncherForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(945, 578);
+            this.ClientSize = new System.Drawing.Size(781, 464);
             this.Controls.Add(this.tabControl1);
             this.Name = "LauncherForm";
             this.Text = "LauncherForm";

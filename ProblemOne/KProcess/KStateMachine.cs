@@ -195,10 +195,6 @@ namespace ProblemOne
                 // блокировки первого синхронного
                 if (executionMode == EExecuteModeType.SyncFirst)
                 {
-                    if (processor.CurrentBlock!.Process.Index == 3 && processor.CurrentBlock!.Block.PipelineIndex == 0 && currentTick == 13)
-                    {
-
-                    }
                     // проверка на возможность запуска блока (рекурсивно по процессу)
                     if (processor.CurrentBlock != null && !processor.CurrentBlock.CanStart(currentTick)) continue;
                 }
@@ -206,10 +202,6 @@ namespace ProblemOne
                 // блокировки второго синхронного
                 if(executionMode == EExecuteModeType.SyncSecond)
                 {
-                    if (processor.CurrentBlock!.Process.Index == 0 && processor.CurrentBlock!.Block.PipelineIndex == 2 && currentTick == 3)
-                    {
-
-                    }
                     // проверка на возможность запуска блока (рекурсивно по привязкам)
                     if (processor.CurrentBlock != null && !processor.CurrentBlock.CanStartSS(currentTick)) continue;
                 }

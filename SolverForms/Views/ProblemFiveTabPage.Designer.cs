@@ -64,12 +64,13 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.inputDataFlowLayoutPanel);
+            this.splitContainer1.Panel1MinSize = 215;
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel1);
             this.splitContainer1.Size = new System.Drawing.Size(800, 450);
-            this.splitContainer1.SplitterDistance = 206;
+            this.splitContainer1.SplitterDistance = 215;
             this.splitContainer1.TabIndex = 1;
             // 
             // inputDataFlowLayoutPanel
@@ -81,7 +82,7 @@
             this.inputDataFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.inputDataFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.inputDataFlowLayoutPanel.Name = "inputDataFlowLayoutPanel";
-            this.inputDataFlowLayoutPanel.Size = new System.Drawing.Size(206, 450);
+            this.inputDataFlowLayoutPanel.Size = new System.Drawing.Size(215, 450);
             this.inputDataFlowLayoutPanel.TabIndex = 1;
             this.inputDataFlowLayoutPanel.WrapContents = false;
             // 
@@ -216,11 +217,13 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.processReqLabel, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.processReqCountValue, 1, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(440, 129);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(440, 450);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // processReqLabel
@@ -239,7 +242,7 @@
             this.processReqCountValue.AutoSize = true;
             this.processReqCountValue.Location = new System.Drawing.Point(223, 0);
             this.processReqCountValue.Name = "processReqCountValue";
-            this.processReqCountValue.Size = new System.Drawing.Size(38, 129);
+            this.processReqCountValue.Size = new System.Drawing.Size(38, 120);
             this.processReqCountValue.TabIndex = 3;
             this.processReqCountValue.Text = "label4";
             this.processReqCountValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
