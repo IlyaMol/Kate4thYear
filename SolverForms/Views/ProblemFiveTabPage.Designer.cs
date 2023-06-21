@@ -61,15 +61,15 @@
             this.inputDataFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.inputDataFlowLayoutPanel.Location = new System.Drawing.Point(3, 3);
             this.inputDataFlowLayoutPanel.Name = "inputDataFlowLayoutPanel";
-            this.inputDataFlowLayoutPanel.Size = new System.Drawing.Size(209, 209);
+            this.inputDataFlowLayoutPanel.Size = new System.Drawing.Size(294, 541);
             this.inputDataFlowLayoutPanel.TabIndex = 1;
             this.inputDataFlowLayoutPanel.WrapContents = false;
             // 
             // inputInfoTableLayoutPanel
             // 
             this.inputInfoTableLayoutPanel.ColumnCount = 2;
-            this.inputInfoTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.inputInfoTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.inputInfoTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 74.22681F));
+            this.inputInfoTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.7732F));
             this.inputInfoTableLayoutPanel.Controls.Add(this.eValUpDown, 1, 2);
             this.inputInfoTableLayoutPanel.Controls.Add(this.processorCountLabel, 0, 0);
             this.inputInfoTableLayoutPanel.Controls.Add(this.blockCountLabel, 0, 1);
@@ -85,19 +85,19 @@
             this.inputInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.inputInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.inputInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.inputInfoTableLayoutPanel.Size = new System.Drawing.Size(199, 120);
+            this.inputInfoTableLayoutPanel.Size = new System.Drawing.Size(291, 138);
             this.inputInfoTableLayoutPanel.TabIndex = 8;
             // 
             // eValUpDown
             // 
-            this.eValUpDown.Location = new System.Drawing.Point(156, 61);
+            this.eValUpDown.Location = new System.Drawing.Point(219, 69);
             this.eValUpDown.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             65536});
             this.eValUpDown.Name = "eValUpDown";
-            this.eValUpDown.Size = new System.Drawing.Size(40, 23);
+            this.eValUpDown.Size = new System.Drawing.Size(69, 27);
             this.eValUpDown.TabIndex = 5;
             this.eValUpDown.Value = new decimal(new int[] {
             1,
@@ -112,7 +112,7 @@
             this.processorCountLabel.AutoSize = true;
             this.processorCountLabel.Location = new System.Drawing.Point(3, 0);
             this.processorCountLabel.Name = "processorCountLabel";
-            this.processorCountLabel.Size = new System.Drawing.Size(103, 29);
+            this.processorCountLabel.Size = new System.Drawing.Size(130, 33);
             this.processorCountLabel.TabIndex = 0;
             this.processorCountLabel.Text = "Процессоров (p):";
             this.processorCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -122,18 +122,18 @@
             this.blockCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.blockCountLabel.AutoSize = true;
-            this.blockCountLabel.Location = new System.Drawing.Point(3, 29);
+            this.blockCountLabel.Location = new System.Drawing.Point(3, 33);
             this.blockCountLabel.Name = "blockCountLabel";
-            this.blockCountLabel.Size = new System.Drawing.Size(66, 29);
+            this.blockCountLabel.Size = new System.Drawing.Size(82, 33);
             this.blockCountLabel.TabIndex = 1;
             this.blockCountLabel.Text = "Блоков (s):";
             this.blockCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // processorUpDown
             // 
-            this.processorUpDown.Location = new System.Drawing.Point(156, 3);
+            this.processorUpDown.Location = new System.Drawing.Point(219, 3);
             this.processorUpDown.Name = "processorUpDown";
-            this.processorUpDown.Size = new System.Drawing.Size(40, 23);
+            this.processorUpDown.Size = new System.Drawing.Size(69, 27);
             this.processorUpDown.TabIndex = 3;
             this.processorUpDown.Value = new decimal(new int[] {
             1,
@@ -143,14 +143,14 @@
             // 
             // blockUpDown
             // 
-            this.blockUpDown.Location = new System.Drawing.Point(156, 32);
+            this.blockUpDown.Location = new System.Drawing.Point(219, 36);
             this.blockUpDown.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             65536});
             this.blockUpDown.Name = "blockUpDown";
-            this.blockUpDown.Size = new System.Drawing.Size(40, 23);
+            this.blockUpDown.Size = new System.Drawing.Size(69, 27);
             this.blockUpDown.TabIndex = 4;
             this.blockUpDown.Value = new decimal(new int[] {
             1,
@@ -163,18 +163,18 @@
             this.minimumExecTime.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.minimumExecTime.AutoSize = true;
-            this.minimumExecTime.Location = new System.Drawing.Point(3, 87);
+            this.minimumExecTime.Location = new System.Drawing.Point(3, 99);
             this.minimumExecTime.Name = "minimumExecTime";
-            this.minimumExecTime.Size = new System.Drawing.Size(144, 33);
+            this.minimumExecTime.Size = new System.Drawing.Size(183, 39);
             this.minimumExecTime.TabIndex = 10;
             this.minimumExecTime.Text = "Минимальное время (T):";
             this.minimumExecTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // minimalExecTimeValue
             // 
-            this.minimalExecTimeValue.Location = new System.Drawing.Point(156, 90);
+            this.minimalExecTimeValue.Location = new System.Drawing.Point(219, 102);
             this.minimalExecTimeValue.Name = "minimalExecTimeValue";
-            this.minimalExecTimeValue.Size = new System.Drawing.Size(39, 23);
+            this.minimalExecTimeValue.Size = new System.Drawing.Size(69, 27);
             this.minimalExecTimeValue.TabIndex = 11;
             // 
             // label1
@@ -182,9 +182,9 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 58);
+            this.label1.Location = new System.Drawing.Point(3, 66);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(127, 29);
+            this.label1.Size = new System.Drawing.Size(158, 33);
             this.label1.TabIndex = 12;
             this.label1.Text = "Доп. сис. расходы (e):";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -197,12 +197,12 @@
             this.tableLayoutPanel1.Controls.Add(this.processReqLabel, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.processReqCountValue, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(218, 3);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(303, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(403, 209);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(623, 541);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // processReqLabel
@@ -210,7 +210,7 @@
             this.processReqLabel.AutoSize = true;
             this.processReqLabel.Location = new System.Drawing.Point(3, 0);
             this.processReqLabel.Name = "processReqLabel";
-            this.processReqLabel.Size = new System.Drawing.Size(219, 120);
+            this.processReqLabel.Size = new System.Drawing.Size(218, 200);
             this.processReqLabel.TabIndex = 0;
             this.processReqLabel.Text = resources.GetString("processReqLabel.Text");
             // 
@@ -221,7 +221,7 @@
             this.processReqCountValue.AutoSize = true;
             this.processReqCountValue.Location = new System.Drawing.Point(228, 0);
             this.processReqCountValue.Name = "processReqCountValue";
-            this.processReqCountValue.Size = new System.Drawing.Size(38, 120);
+            this.processReqCountValue.Size = new System.Drawing.Size(50, 200);
             this.processReqCountValue.TabIndex = 3;
             this.processReqCountValue.Text = "label4";
             this.processReqCountValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -229,7 +229,7 @@
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 215F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel1, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.inputDataFlowLayoutPanel, 0, 0);
@@ -238,12 +238,12 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(624, 215);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(929, 547);
             this.tableLayoutPanel2.TabIndex = 2;
             // 
             // ProblemFiveTabPage
             // 
-            this.ClientSize = new System.Drawing.Size(624, 215);
+            this.ClientSize = new System.Drawing.Size(929, 547);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Name = "ProblemFiveTabPage";
             this.Text = "инд. 5";

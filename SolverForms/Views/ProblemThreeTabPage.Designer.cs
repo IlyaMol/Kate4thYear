@@ -85,7 +85,7 @@
             this.inputInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.inputInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.inputInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.inputInfoTableLayoutPanel.Size = new System.Drawing.Size(199, 88);
+            this.inputInfoTableLayoutPanel.Size = new System.Drawing.Size(199, 106);
             this.inputInfoTableLayoutPanel.TabIndex = 8;
             // 
             // processorCountLabel
@@ -95,7 +95,7 @@
             this.processorCountLabel.AutoSize = true;
             this.processorCountLabel.Location = new System.Drawing.Point(3, 0);
             this.processorCountLabel.Name = "processorCountLabel";
-            this.processorCountLabel.Size = new System.Drawing.Size(103, 29);
+            this.processorCountLabel.Size = new System.Drawing.Size(130, 33);
             this.processorCountLabel.TabIndex = 0;
             this.processorCountLabel.Text = "Процессоров (p):";
             this.processorCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -105,9 +105,9 @@
             this.processCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.processCountLabel.AutoSize = true;
-            this.processCountLabel.Location = new System.Drawing.Point(3, 29);
+            this.processCountLabel.Location = new System.Drawing.Point(3, 33);
             this.processCountLabel.Name = "processCountLabel";
-            this.processCountLabel.Size = new System.Drawing.Size(89, 29);
+            this.processCountLabel.Size = new System.Drawing.Size(111, 33);
             this.processCountLabel.TabIndex = 1;
             this.processCountLabel.Text = "Процессов (n):";
             this.processCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -121,7 +121,7 @@
             0,
             0});
             this.processorUpDown.Name = "processorUpDown";
-            this.processorUpDown.Size = new System.Drawing.Size(40, 23);
+            this.processorUpDown.Size = new System.Drawing.Size(40, 27);
             this.processorUpDown.TabIndex = 3;
             this.processorUpDown.Value = new decimal(new int[] {
             1,
@@ -134,23 +134,23 @@
             this.copyCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.copyCountLabel.AutoSize = true;
-            this.copyCountLabel.Location = new System.Drawing.Point(3, 58);
+            this.copyCountLabel.Location = new System.Drawing.Point(3, 66);
             this.copyCountLabel.Name = "copyCountLabel";
-            this.copyCountLabel.Size = new System.Drawing.Size(109, 30);
+            this.copyCountLabel.Size = new System.Drawing.Size(137, 40);
             this.copyCountLabel.TabIndex = 2;
             this.copyCountLabel.Text = "Копий ресурса (c):";
             this.copyCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // processUpDown
             // 
-            this.processUpDown.Location = new System.Drawing.Point(156, 32);
+            this.processUpDown.Location = new System.Drawing.Point(156, 36);
             this.processUpDown.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.processUpDown.Name = "processUpDown";
-            this.processUpDown.Size = new System.Drawing.Size(40, 23);
+            this.processUpDown.Size = new System.Drawing.Size(40, 27);
             this.processUpDown.TabIndex = 4;
             this.processUpDown.Value = new decimal(new int[] {
             1,
@@ -160,14 +160,14 @@
             // 
             // copyUpDown
             // 
-            this.copyUpDown.Location = new System.Drawing.Point(156, 61);
+            this.copyUpDown.Location = new System.Drawing.Point(156, 69);
             this.copyUpDown.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.copyUpDown.Name = "copyUpDown";
-            this.copyUpDown.Size = new System.Drawing.Size(40, 23);
+            this.copyUpDown.Size = new System.Drawing.Size(40, 27);
             this.copyUpDown.TabIndex = 5;
             this.copyUpDown.Value = new decimal(new int[] {
             1,
@@ -181,9 +181,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.sourceQueueTextBox.DataSource = new double[0];
-            this.sourceQueueTextBox.Location = new System.Drawing.Point(3, 97);
+            this.sourceQueueTextBox.Location = new System.Drawing.Point(3, 115);
             this.sourceQueueTextBox.Name = "sourceQueueTextBox";
-            this.sourceQueueTextBox.Size = new System.Drawing.Size(199, 23);
+            this.sourceQueueTextBox.Size = new System.Drawing.Size(199, 27);
             this.sourceQueueTextBox.TabIndex = 9;
             // 
             // tableLayoutPanel1
@@ -214,7 +214,7 @@
             this.minimumExecTimeLabel.AutoSize = true;
             this.minimumExecTimeLabel.Location = new System.Drawing.Point(3, 0);
             this.minimumExecTimeLabel.Name = "minimumExecTimeLabel";
-            this.minimumExecTimeLabel.Size = new System.Drawing.Size(199, 28);
+            this.minimumExecTimeLabel.Size = new System.Drawing.Size(253, 28);
             this.minimumExecTimeLabel.TabIndex = 0;
             this.minimumExecTimeLabel.Text = "Минимальное время выполнения:";
             this.minimumExecTimeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -226,7 +226,7 @@
             this.requiredProcessorCountLabel.AutoSize = true;
             this.requiredProcessorCountLabel.Location = new System.Drawing.Point(3, 28);
             this.requiredProcessorCountLabel.Name = "requiredProcessorCountLabel";
-            this.requiredProcessorCountLabel.Size = new System.Drawing.Size(194, 28);
+            this.requiredProcessorCountLabel.Size = new System.Drawing.Size(243, 28);
             this.requiredProcessorCountLabel.TabIndex = 1;
             this.requiredProcessorCountLabel.Text = "Достаточное число процессоров:";
             this.requiredProcessorCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -236,7 +236,7 @@
             this.minimumProcessorCountLabel.AutoSize = true;
             this.minimumProcessorCountLabel.Location = new System.Drawing.Point(3, 56);
             this.minimumProcessorCountLabel.Name = "minimumProcessorCountLabel";
-            this.minimumProcessorCountLabel.Size = new System.Drawing.Size(203, 15);
+            this.minimumProcessorCountLabel.Size = new System.Drawing.Size(255, 20);
             this.minimumProcessorCountLabel.TabIndex = 2;
             this.minimumProcessorCountLabel.Text = "Минимальное число процессоров:";
             // 
@@ -245,9 +245,9 @@
             this.minimumExecTimeValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.minimumExecTimeValue.AutoSize = true;
-            this.minimumExecTimeValue.Location = new System.Drawing.Point(212, 0);
+            this.minimumExecTimeValue.Location = new System.Drawing.Point(264, 0);
             this.minimumExecTimeValue.Name = "minimumExecTimeValue";
-            this.minimumExecTimeValue.Size = new System.Drawing.Size(38, 28);
+            this.minimumExecTimeValue.Size = new System.Drawing.Size(50, 28);
             this.minimumExecTimeValue.TabIndex = 3;
             this.minimumExecTimeValue.Text = "label4";
             this.minimumExecTimeValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -257,9 +257,9 @@
             this.requiredProcessorCountValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.requiredProcessorCountValue.AutoSize = true;
-            this.requiredProcessorCountValue.Location = new System.Drawing.Point(212, 28);
+            this.requiredProcessorCountValue.Location = new System.Drawing.Point(264, 28);
             this.requiredProcessorCountValue.Name = "requiredProcessorCountValue";
-            this.requiredProcessorCountValue.Size = new System.Drawing.Size(38, 28);
+            this.requiredProcessorCountValue.Size = new System.Drawing.Size(50, 28);
             this.requiredProcessorCountValue.TabIndex = 4;
             this.requiredProcessorCountValue.Text = "label5";
             this.requiredProcessorCountValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -267,9 +267,9 @@
             // minimumProcessorCountValue
             // 
             this.minimumProcessorCountValue.AutoSize = true;
-            this.minimumProcessorCountValue.Location = new System.Drawing.Point(212, 56);
+            this.minimumProcessorCountValue.Location = new System.Drawing.Point(264, 56);
             this.minimumProcessorCountValue.Name = "minimumProcessorCountValue";
-            this.minimumProcessorCountValue.Size = new System.Drawing.Size(38, 15);
+            this.minimumProcessorCountValue.Size = new System.Drawing.Size(50, 20);
             this.minimumProcessorCountValue.TabIndex = 5;
             this.minimumProcessorCountValue.Text = "label6";
             // 

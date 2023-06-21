@@ -34,9 +34,9 @@
             this.processorUpDown = new System.Windows.Forms.NumericUpDown();
             this.processLabel = new System.Windows.Forms.Label();
             this.processUpDown = new System.Windows.Forms.NumericUpDown();
-            this.sourceQueueTextBox = new SolverForms.Views.Controls.QueueTextBox();
             this.tauLabel = new System.Windows.Forms.Label();
             this.tauUpDown = new System.Windows.Forms.NumericUpDown();
+            this.sourceQueueTextBox = new SolverForms.Views.Controls.QueueTextBox();
             this.resultTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.optimalBlockCountValueLabel = new System.Windows.Forms.Label();
@@ -92,7 +92,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(203, 134);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(203, 139);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // processorLabel
@@ -103,7 +103,7 @@
             this.processorLabel.AutoSize = true;
             this.processorLabel.Location = new System.Drawing.Point(3, 0);
             this.processorLabel.Name = "processorLabel";
-            this.processorLabel.Size = new System.Drawing.Size(148, 29);
+            this.processorLabel.Size = new System.Drawing.Size(148, 33);
             this.processorLabel.TabIndex = 0;
             this.processorLabel.Text = "Процессоры (p):";
             this.processorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -112,7 +112,7 @@
             // 
             this.processorUpDown.Location = new System.Drawing.Point(157, 3);
             this.processorUpDown.Name = "processorUpDown";
-            this.processorUpDown.Size = new System.Drawing.Size(43, 23);
+            this.processorUpDown.Size = new System.Drawing.Size(43, 27);
             this.processorUpDown.TabIndex = 1;
             // 
             // processLabel
@@ -121,19 +121,39 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.processLabel.AutoSize = true;
-            this.processLabel.Location = new System.Drawing.Point(3, 29);
+            this.processLabel.Location = new System.Drawing.Point(3, 33);
             this.processLabel.Name = "processLabel";
-            this.processLabel.Size = new System.Drawing.Size(148, 29);
+            this.processLabel.Size = new System.Drawing.Size(148, 33);
             this.processLabel.TabIndex = 2;
             this.processLabel.Text = "Процессы (n):";
             this.processLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // processUpDown
             // 
-            this.processUpDown.Location = new System.Drawing.Point(157, 32);
+            this.processUpDown.Location = new System.Drawing.Point(157, 36);
             this.processUpDown.Name = "processUpDown";
-            this.processUpDown.Size = new System.Drawing.Size(43, 23);
+            this.processUpDown.Size = new System.Drawing.Size(43, 27);
             this.processUpDown.TabIndex = 3;
+            // 
+            // tauLabel
+            // 
+            this.tauLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tauLabel.AutoSize = true;
+            this.tauLabel.Location = new System.Drawing.Point(3, 66);
+            this.tauLabel.Name = "tauLabel";
+            this.tauLabel.Size = new System.Drawing.Size(148, 40);
+            this.tauLabel.TabIndex = 5;
+            this.tauLabel.Text = "Накладные расходы (τ):";
+            this.tauLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tauUpDown
+            // 
+            this.tauUpDown.Location = new System.Drawing.Point(157, 69);
+            this.tauUpDown.Name = "tauUpDown";
+            this.tauUpDown.Size = new System.Drawing.Size(43, 27);
+            this.tauUpDown.TabIndex = 6;
             // 
             // sourceQueueTextBox
             // 
@@ -142,30 +162,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.SetColumnSpan(this.sourceQueueTextBox, 2);
             this.sourceQueueTextBox.DataSource = new double[0];
-            this.sourceQueueTextBox.Location = new System.Drawing.Point(3, 90);
+            this.sourceQueueTextBox.Location = new System.Drawing.Point(3, 109);
             this.sourceQueueTextBox.Name = "sourceQueueTextBox";
-            this.sourceQueueTextBox.Size = new System.Drawing.Size(197, 23);
+            this.sourceQueueTextBox.Size = new System.Drawing.Size(197, 27);
             this.sourceQueueTextBox.TabIndex = 4;
-            // 
-            // tauLabel
-            // 
-            this.tauLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tauLabel.AutoSize = true;
-            this.tauLabel.Location = new System.Drawing.Point(3, 58);
-            this.tauLabel.Name = "tauLabel";
-            this.tauLabel.Size = new System.Drawing.Size(148, 29);
-            this.tauLabel.TabIndex = 5;
-            this.tauLabel.Text = "Накладные расходы (τ):";
-            this.tauLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // tauUpDown
-            // 
-            this.tauUpDown.Location = new System.Drawing.Point(157, 61);
-            this.tauUpDown.Name = "tauUpDown";
-            this.tauUpDown.Size = new System.Drawing.Size(43, 23);
-            this.tauUpDown.TabIndex = 6;
             // 
             // resultTableLayoutPanel
             // 
@@ -200,7 +200,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(227, 15);
+            this.label1.Size = new System.Drawing.Size(286, 20);
             this.label1.TabIndex = 0;
             this.label1.Text = "Равномерное структирирование:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -210,9 +210,9 @@
             this.optimalBlockCountValueLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.optimalBlockCountValueLabel.AutoSize = true;
-            this.optimalBlockCountValueLabel.Location = new System.Drawing.Point(236, 56);
+            this.optimalBlockCountValueLabel.Location = new System.Drawing.Point(295, 56);
             this.optimalBlockCountValueLabel.Name = "optimalBlockCountValueLabel";
-            this.optimalBlockCountValueLabel.Size = new System.Drawing.Size(420, 15);
+            this.optimalBlockCountValueLabel.Size = new System.Drawing.Size(420, 20);
             this.optimalBlockCountValueLabel.TabIndex = 5;
             this.optimalBlockCountValueLabel.Text = "label5";
             this.optimalBlockCountValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -222,9 +222,9 @@
             this.uniformedQueueTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.uniformedQueueTextBox.DataSource = new double[0];
-            this.uniformedQueueTextBox.Location = new System.Drawing.Point(236, 3);
+            this.uniformedQueueTextBox.Location = new System.Drawing.Point(295, 3);
             this.uniformedQueueTextBox.Name = "uniformedQueueTextBox";
-            this.uniformedQueueTextBox.Size = new System.Drawing.Size(420, 23);
+            this.uniformedQueueTextBox.Size = new System.Drawing.Size(420, 27);
             this.uniformedQueueTextBox.TabIndex = 1;
             // 
             // resultTauLabel
@@ -234,7 +234,7 @@
             this.resultTauLabel.AutoSize = true;
             this.resultTauLabel.Location = new System.Drawing.Point(3, 56);
             this.resultTauLabel.Name = "resultTauLabel";
-            this.resultTauLabel.Size = new System.Drawing.Size(227, 15);
+            this.resultTauLabel.Size = new System.Drawing.Size(286, 20);
             this.resultTauLabel.TabIndex = 4;
             this.resultTauLabel.Text = "Оптимальное число блоков при τ = 1:";
             this.resultTauLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -246,7 +246,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(3, 28);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(227, 15);
+            this.label2.Size = new System.Drawing.Size(286, 20);
             this.label2.TabIndex = 2;
             this.label2.Text = "Оценка величины накладных расходов:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -256,9 +256,9 @@
             this.resultTauValueLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.resultTauValueLabel.AutoSize = true;
-            this.resultTauValueLabel.Location = new System.Drawing.Point(236, 28);
+            this.resultTauValueLabel.Location = new System.Drawing.Point(295, 28);
             this.resultTauValueLabel.Name = "resultTauValueLabel";
-            this.resultTauValueLabel.Size = new System.Drawing.Size(420, 15);
+            this.resultTauValueLabel.Size = new System.Drawing.Size(420, 20);
             this.resultTauValueLabel.TabIndex = 3;
             this.resultTauValueLabel.Text = "label3";
             this.resultTauValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -268,16 +268,16 @@
             this.optimalProcessorCountLabel.AutoSize = true;
             this.optimalProcessorCountLabel.Location = new System.Drawing.Point(3, 84);
             this.optimalProcessorCountLabel.Name = "optimalProcessorCountLabel";
-            this.optimalProcessorCountLabel.Size = new System.Drawing.Size(199, 15);
+            this.optimalProcessorCountLabel.Size = new System.Drawing.Size(250, 20);
             this.optimalProcessorCountLabel.TabIndex = 6;
             this.optimalProcessorCountLabel.Text = "Оптимальное число процессоров:";
             // 
             // optimalProcessorCountValueLabel
             // 
             this.optimalProcessorCountValueLabel.AutoSize = true;
-            this.optimalProcessorCountValueLabel.Location = new System.Drawing.Point(236, 84);
+            this.optimalProcessorCountValueLabel.Location = new System.Drawing.Point(295, 84);
             this.optimalProcessorCountValueLabel.Name = "optimalProcessorCountValueLabel";
-            this.optimalProcessorCountValueLabel.Size = new System.Drawing.Size(38, 15);
+            this.optimalProcessorCountValueLabel.Size = new System.Drawing.Size(50, 20);
             this.optimalProcessorCountValueLabel.TabIndex = 7;
             this.optimalProcessorCountValueLabel.Text = "label3";
             // 
