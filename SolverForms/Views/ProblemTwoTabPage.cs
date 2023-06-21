@@ -5,7 +5,7 @@ namespace SolverForms.Views
     public partial class ProblemTwoTabPage : TabPage
     {
         private ProblemTwoViewModel viewModel;
-        
+
         public ProblemTwoTabPage()
         {
             Text = "инд. 2";
@@ -40,38 +40,6 @@ namespace SolverForms.Views
                 true,
                 DataSourceUpdateMode.OnPropertyChanged
                 );
-            tauUpDown.DataBindings.Add
-                (
-                nameof(tauUpDown.Value),
-                viewModel,
-                nameof(viewModel.TauValue),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged
-                );
-            resultTauLabel.DataBindings.Add
-                (
-                nameof(resultTauLabel.Text),
-                viewModel,
-                nameof(viewModel.TauLabelText),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged
-                );
-            resultTauValueLabel.DataBindings.Add
-                (
-                nameof(resultTauValueLabel.Text),
-                viewModel,
-                nameof(viewModel.ResultTauValue),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged
-                );
-            optimalBlockCountValueLabel.DataBindings.Add
-                (
-                nameof(optimalBlockCountValueLabel.Text),
-                viewModel,
-                nameof(viewModel.OptimalBlockCountValue),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged
-                );
             sourceQueueTextBox.DataBindings.Add
                 (
                 nameof(sourceQueueTextBox.DataSource),
@@ -80,19 +48,55 @@ namespace SolverForms.Views
                 false,
                 DataSourceUpdateMode.OnPropertyChanged
                 );
-            uniformedQueueTextBox.DataBindings.Add
+            uniformQueueTextBox.DataBindings.Add
                 (
-                nameof(uniformedQueueTextBox.DataSource),
+                nameof(uniformQueueTextBox.DataSource),
                 viewModel,
                 nameof(viewModel.UniformQueue),
                 false,
                 DataSourceUpdateMode.OnPropertyChanged
                 );
-            optimalProcessorCountValueLabel.DataBindings.Add
+            sqrtnValue.DataBindings.Add
                 (
-                nameof(optimalProcessorCountValueLabel.Text),
+                nameof(sqrtnValue.Text),
                 viewModel,
-                nameof(viewModel.OptimalProcessorCount),
+                nameof(viewModel.SqrtNValueLabelText)
+                );
+            resultTauValueLabel.DataBindings.Add
+                (
+                nameof(resultTauValueLabel.Text),
+                viewModel,
+                nameof(viewModel.TauValueLabelText),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged
+                );
+            sumTLabel.DataBindings.Add
+                (
+                nameof(sumTLabel.Text),
+                viewModel,
+                nameof(viewModel.SumTValueLabelText)
+                );
+            optimalBlockCountValueLabel1.DataBindings.Add
+                (
+                nameof(optimalBlockCountValueLabel1.Text),
+                viewModel,
+                nameof(viewModel.OptimalBlockCountValueMainLabelText),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged
+                );
+            optimalBlockCountValueLabel2.DataBindings.Add
+                (
+                nameof(optimalBlockCountValueLabel2.Text),
+                viewModel,
+                nameof(viewModel.OptimalBlockCountValueSecondaryLabelText),
+                true,
+                DataSourceUpdateMode.OnPropertyChanged
+                );
+            optimalProcessorCountValue.DataBindings.Add
+                (
+                nameof(optimalProcessorCountValue.Text),
+                viewModel,
+                nameof(viewModel.OptimalProcessorCountValueText),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged
                 );

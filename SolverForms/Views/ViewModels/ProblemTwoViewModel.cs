@@ -11,7 +11,10 @@ namespace SolverForms.Views.ViewModels
         private int _tauValue = 1;
         private double _resultTauValue = 0;
         private double _optimalBlockCountValue = 0;
+        private double _optimalBlockCountValue2 = 0;
         private uint _optimalProcessorCount = 0;
+        private double _sqrtN = 0;
+        private int _sumTValue = 0;
 
         private double[] _sourceQueue = Array.Empty<double>();
         private double[] _uniformQueue = Array.Empty<double>();
@@ -59,10 +62,6 @@ namespace SolverForms.Views.ViewModels
                 Recalc();
             }
         }
-        public string TauLabelText
-        {
-            get { return $"Оптимальное число блоков при τ = {TauValue}:"; }
-        }
         public double ResultTauValue
         {
             get { return _resultTauValue; }
@@ -70,6 +69,54 @@ namespace SolverForms.Views.ViewModels
             {
                 if (_resultTauValue == value) return;
                 _resultTauValue = value;
+                OnPropertyChanged();
+            }
+        }
+        public string TauValueLabelText
+        {
+            get { return $"Величина накладных расходов: τ ≤ {ResultTauValue}"; }
+        }
+        public string TauLabelText
+        {
+            get { return $"Оптимальное число блоков при τ=1:"; }
+        }
+        public double SqrtNValue
+        {
+            get { return _sqrtN; }
+            set
+            {
+                if (_sqrtN == value) return;
+                _sqrtN = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(SqrtNValueLabelText));
+            }
+        }
+        public string SqrtNValueLabelText
+        {
+            get { return $"= {SqrtNValue}"; }
+        }
+        public int SumTValue
+        {
+            get { return _sumTValue; }
+            set
+            {
+                if (_sumTValue == value) return;
+                _sumTValue = value; 
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(SumTValueLabelText));
+            }
+        }
+        public string SumTValueLabelText
+        {
+            get { return $"= {SumTValue}"; }
+        }
+        public double OptimalBlockCountValue2
+        {
+            get { return _optimalBlockCountValue2; }
+            set
+            {
+                if (_optimalBlockCountValue2 == value) return;
+                _optimalBlockCountValue2 = value;
                 OnPropertyChanged();
             }
         }
@@ -83,6 +130,15 @@ namespace SolverForms.Views.ViewModels
                 OnPropertyChanged();
             }
         }
+        public string OptimalBlockCountValueMainLabelText
+        {
+            get { return $"(пункт в) для p=n={ProcessCount}, τ=1: s(0)={OptimalBlockCountValue}"; }
+        }
+        public string OptimalBlockCountValueSecondaryLabelText
+        {
+            get { return $"(пункт г) для p={4}, n={ProcessCount}, τ=1: s(0)={OptimalBlockCountValue2}"; }
+        }
+
         public uint OptimalProcessorCount
         {
             get { return _optimalProcessorCount; }
@@ -93,6 +149,11 @@ namespace SolverForms.Views.ViewModels
                 OnPropertyChanged();
             }
         }
+        public string OptimalProcessorCountValueText
+        {
+            get { return $"= {OptimalProcessorCount}"; }
+        }
+
         public double[] SourceQueue
         {
             get { return _sourceQueue; }
@@ -135,8 +196,11 @@ namespace SolverForms.Views.ViewModels
             if (_processorCount == 0) return;
 
             UniformQueue = _calculator.GetUniformSruct(_sourceQueue);
+            SqrtNValue = _calculator.GetSqrtProcess(_processCount);
             ResultTauValue = _calculator.OverheadCosts(_sourceQueue, _processorCount);
+            SumTValue = _calculator.GetSumTBlocks(SourceQueue);
             OptimalBlockCountValue = _calculator.OptimalBlockCount(_sourceQueue, _processorCount, _processCount, _tauValue);
+            OptimalBlockCountValue2 = _calculator.OptimalBlockCount(_sourceQueue, 4, _processCount, _tauValue);
             OptimalProcessorCount = _calculator.OptimalProcessorCount(_sourceQueue, _processCount);
         }
         #endregion

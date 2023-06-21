@@ -34,6 +34,14 @@
             return estimate;
         }
 
+        public double GetSqrtProcess(int processCount = 0)
+        {
+            return MathF.Sqrt(processCount);
+        }
+        public int GetSumTBlocks(double[] sourceStruct)
+        {
+            return (int)sourceStruct.Sum(x => x);
+        }
         /// <summary>
         /// Оптимальное число блоков
         /// </summary>
