@@ -11,7 +11,7 @@ namespace SolverForms
             tabControl1.TabPages.Add(new ProblemOneTabPage());
             tabControl1.TabPages.Add(new ProblemTwoTabPage());
             tabControl1.TabPages.Add(new ProblemThreeTabPage());
-            //tabControl1.TabPages.Add(new ProblemFiveTabPage());
+            tabControl1.TabPages.Add(new ProblemFiveTabPage());
         }
     }
 }

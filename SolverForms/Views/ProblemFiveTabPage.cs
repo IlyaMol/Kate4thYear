@@ -2,7 +2,7 @@
 
 namespace SolverForms.Views
 {
-    public partial class ProblemFiveTabPage : Form
+    public partial class ProblemFiveTabPage : TabPage
     {
         private ProblemFiveViewModel viewModel;
 
@@ -13,49 +13,32 @@ namespace SolverForms.Views
             viewModel = new ProblemFiveViewModel();
             UpdateDataBindings();
 
-            eValUpDown.DecimalPlaces= 1;
+            //eValUpDown.DecimalPlaces= 1;
         }
 
         public void UpdateDataBindings()
         {
-            processorUpDown.DataBindings.Add
+            resultALabelValue.DataBindings.Add
                 (
-                nameof(processorUpDown.Value),
+                nameof(resultALabelValue.Text),
                 viewModel,
-                nameof(viewModel.ProcessorCount),
+                nameof(viewModel.ProcessReqACountLabel),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged
                 );
-            blockUpDown.DataBindings.Add
+            resultBLabelValue.DataBindings.Add
                 (
-                nameof(blockUpDown.Value),
+                nameof(resultBLabelValue.Text),
                 viewModel,
-                nameof(viewModel.BlockCount),
+                nameof(viewModel.ProcessReqBCountLabel),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged
                 );
-            minimalExecTimeValue.DataBindings.Add
+            resultCLabelValue.DataBindings.Add
                 (
-                nameof(minimalExecTimeValue.Text),
+                nameof(resultCLabelValue.Text),
                 viewModel,
-                nameof(viewModel.MinExecTime),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged
-                );
-            eValUpDown.DataBindings.Add
-                (
-                nameof(eValUpDown.Value),
-                viewModel,
-                nameof(viewModel.eVal),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged
-                );
-
-            processReqCountValue.DataBindings.Add
-                (
-                nameof(processReqCountValue.Text),
-                viewModel,
-                nameof(viewModel.ProcessReqCount),
+                nameof(viewModel.ProcessReqCCountLabel),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged
                 );
