@@ -72,9 +72,31 @@ namespace SolverForms.Views.ViewModels
             {
                 if (_minExecTime == value) return;
                 _minExecTime = value;
+                OnPropertyChanged(nameof(MinimalExecutionTimeLabelValue));
                 OnPropertyChanged();
             }
         }
+        public string MinimalExecutionTimeLabelValue
+        {
+            get { return $"= {MinimalExecutionTime}"; }
+        }
+        
+        public int MinimumProcessorCount
+        {
+            get { return _minProcCount; }
+            set
+            {
+                if (_minProcCount == value) return;
+                _minProcCount = value;
+                OnPropertyChanged(nameof(MinimumProcessorCountLabelValue));
+                OnPropertyChanged();
+            }
+        }
+        public string MinimumProcessorCountLabelValue
+        {
+            get { return $"= {MinimumProcessorCount}"; }
+        }
+
         public int RequiredProcessorCount
         {
             get { return _reqProcCount; }
@@ -83,19 +105,14 @@ namespace SolverForms.Views.ViewModels
                 if (_reqProcCount == value) return;
                 _reqProcCount = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(RequiredProcessorCountLabelValue));
             }
         }
-        public int MinimumProcessorCount
+        public string RequiredProcessorCountLabelValue
         {
-            get { return _minProcCount; }
-            set
-            {
-                if (_minProcCount == value) return;
-                _minProcCount = value;
-                OnPropertyChanged();
-            }
+            get { return $"= {RequiredProcessorCount}"; }
         }
-        
+
         public int SourceDataLength
         {
             get { return SourceQueue.Length; }

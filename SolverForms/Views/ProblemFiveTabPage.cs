@@ -2,7 +2,7 @@
 
 namespace SolverForms.Views
 {
-    public partial class ProblemFiveTabPage : TabPage
+    public partial class ProblemFiveTabPage : Form
     {
         private ProblemFiveViewModel viewModel;
 

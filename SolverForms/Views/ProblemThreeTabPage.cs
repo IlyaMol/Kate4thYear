@@ -23,6 +23,14 @@ namespace SolverForms.Views
 
         public void UpdateDataBindings()
         {
+            sourceQueueTextBox.DataBindings.Add
+                (
+                nameof(sourceQueueTextBox.DataSource),
+                viewModel,
+                nameof(viewModel.SourceQueue),
+                false,
+                DataSourceUpdateMode.OnPropertyChanged
+                );
             processorUpDown.DataBindings.Add
                 (
                 nameof(processorUpDown.Value),
@@ -47,36 +55,25 @@ namespace SolverForms.Views
                 true,
                 DataSourceUpdateMode.OnPropertyChanged
                 );
-            sourceQueueTextBox.DataBindings.Add
-                (
-                nameof(sourceQueueTextBox.DataSource),
-                viewModel,
-                nameof(viewModel.SourceQueue),
-                false,
-                DataSourceUpdateMode.OnPropertyChanged
-                );
-            
             minimumExecTimeValue.DataBindings.Add
                 (
-                nameof(minimumExecTimeLabel.Text),
+                nameof(minimumExecTimeValue.Text),
                 viewModel,
-                nameof(viewModel.MinimalExecutionTime),
+                nameof(viewModel.MinimalExecutionTimeLabelValue), 
                 true,
                 DataSourceUpdateMode.OnPropertyChanged
-                );
+                ); 
             requiredProcessorCountValue.DataBindings.Add
                 (
                 nameof(requiredProcessorCountValue.Text),
                 viewModel,
-                nameof(viewModel.RequiredProcessorCount),
-                true,
-                DataSourceUpdateMode.OnPropertyChanged
+                nameof(viewModel.RequiredProcessorCountLabelValue)
                 );
             minimumProcessorCountValue.DataBindings.Add
                 (
                 nameof(minimumProcessorCountValue.Text),
                 viewModel,
-                nameof(viewModel.MinimumProcessorCount),
+                nameof(viewModel.MinimumProcessorCountLabelValue),
                 true,
                 DataSourceUpdateMode.OnPropertyChanged
                 );

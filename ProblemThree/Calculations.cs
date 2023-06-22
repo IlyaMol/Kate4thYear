@@ -6,7 +6,7 @@
         public int MinimumCompletionTime(double[] sourceQueue, int processorCount, 
                                          int processCount, int copyCount)
         {
-            return processCount / Math.Min(processorCount, copyCount) * (int)sourceQueue.Sum();
+            return (int)Math.Floor((double)processCount / Math.Min(processorCount, copyCount)) * (int)sourceQueue.Sum();
         }
 
         public int RequiredProcessorCount(int processorCount, int copyCount)

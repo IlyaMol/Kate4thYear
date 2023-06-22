@@ -80,7 +80,6 @@
             // 
             this.sourceMatrixView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.sourceMatrixView.ColumnCount = 0;
-            this.sourceMatrixView.Location = new System.Drawing.Point(3, 145);
             this.sourceMatrixView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.sourceMatrixView.Name = "sourceMatrixView";
             this.sourceMatrixView.ReadOnly = false;
@@ -91,7 +90,6 @@
             // 
             // loadDataButton
             // 
-            this.loadDataButton.Location = new System.Drawing.Point(3, 3);
             this.loadDataButton.Name = "loadDataButton";
             this.loadDataButton.Size = new System.Drawing.Size(75, 30);
             this.loadDataButton.TabIndex = 1;
@@ -101,7 +99,6 @@
             // 
             // processorUpDown
             // 
-            this.processorUpDown.Location = new System.Drawing.Point(156, 3);
             this.processorUpDown.Name = "processorUpDown";
             this.processorUpDown.Size = new System.Drawing.Size(40, 27);
             this.processorUpDown.TabIndex = 3;
@@ -112,11 +109,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.inputDataFlowLayoutPanel.AutoScroll = true;
-            this.inputDataFlowLayoutPanel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.inputDataFlowLayoutPanel.BackColor = System.Drawing.SystemColors.Control;
             this.inputDataFlowLayoutPanel.Controls.Add(this.inputInfoTableLayoutPanel);
             this.inputDataFlowLayoutPanel.Controls.Add(this.sourceMatrixView);
             this.inputDataFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.inputDataFlowLayoutPanel.Location = new System.Drawing.Point(3, 3);
             this.inputDataFlowLayoutPanel.Name = "inputDataFlowLayoutPanel";
             this.inputDataFlowLayoutPanel.Size = new System.Drawing.Size(209, 578);
             this.inputDataFlowLayoutPanel.TabIndex = 0;
@@ -134,7 +130,6 @@
             this.inputInfoTableLayoutPanel.Controls.Add(this.blockCountLabel, 0, 2);
             this.inputInfoTableLayoutPanel.Controls.Add(this.processUpDown, 1, 1);
             this.inputInfoTableLayoutPanel.Controls.Add(this.blockUpDown, 1, 2);
-            this.inputInfoTableLayoutPanel.Location = new System.Drawing.Point(3, 3);
             this.inputInfoTableLayoutPanel.Name = "inputInfoTableLayoutPanel";
             this.inputInfoTableLayoutPanel.RowCount = 4;
             this.inputInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -149,7 +144,6 @@
             this.processorCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.processorCountLabel.AutoSize = true;
-            this.processorCountLabel.Location = new System.Drawing.Point(3, 0);
             this.processorCountLabel.Name = "processorCountLabel";
             this.processorCountLabel.Size = new System.Drawing.Size(130, 33);
             this.processorCountLabel.TabIndex = 0;
@@ -165,7 +159,6 @@
             this.saveLoadTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.saveLoadTableLayoutPanel.Controls.Add(this.saveDataButton, 1, 0);
             this.saveLoadTableLayoutPanel.Controls.Add(this.loadDataButton, 0, 0);
-            this.saveLoadTableLayoutPanel.Location = new System.Drawing.Point(3, 102);
             this.saveLoadTableLayoutPanel.Name = "saveLoadTableLayoutPanel";
             this.saveLoadTableLayoutPanel.RowCount = 1;
             this.saveLoadTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -175,7 +168,6 @@
             // saveDataButton
             // 
             this.saveDataButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveDataButton.Location = new System.Drawing.Point(115, 3);
             this.saveDataButton.Name = "saveDataButton";
             this.saveDataButton.Size = new System.Drawing.Size(75, 30);
             this.saveDataButton.TabIndex = 2;
@@ -188,7 +180,6 @@
             this.processCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.processCountLabel.AutoSize = true;
-            this.processCountLabel.Location = new System.Drawing.Point(3, 33);
             this.processCountLabel.Name = "processCountLabel";
             this.processCountLabel.Size = new System.Drawing.Size(111, 33);
             this.processCountLabel.TabIndex = 1;
@@ -200,7 +191,6 @@
             this.blockCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.blockCountLabel.AutoSize = true;
-            this.blockCountLabel.Location = new System.Drawing.Point(3, 66);
             this.blockCountLabel.Name = "blockCountLabel";
             this.blockCountLabel.Size = new System.Drawing.Size(82, 33);
             this.blockCountLabel.TabIndex = 2;
@@ -209,14 +199,12 @@
             // 
             // processUpDown
             // 
-            this.processUpDown.Location = new System.Drawing.Point(156, 36);
             this.processUpDown.Name = "processUpDown";
             this.processUpDown.Size = new System.Drawing.Size(40, 27);
             this.processUpDown.TabIndex = 4;
             // 
             // blockUpDown
             // 
-            this.blockUpDown.Location = new System.Drawing.Point(156, 69);
             this.blockUpDown.Name = "blockUpDown";
             this.blockUpDown.Size = new System.Drawing.Size(40, 27);
             this.blockUpDown.TabIndex = 5;
@@ -226,7 +214,6 @@
             this.drawPanel.AutoScroll = true;
             this.drawPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.drawPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.drawPanel.Location = new System.Drawing.Point(3, 3);
             this.drawPanel.Name = "drawPanel";
             this.drawPanel.Scene = null;
             this.drawPanel.Size = new System.Drawing.Size(803, 344);
@@ -236,7 +223,6 @@
             // 
             this.offsetSliderValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.offsetSliderValue.Location = new System.Drawing.Point(812, 3);
             this.offsetSliderValue.Maximum = 50;
             this.offsetSliderValue.Minimum = 5;
             this.offsetSliderValue.Name = "offsetSliderValue";
@@ -252,7 +238,6 @@
             this.drawingModeFlowLayoutPanel.Controls.Add(this.buildCombinedCheckBox);
             this.drawingModeFlowLayoutPanel.Controls.Add(this.executeMethodComboBox);
             this.drawingModeFlowLayoutPanel.Controls.Add(this.distributeMethodComboBox);
-            this.drawingModeFlowLayoutPanel.Location = new System.Drawing.Point(3, 178);
             this.drawingModeFlowLayoutPanel.Name = "drawingModeFlowLayoutPanel";
             this.drawingModeFlowLayoutPanel.Size = new System.Drawing.Size(347, 34);
             this.drawingModeFlowLayoutPanel.TabIndex = 12;
@@ -260,7 +245,6 @@
             // buildCombinedCheckBox
             // 
             this.buildCombinedCheckBox.AutoSize = true;
-            this.buildCombinedCheckBox.Location = new System.Drawing.Point(3, 3);
             this.buildCombinedCheckBox.Name = "buildCombinedCheckBox";
             this.buildCombinedCheckBox.Size = new System.Drawing.Size(130, 24);
             this.buildCombinedCheckBox.TabIndex = 9;
@@ -270,7 +254,6 @@
             // executeMethodComboBox
             // 
             this.executeMethodComboBox.FormattingEnabled = true;
-            this.executeMethodComboBox.Location = new System.Drawing.Point(139, 3);
             this.executeMethodComboBox.Name = "executeMethodComboBox";
             this.executeMethodComboBox.Size = new System.Drawing.Size(100, 28);
             this.executeMethodComboBox.TabIndex = 14;
@@ -278,7 +261,6 @@
             // distributeMethodComboBox
             // 
             this.distributeMethodComboBox.FormattingEnabled = true;
-            this.distributeMethodComboBox.Location = new System.Drawing.Point(245, 3);
             this.distributeMethodComboBox.Name = "distributeMethodComboBox";
             this.distributeMethodComboBox.Size = new System.Drawing.Size(99, 28);
             this.distributeMethodComboBox.TabIndex = 14;
@@ -287,7 +269,6 @@
             // 
             this.resultMatrixView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.resultMatrixView.ColumnCount = 0;
-            this.resultMatrixView.Location = new System.Drawing.Point(3, 65);
             this.resultMatrixView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.resultMatrixView.Name = "resultMatrixView";
             this.resultMatrixView.ReadOnly = false;
@@ -310,7 +291,6 @@
             this.matrixInfoTableLayoutPanel.Controls.Add(this.selectedPathIndexUpDown, 2, 0);
             this.matrixInfoTableLayoutPanel.Controls.Add(this.criticalPathCountLabel, 0, 0);
             this.matrixInfoTableLayoutPanel.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.AddColumns;
-            this.matrixInfoTableLayoutPanel.Location = new System.Drawing.Point(3, 3);
             this.matrixInfoTableLayoutPanel.Name = "matrixInfoTableLayoutPanel";
             this.matrixInfoTableLayoutPanel.RowCount = 2;
             this.matrixInfoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -323,7 +303,6 @@
             this.criticalPathLenthLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.criticalPathLenthLabel.AutoSize = true;
-            this.criticalPathLenthLabel.Location = new System.Drawing.Point(3, 27);
             this.criticalPathLenthLabel.Name = "criticalPathLenthLabel";
             this.criticalPathLenthLabel.Size = new System.Drawing.Size(189, 28);
             this.criticalPathLenthLabel.TabIndex = 1;
@@ -335,7 +314,6 @@
             this.criticalPathCountValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.criticalPathCountValue.AutoSize = true;
-            this.criticalPathCountValue.Location = new System.Drawing.Point(198, 0);
             this.criticalPathCountValue.Name = "criticalPathCountValue";
             this.criticalPathCountValue.Size = new System.Drawing.Size(50, 27);
             this.criticalPathCountValue.TabIndex = 2;
@@ -347,7 +325,6 @@
             this.criticalPathLengthValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.criticalPathLengthValue.AutoSize = true;
-            this.criticalPathLengthValue.Location = new System.Drawing.Point(198, 27);
             this.criticalPathLengthValue.Name = "criticalPathLengthValue";
             this.criticalPathLengthValue.Size = new System.Drawing.Size(50, 28);
             this.criticalPathLengthValue.TabIndex = 3;
@@ -358,7 +335,6 @@
             // 
             this.selectedPathIndexUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.selectedPathIndexUpDown.Location = new System.Drawing.Point(254, 3);
             this.selectedPathIndexUpDown.Minimum = new decimal(new int[] {
             1,
             0,
@@ -379,7 +355,6 @@
             this.criticalPathCountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.criticalPathCountLabel.AutoSize = true;
-            this.criticalPathCountLabel.Location = new System.Drawing.Point(3, 0);
             this.criticalPathCountLabel.Name = "criticalPathCountLabel";
             this.criticalPathCountLabel.Size = new System.Drawing.Size(143, 27);
             this.criticalPathCountLabel.TabIndex = 0;
@@ -406,7 +381,6 @@
             this.tableLayoutPanel2.Controls.Add(this.inputDataFlowLayoutPanel, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -422,7 +396,6 @@
             this.tableLayoutPanel3.Controls.Add(this.matrixInfoTableLayoutPanel, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.flowLayoutPanel1, 0, 3);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(218, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 4;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -438,7 +411,6 @@
             this.flowLayoutPanel1.Controls.Add(this.drawPanel);
             this.flowLayoutPanel1.Controls.Add(this.offsetSliderValue);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 218);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(863, 357);
             this.flowLayoutPanel1.TabIndex = 13;
@@ -446,6 +418,7 @@
             // 
             // ProblemOneTabPage
             // 
+            this.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.ClientSize = new System.Drawing.Size(1090, 584);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Name = "ProblemOneTabPage";

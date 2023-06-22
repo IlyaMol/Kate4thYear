@@ -57,4 +57,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="richTextBox1.Text" xml:space="preserve">
+    <value>Пусть время выполнения программного ресурса составляет величину θs=(4,2,5,2) p=n=4, c=2;
+
+а) Найти минимальное общее время выполнения заданных объемов вычислений.
+б) Оценить достаточное число процессоров.
+в) Оценить минимальное число процессоров.</value>
+  </data>
 </root>
