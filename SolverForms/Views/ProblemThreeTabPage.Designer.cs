@@ -137,6 +137,7 @@
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(615, 30);
             this.flowLayoutPanel1.TabIndex = 1;
+            this.flowLayoutPanel1.WrapContents = false;
             // 
             // label1
             // 
@@ -170,6 +171,7 @@
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(615, 30);
             this.flowLayoutPanel2.TabIndex = 2;
+            this.flowLayoutPanel2.WrapContents = false;
             // 
             // label2
             // 
@@ -335,6 +337,7 @@
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
             this.flowLayoutPanel4.Size = new System.Drawing.Size(250, 30);
             this.flowLayoutPanel4.TabIndex = 7;
+            this.flowLayoutPanel4.WrapContents = false;
             // 
             // pictureBox2
             // 
@@ -366,6 +369,7 @@
             this.flowLayoutPanel5.Name = "flowLayoutPanel5";
             this.flowLayoutPanel5.Size = new System.Drawing.Size(506, 68);
             this.flowLayoutPanel5.TabIndex = 10;
+            this.flowLayoutPanel5.WrapContents = false;
             // 
             // pictureBox3
             // 
